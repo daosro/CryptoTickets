@@ -1,0 +1,52 @@
+{
+  "name": "client",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "axios": "^0.27.2",
+    "clsx": "^1.1.1",
+    "jss-plugin-global": "^10.9.0",
+    "moment": "^2.29.3",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0",
+    "react-icons": "^4.3.1",
+    "react-jss": "^10.9.0",
+    "react-router-dom": "^6.3.0",
+    "react-scripts": "4.0.3",
+    "web3": "^1.6.1"
+  },
+  "scripts": {
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "start": "react-scripts start",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ],
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

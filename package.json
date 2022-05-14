@@ -1,0 +1,26 @@
+{
+  "name": "sporttickets",
+  "version": "1.0.0",
+  "description": "TFM- UE Master Blockchain",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/daosro/CryptoTickets.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/daosro/CryptoTickets/issues"
+  },
+  "homepage": "https://github.com/daosro/CryptoTickets#readme",
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.6.0",
+    "truffle": "^5.5.18"
+  }
+}
