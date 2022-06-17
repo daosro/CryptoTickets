@@ -12,7 +12,7 @@ export default createUseStyles(
       zIndex: 4,
       position: "fixed",
       color: "#000000",
-      borderBottom: '1px solid #d4d4d4',
+      borderBottom: "1px solid #d4d4d4",
     },
     icon: {
       height: "2em",
@@ -32,7 +32,12 @@ export default createUseStyles(
       marginLeft: "1rem",
       marginRight: "1rem",
     },
-    ticketsButton: {
+    right: {
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    button: {
       display: "flex",
       backgroundColor: "#0255a5",
       color: "#FFFFFF",
@@ -44,9 +49,13 @@ export default createUseStyles(
       padding: "0.625rem 0.8125rem",
       fontSize: ".8125rem",
       marginRight: "1rem",
+      height: "1.5rem",
+      cursor: "pointer",
       "&:hover": {
         backgroundColor: "#003366",
       },
+    },
+    ticketsButton: {
       "&:before": {
         content: '"\\e919"',
         display: "flex",

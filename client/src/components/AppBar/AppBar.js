@@ -1,12 +1,21 @@
-import React from "react";
+import React, { useContext, useMemo } from "react";
+import { matchPath } from "react-router";
 import clsx from "clsx";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import useStyles from "./AppBar.style";
 import { HOME_PATH, TICKETS_PATH } from "../../constants/routes";
+import { Web3Context } from "../../context/Web3";
 
-const AppBar = ({ simple = false }) => {
-  const classes = useStyles({ simple });
+const AppBar = () => {
+  const classes = useStyles();
+  const location = useLocation();
+  const { accounts, connect } = useContext(Web3Context);
+
+  const displayTicketLink = useMemo(
+    () => !matchPath(location.pathname, TICKETS_PATH),
+    [location]
+  );
 
   return (
     <header className={classes.root}>
@@ -31,9 +40,20 @@ const AppBar = ({ simple = false }) => {
           alt="Champions 14"
         />
       </div>
-      <Link to={TICKETS_PATH} className={classes.ticketsButton}>
-        ENTRADAS
-      </Link>
+
+      <div className={classes.right}>
+        {displayTicketLink && (
+          <Link
+            to={TICKETS_PATH}
+            className={clsx(classes.button, classes.ticketsButton)}
+          >
+            ENTRADAS
+          </Link>
+        )}
+        <div className={classes.button} onClick={connect}>
+          {accounts?.[0] || "CONNECT"}
+        </div>
+      </div>
     </header>
   );
 };
