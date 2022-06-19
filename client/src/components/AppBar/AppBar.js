@@ -1,11 +1,12 @@
 import React, { useContext, useMemo } from "react";
 import { matchPath } from "react-router";
-import clsx from "clsx";
 import { Link, useLocation } from "react-router-dom";
+import clsx from "clsx";
+import ConnectButton from "../../core/ConnectButton";
+import { Web3Context } from "../../context/Web3";
+import { HOME_PATH, TICKETS_PATH } from "../../constants/routes";
 
 import useStyles from "./AppBar.style";
-import { HOME_PATH, TICKETS_PATH } from "../../constants/routes";
-import { Web3Context } from "../../context/Web3";
 
 const AppBar = () => {
   const classes = useStyles();
@@ -50,9 +51,7 @@ const AppBar = () => {
             ENTRADAS
           </Link>
         )}
-        <div className={classes.button} onClick={connect}>
-          {accounts?.[0] || "CONNECT"}
-        </div>
+        <ConnectButton />
       </div>
     </header>
   );
