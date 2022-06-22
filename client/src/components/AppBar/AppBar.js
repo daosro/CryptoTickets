@@ -1,9 +1,8 @@
-import React, { useContext, useMemo } from "react";
+import React, { useMemo } from "react";
 import { matchPath } from "react-router";
 import { Link, useLocation } from "react-router-dom";
 import clsx from "clsx";
 import ConnectButton from "../../core/ConnectButton";
-import { Web3Context } from "../../context/Web3";
 import { HOME_PATH, TICKETS_PATH } from "../../constants/routes";
 
 import useStyles from "./AppBar.style";
@@ -11,7 +10,6 @@ import useStyles from "./AppBar.style";
 const AppBar = () => {
   const classes = useStyles();
   const location = useLocation();
-  const { accounts, connect } = useContext(Web3Context);
 
   const displayTicketLink = useMemo(
     () => !matchPath(location.pathname, TICKETS_PATH),

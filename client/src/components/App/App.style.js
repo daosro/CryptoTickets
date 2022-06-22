@@ -9,12 +9,12 @@ export default createUseStyles(
         height: "5px",
       },
       "*::-webkit-scrollbar-track": {
-        backgroundColor: 'rgba(0, 0, 0, 0.4)',
-        borderRadius: '10px',
+        backgroundColor: "rgba(0, 0, 0, 0.4)",
+        borderRadius: "10px",
       },
       "*::-webkit-scrollbar-thumb": {
-        backgroundColor: '#dfdfdf',
-        borderRadius: '10px',
+        backgroundColor: "#dfdfdf",
+        borderRadius: "10px",
       },
       html: {
         height: "100%",
@@ -36,6 +36,10 @@ export default createUseStyles(
       "#root": {
         minHeight: "100vh",
       },
+      a: {
+        color: "#000",
+        textDecoration: "none",
+      },
     },
     root: {
       minHeight: "100vh",
@@ -44,7 +48,7 @@ export default createUseStyles(
       zIndex: 4,
       position: "sticky",
       bottom: "0",
-      boxShadow: '0px -2px 5px #101010',
+      boxShadow: "0px -2px 5px #101010",
     },
   },
   { name: "App" }

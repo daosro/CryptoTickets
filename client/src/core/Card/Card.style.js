@@ -21,10 +21,11 @@ export default createUseStyles(
     },
     header: {
       padding: "10px",
+      fontWeight: "bold",
+      fontSize: "larger",
+      backgroundColor: "#cfcfcf",
     },
-    content: {
-      padding: "2px 16px",
-    },
+    content: {},
     footer: {},
   },
   { name: "Card" }
