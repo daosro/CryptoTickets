@@ -14,6 +14,24 @@ export default createUseStyles(
       color: "#000000",
       borderBottom: "1px solid #d4d4d4",
     },
+    leftSide: {
+      display: "flex",
+    },
+    homeLink: {
+      width: "150px",
+      marginLeft: "20px",
+      "@media (max-width: 575.98px)": {
+        width: "40px",
+      },
+    },
+    realmadridlogo: {
+      height: "100%",
+      backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/header_logo.svg)`,
+      backgroundRepeat: "no-repeat",
+      "@media (max-width: 575.98px)": {
+        backgroundSize: "150px 100%",
+      },
+    },
     icon: {
       height: "2em",
       width: "2em",
@@ -29,8 +47,8 @@ export default createUseStyles(
       height: "3rem",
     },
     separator: {
-      marginLeft: "1rem",
-      marginRight: "1rem",
+      marginLeft: "0.5rem",
+      marginRight: "0.5rem",
     },
     right: {
       display: "flex",

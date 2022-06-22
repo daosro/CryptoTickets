@@ -20,13 +20,9 @@ const AppBar = () => {
 
   return (
     <header className={classes.root}>
-      <div className={classes.left}>
-        <Link to={HOME_PATH}>
-          <img
-            className={clsx(classes.logo, classes.marginLeft)}
-            src={process.env.PUBLIC_URL + "/assets/images/header_logo.svg"}
-            alt="Real Madrid Logo"
-          />
+      <div className={classes.leftSide}>
+        <Link to={HOME_PATH} className={classes.homeLink}>
+          <div className={classes.realmadridlogo} />
         </Link>
         <img
           className={classes.separator}
