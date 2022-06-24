@@ -9,14 +9,18 @@ export default createUseStyles(
       alignItems: "center",
       flexDirection: "column",
     },
-    arrow: {
-      left: "50%",
-      position: "absolute",
-      transform: "translateX(-90%)",
-      alignItems: "center",
-      justifyContent: "center",
-      bottom: "10vh",
-      width: "12rem",
+    title: {
+      fontWeight: "bold",
+      fontSize: "medium",
+      padding: "5px 15px 10px",
+    },
+    text: {
+      textAlign: "justify",
+      padding: "5px 15px 10px",
+    },
+    image: {
+      maxWidth: "40%",
+      margin: "20px 20px 40px",
     },
   },
   { name: "Subscriber" }
