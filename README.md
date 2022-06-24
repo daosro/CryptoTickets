@@ -12,6 +12,12 @@ truffle develop
 compile
 migrate
 
+Tambíen se puede ejecutar con el comando:
+sudo truffle migrate --network matic
+
+Antes de ejecutar dicho comando es necesario modificar el fichero .env añadiendo las palabras semilla
+MNEMONIC="Palabras semilla"
+
 cd client
 npm install
 npm run start
@@ -23,6 +29,7 @@ npm run start
   - Airdrop de las entradas: TODO Modificar contrato para mintear las entradas
 - Area de entradas
   - Mintear mi token de Abonado - Listo, faltan más NFT de ejemplo
+    - Falta añadir mensaje de ok / ko
   - Ir al market
     - Visualizar las entradas de mi wallet -
     - Visualizar entradas disponibles

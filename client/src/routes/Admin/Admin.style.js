@@ -10,5 +10,5 @@ export default createUseStyles(
       flexDirection: "column",
     },
   },
-  { name: "Home" }
+  { name: "Admin" }
 );

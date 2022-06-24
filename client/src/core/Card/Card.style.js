@@ -6,6 +6,7 @@ export default createUseStyles(
       boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
       transition: "0.3s",
       margin: "5px",
+      minHeight: "25vh",
       "@media (max-width: 575.98px)": {
         width: ({ xs }) => `calc(((100% / 12 )* ${xs}) - 10px)`,
       },

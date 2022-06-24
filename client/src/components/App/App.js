@@ -1,16 +1,22 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import {
+  CLUB_ADMIN_AREA_PATH,
   HOME_PATH,
-  TICKETS_PATH,
-  TICKETS_SUBSCRIBER_PATH,
+  USER_ZONE_MARKET_PATH,
+  USER_ZONE_PATH,
+  USER_ZONE_SUBSCRIBER_PATH,
+  USER_ZONE_TICKETS_PATH,
 } from "../../constants/routes";
 import { Web3Provider } from "../../context/Web3";
 
-import Home from "../../routes/Home";
-import Tickets from "../../routes/Tickets";
-import Subscriber from "../../routes/Subscriber";
 import AppBar from "../AppBar";
+import Home from "../../routes/Home";
+import UserArea from "../../routes/UserArea";
+import Subscriber from "../../routes/Subscriber";
+import Market from "../../routes/Market";
+import Tickets from "../../routes/Tickets";
+import Admin from "../../routes/Admin";
 
 import useStyles from "./App.style";
 
@@ -23,12 +29,15 @@ const App = () => {
           <AppBar />
           <Routes>
             <Route exact path={HOME_PATH} element={<Home />} />
-            <Route exact path={TICKETS_PATH} element={<Tickets />} />
+            <Route exact path={USER_ZONE_PATH} element={<UserArea />} />
             <Route
               exact
-              path={TICKETS_SUBSCRIBER_PATH}
+              path={USER_ZONE_SUBSCRIBER_PATH}
               element={<Subscriber />}
             />
+            <Route exact path={USER_ZONE_TICKETS_PATH} element={<Tickets />} />
+            <Route exact path={USER_ZONE_MARKET_PATH} element={<Market />} />
+            <Route exact path={CLUB_ADMIN_AREA_PATH} element={<Admin />} />
           </Routes>
         </div>
       </BrowserRouter>

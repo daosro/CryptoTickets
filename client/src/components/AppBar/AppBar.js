@@ -3,7 +3,7 @@ import { matchPath } from "react-router";
 import { Link, useLocation } from "react-router-dom";
 import clsx from "clsx";
 import ConnectButton from "../../core/ConnectButton";
-import { HOME_PATH, TICKETS_PATH } from "../../constants/routes";
+import { HOME_PATH, USER_ZONE_PATH } from "../../constants/routes";
 
 import useStyles from "./AppBar.style";
 
@@ -12,7 +12,7 @@ const AppBar = () => {
   const location = useLocation();
 
   const displayTicketLink = useMemo(
-    () => !matchPath(location.pathname, TICKETS_PATH),
+    () => !matchPath(location.pathname, USER_ZONE_PATH),
     [location]
   );
 
@@ -39,7 +39,7 @@ const AppBar = () => {
       <div className={classes.right}>
         {displayTicketLink && (
           <Link
-            to={TICKETS_PATH}
+            to={USER_ZONE_PATH}
             className={clsx(classes.button, classes.ticketsButton)}
           >
             ENTRADAS
