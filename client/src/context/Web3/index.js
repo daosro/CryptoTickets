@@ -20,11 +20,15 @@ const switchToContractChain = async (web3, awaitTime) => {
   return connectedToCorrectChain;
 };
 
-const getContractInstance = (web3, networkId) => {
+const getContractInstance = (web3, networkId, account) => {
   const deployedNetwork = SportTicketsContract.networks[networkId];
   const contract = new web3.eth.Contract(
     SportTicketsContract.abi,
-    deployedNetwork && deployedNetwork.address
+    deployedNetwork && deployedNetwork.address,
+    {
+      from: account,
+      gasLimit: 3000000,
+    }
   );
   return contract;
 };
@@ -38,7 +42,7 @@ const connectAccount = async (web3) => {
   const connectedToCorrectChain = await switchToContractChain(web3, 0);
   if (connectedToCorrectChain) {
     // Get the contract instance.
-    const contract = getContractInstance(web3, networkId);
+    const contract = getContractInstance(web3, networkId, accounts[0]);
     return { accounts, contract, isConnected: accounts.length > 0 };
   }
   return { accounts: null, contract: null, isConnected: false };
@@ -62,7 +66,8 @@ const Web3Provider = ({ children }) => {
       const accounts = await getUserAccounts(web3);
       if (accounts.length > 0) {
         const connectedToCorrectChain = await switchToContractChain(web3, 0);
-        const contract = getContractInstance(web3, web3.eth.net.getId());
+        const networkId = await web3.eth.net.getId();
+        const contract = getContractInstance(web3, networkId, accounts[0]);
         setState((prevState) => ({
           ...prevState,
           web3,
