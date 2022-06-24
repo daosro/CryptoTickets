@@ -16,11 +16,14 @@ export default createUseStyles(
     },
     text: {
       textAlign: "justify",
-      padding: "5px 15px 10px",
+      padding: "5px 15px 5px",
     },
     image: {
       maxWidth: "40%",
       margin: "20px 20px 40px",
+    },
+    button: {
+      margin: "0 0 40px",
     },
   },
   { name: "Subscriber" }

@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useCallback, useContext, useState } from "react";
+import { Web3Context } from "../../context/Web3";
+import Button from "../../core/Button";
 import withConnectionRequired from "../../hocs/withConnectionRequired";
 
 import useStyles from "./Subscriber.style";
 
 const Subscriber = () => {
   const classes = useStyles();
+  const { contract } = useContext(Web3Context);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const onClickHandler = useCallback(() => {
+    setIsButtonDisabled(true);
+    contract.methods
+      .mintSubscriberNFT(
+        "ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali"
+      )
+      .send();
+  }, [contract]);
+
   return (
     <div className={classes.root}>
       <div className={classes.title}>CARNÉ DE SOCIO</div>
@@ -19,6 +32,15 @@ const Subscriber = () => {
         src={process.env.PUBLIC_URL + "/assets/images/360-abono.png"}
         alt="Stadium"
       />
+
+      <Button
+        className={classes.button}
+        onClick={onClickHandler}
+        disabled={isButtonDisabled}
+      >
+        Quiero ser Socio
+      </Button>
+
       <div className={classes.title}>
         CONDICIONES ESPECIFICADAS EN LA TARJETA
       </div>
