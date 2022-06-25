@@ -2,6 +2,7 @@
 pragma solidity ^0.8.4;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
@@ -10,6 +11,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract SportTickets is
     ERC721,
+    ERC721Enumerable,
     ERC721URIStorage,
     Pausable,
     AccessControl,
@@ -22,7 +24,7 @@ contract SportTickets is
     using Counters for Counters.Counter;
     Counters.Counter private _subscriberCounter;
 
-    constructor() ERC721("RMRM Fan Token", "RMRM") {
+    constructor() ERC721("RMRM Fan Token D1", "RMRM") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(ADMIN_CLUB_ROLE, msg.sender);
         _grantRole(SUBSCRIBER_ROLE, msg.sender);
@@ -49,19 +51,16 @@ contract SportTickets is
         _setTokenURI(tokenId, uri);
     }
 
-    function _beforeTokenTransfer(
-        address from,
-        address to,
-        uint256 tokenId
-    ) internal override whenNotPaused {
+    function _beforeTokenTransfer(address from, address to, uint256 tokenId)
+        internal
+        whenNotPaused
+        override(ERC721, ERC721Enumerable)
+    {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
     // The following functions are overrides required by Solidity.
-    function _burn(uint256 tokenId)
-        internal
-        override(ERC721, ERC721URIStorage)
-    {
+    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
     }
 
@@ -77,7 +76,7 @@ contract SportTickets is
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721, AccessControl)
+        override(ERC721, ERC721Enumerable, AccessControl)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);

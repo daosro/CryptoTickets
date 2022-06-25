@@ -107,7 +107,9 @@ const Web3Provider = ({ children }) => {
       onAccountChanged = async () => {
         const accounts = await web3.eth.getAccounts();
         if (accounts.length > 0) {
-          setState((prevState) => ({ ...prevState, accounts }));
+          const networkId = await web3.eth.net.getId();
+          const contract = getContractInstance(web3, networkId, accounts[0]);
+          setState((prevState) => ({ ...prevState, accounts, contract }));
         } else {
           // The user is disconnected.
           setState((prevState) => ({ ...INITIAL_STATE, web3: prevState.web3 }));

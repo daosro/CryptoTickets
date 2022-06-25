@@ -9,13 +9,20 @@ const Subscriber = () => {
   const classes = useStyles();
   const { contract } = useContext(Web3Context);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
-  const onClickHandler = useCallback(() => {
+  const onClickHandler = useCallback(async () => {
     setIsButtonDisabled(true);
-    contract.methods
-      .mintSubscriberNFT(
-        "ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali"
-      )
-      .send();
+    try {
+      const result = await contract.methods
+        .mintSubscriberNFT(
+          "ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali"
+        )
+        .send();
+      console.log(result);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsButtonDisabled(false);
+    }
   }, [contract]);
 
   return (

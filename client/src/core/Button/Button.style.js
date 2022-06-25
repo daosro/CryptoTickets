@@ -20,6 +20,13 @@ export default createUseStyles(
         backgroundColor: "#003366",
       },
     },
+    disabled: {
+      backgroundColor: "#c8c8c8",
+      "&:hover": {
+        backgroundColor: "#c8c8c8",
+        cursor: "not-allowed",
+      },
+    },
   },
   { name: "Button" }
 );

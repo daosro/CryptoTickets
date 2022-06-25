@@ -8,6 +8,8 @@ const Card = ({
   md = 12,
   lg = 12,
   header,
+  image,
+  alt,
   children,
   footer,
 }) => {
@@ -19,9 +21,10 @@ const Card = ({
   });
   return (
     <div className={classes.root}>
-      <div className={classes.header}>{header}</div>
+      {header && <div className={classes.header}>{header}</div>}
+      {image && <img className={classes.image} src={image} alt={alt} />}
       <div className={classes.content}>{children}</div>
-      <div className={classes.footer}>{footer}</div>
+      {footer && <div className={classes.footer}>{footer}</div>}
     </div>
   );
 };

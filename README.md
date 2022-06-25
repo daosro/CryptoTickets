@@ -13,7 +13,10 @@ compile
 migrate
 
 Tambíen se puede ejecutar con el comando:
+sudo truffle compile
+
 sudo truffle migrate --network matic
+sudo truffle migrate --reset --network matic
 
 Antes de ejecutar dicho comando es necesario modificar el fichero .env añadiendo las palabras semilla
 MNEMONIC="Palabras semilla"

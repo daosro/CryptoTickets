@@ -3,12 +3,14 @@ import React from "react";
 
 import useStyles from "./Button.style";
 
-const Button = ({ onClick, className, children, ...restProps }) => {
+const Button = ({ onClick, disabled, className, children, ...restProps }) => {
   const classes = useStyles();
   return (
     <div
-      className={clsx(classes.root, className)}
-      onClick={onClick}
+      className={clsx(classes.root, className, {
+        [classes.disabled]: disabled,
+      })}
+      onClick={!disabled ? onClick : undefined}
       {...restProps}
     >
       {children}
