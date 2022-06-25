@@ -16,6 +16,7 @@ export default createUseStyles(
       marginRight: "1rem",
       height: "1.5rem",
       cursor: "pointer",
+      whiteSpace: "nowrap",
       "&:hover": {
         backgroundColor: "#003366",
       },
