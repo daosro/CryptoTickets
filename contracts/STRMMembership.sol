@@ -148,6 +148,10 @@ contract STRMMembership is
         return memberships[account];
     }
 
+    function isMembershipTokenMinted(address account) public view returns (bool) {
+        return membershipsTokenMinted[account];
+    }
+
     function membershipsNumber() public view returns (uint256) {
         return _membershipCounter.current();
     }

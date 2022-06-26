@@ -1,4 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { USER_ZONE_TICKETS_PATH } from "../../constants/routes";
 import { Web3Context } from "../../context/Web3";
 import Button from "../../core/Button";
 import withConnectionRequired from "../../hocs/withConnectionRequired";
@@ -7,25 +9,36 @@ import useStyles from "./Subscriber.style";
 
 const Subscriber = () => {
   const classes = useStyles();
-  const { contracts } = useContext(Web3Context);
+  const navigate = useNavigate();
+  const { accounts, contracts } = useContext(Web3Context);
+  const [isMembershipTokenMinted, setIsMembershipTokenMinted] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
 
   useEffect(() => {
+    const checkIfTokenIsMinted = async () => {
+      if (accounts?.[0] && contracts?.membership) {
+        const result = await contracts.membership.methods
+          .isMembershipTokenMinted(accounts?.[0])
+          .call();
+        setIsMembershipTokenMinted(result);
+      }
+    };
+    checkIfTokenIsMinted();
+  }, [accounts, contracts, isButtonDisabled]);
+
+  useEffect(() => {
     if (contracts.lenght || contracts.membership) {
-      const event = contracts.membership.events.MembershipTokenMinted(
-        {},
-        (error, result) => {
-          if (!error) {
-            console.log(result);
-          } else {
-            console.error(error);
-          }
+      contracts.membership.events.MembershipTokenMinted({}, (error, result) => {
+        if (!error) {
+          console.log(result);
+        } else {
+          console.error(error);
         }
-      );
+      });
     }
   }, [contracts]);
 
-  const onClickHandler = useCallback(async () => {
+  const onMintTokenButtonClick = useCallback(async () => {
     setIsButtonDisabled(true);
     try {
       const result = await contracts.membership.methods
@@ -56,6 +69,10 @@ const Subscriber = () => {
     }
   }, [contracts]);
 
+  const onSeeMembershipTokenButtonClick = useCallback(() => {
+    navigate(USER_ZONE_TICKETS_PATH);
+  }, [navigate]);
+
   return (
     <div className={classes.root}>
       <div className={classes.title}>CARNÉ DE SOCIO</div>
@@ -71,13 +88,24 @@ const Subscriber = () => {
         alt="Stadium"
       />
 
-      <Button
-        className={classes.button}
-        onClick={onClickHandler}
-        disabled={isButtonDisabled}
-      >
-        Quiero ser Socio
-      </Button>
+      {isMembershipTokenMinted === false && (
+        <Button
+          className={classes.button}
+          onClick={onMintTokenButtonClick}
+          disabled={isButtonDisabled}
+        >
+          Quiero ser Socio
+        </Button>
+      )}
+
+      {isMembershipTokenMinted === true && (
+        <Button
+          className={classes.button}
+          onClick={onSeeMembershipTokenButtonClick}
+        >
+          Ver mi Carné de Socio
+        </Button>
+      )}
 
       <div className={classes.title}>
         CONDICIONES ESPECIFICADAS EN LA TARJETA
