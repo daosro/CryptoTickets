@@ -1,0 +1,23 @@
+{
+  "name": "Season Real Madrid vs Cádiz C.F.",
+  "description": "This is a one-day NFT from the 22-23 season.",
+  "image": "ipfs://bafybeie7zq5v7fyda3fqzotzrhtrcqkn2l5voxzx4kifvqpqziscdloewe",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Season"
+    },
+    {
+      "trait_type": "Year",
+      "value": "22-23"
+    },
+    {
+      "trait_type": "Title",
+      "value": "Real Madrid vs Cádiz C.F."
+    },
+    {
+      "trait_type": "Fecha",
+      "value": "30/06/2022"
+    }
+  ]
+}

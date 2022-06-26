@@ -1,0 +1,43 @@
+{
+  "name": "Real Madrid Subscriber",
+  "description": "This is the Real Madrid Subscriber Token that allow the owner to see the local matches",
+  "image": "ipfs://bafkreihgrqgd7cwyg3xf5snrcu7burxx55nwumempwadeebcljzv5d77s4",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Subscriber"
+    },
+    {
+      "trait_type": "Season",
+      "value": "2022-2023"
+    },
+    {
+      "trait_type": "Area",
+      "value": "Fondo Norte"
+    },
+    {
+      "trait_type": "Locality",
+      "value": "1º Anfiteatro"
+    },
+    {
+      "trait_type": "Vomitory",
+      "value": "236-U"
+    },
+    {
+      "trait_type": "Sector",
+      "value": "025"
+    },
+    {
+      "trait_type": "Access",
+      "value": "Torre B-N1"
+    },
+    {
+      "trait_type": "Row",
+      "value": "0011"
+    },
+    {
+      "trait_type": "Seat",
+      "value": "0019"
+    }
+  ]
+}

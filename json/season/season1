@@ -1,0 +1,23 @@
+{
+  "name": "Season Real Madrid vs Bayern Munich",
+  "description": "This is a one-day NFT from the 22-23 season.",
+  "image": "ipfs://bafybeie4yfs7snh7hazwziua3e7gpwyvbvcredxkvtzrqoudexy2akdwaq",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Season"
+    },
+    {
+      "trait_type": "Year",
+      "value": "22-23"
+    },
+    {
+      "trait_type": "Title",
+      "value": "Real Madrid vs Bayern Munich"
+    },
+    {
+      "trait_type": "Fecha",
+      "value": "20/06/2022"
+    }
+  ]
+}
