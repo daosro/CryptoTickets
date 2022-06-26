@@ -41,3 +41,4 @@ npm run start
 - Generación de la recompensa
   - Quema de la entrada
   - Airdrop de las recompensas
+
