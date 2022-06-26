@@ -42,7 +42,7 @@ const connectAccount = async (web3) => {
   const connectedToCorrectChain = await switchToContractChain(web3, 0);
   if (connectedToCorrectChain) {
     // Get the contract instance.
-    const contracts = getContractInstances(web3, accounts[0]);
+    const contracts = await getContractInstances(web3, accounts[0]);
     return { accounts, contracts, isConnected: accounts.length > 0 };
   }
   return { accounts: null, contracts: {}, isConnected: false };
