@@ -15,7 +15,7 @@ const Admin = () => {
   const addSubscriberHandler = useCallback(async () => {
     try {
       await contracts.membership.methods
-        .grantSubscriberRol(subscriberAccount)
+        .grantMembershipRol(subscriberAccount)
         .send();
       console.log("Subscriber added");
     } catch (error) {

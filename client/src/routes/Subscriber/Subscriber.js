@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Web3Context } from "../../context/Web3";
 import Button from "../../core/Button";
 import withConnectionRequired from "../../hocs/withConnectionRequired";
@@ -9,14 +9,45 @@ const Subscriber = () => {
   const classes = useStyles();
   const { contracts } = useContext(Web3Context);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
+  useEffect(() => {
+    if (contracts.lenght || contracts.membership) {
+      const event = contracts.membership.events.MembershipTokenMinted(
+        {},
+        (error, result) => {
+          if (!error) {
+            console.log(result);
+          } else {
+            console.error(error);
+          }
+        }
+      );
+    }
+  }, [contracts]);
+
   const onClickHandler = useCallback(async () => {
     setIsButtonDisabled(true);
     try {
       const result = await contracts.membership.methods
-        .mintSubscriberNFT(
+        .mintMembershipToken(
           "ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali"
         )
-        .send();
+        .send()
+        .on("receipt", function () {
+          console.log("receipt");
+        });
+      //   .on('transactionHash', function(hash){
+      //     ...
+      // })
+      // .on('receipt', function(receipt){
+      //     ...
+      // })
+      // .on('confirmation', function(confirmationNumber, receipt){
+      //     ...
+      // })
+      // .on('error', function(error, receipt) {
+      //     ...
+      // });
       console.log(result);
     } catch (error) {
       console.error(error);
