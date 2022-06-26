@@ -6,7 +6,7 @@ import useStyles from "./Admin.style";
 
 const Admin = () => {
   const classes = useStyles();
-  const { contract } = useContext(Web3Context);
+  const { contracts } = useContext(Web3Context);
   const [subscriberAccount, setSubscriberAccount] = useState(null);
   const onAccountChanged = useCallback((event) => {
     setSubscriberAccount(event.target.value);
@@ -14,12 +14,14 @@ const Admin = () => {
 
   const addSubscriberHandler = useCallback(async () => {
     try {
-      await contract.methods.grantSubscriberRol(subscriberAccount).send();
+      await contracts.membership.methods
+        .grantSubscriberRol(subscriberAccount)
+        .send();
       console.log("Subscriber added");
     } catch (error) {
       console.error(error);
     }
-  }, [subscriberAccount, contract]);
+  }, [subscriberAccount, contracts]);
 
   return (
     <>

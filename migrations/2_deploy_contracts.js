@@ -1,5 +1,5 @@
-var SportTickets = artifacts.require("./SportTickets.sol");
+var STRMMembership = artifacts.require("./STRMMembership.sol");
 
-module.exports = function(deployer) {
-  deployer.deploy(SportTickets);
+module.exports = function (deployer) {
+  deployer.deploy(STRMMembership);
 };

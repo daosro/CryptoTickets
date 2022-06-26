@@ -12,22 +12,24 @@ import useStyles from "./Tickets.style";
 
 const Tickets = () => {
   const classes = useStyles();
-  const { accounts, contract } = useContext(Web3Context);
+  const { accounts, contracts } = useContext(Web3Context);
   const [subscriberNFTMetadata, setSubscriberNFTMetadata] = useState(null);
 
   useEffect(() => {
-    if (accounts?.[0] || contract) {
+    if (accounts?.[0] || contracts.lenght) {
       const getUserToken = async () => {
         const account = accounts[0];
-        const tokenLength = await contract.methods.balanceOf(account).call();
+        const tokenLength = await contracts.membership.methods
+          .balanceOf(account)
+          .call();
 
         if (tokenLength > 0) {
           // Fetch the first NFT metadata so you should only mint one Subscriber NFT
-          const tokenId = await contract.methods
+          const tokenId = await contracts.membership.methods
             .tokenOfOwnerByIndex(account, 0)
             .call();
 
-          const tokenMetadataURI = await contract.methods
+          const tokenMetadataURI = await contracts.membership.methods
             .tokenURI(tokenId)
             .call();
 
@@ -39,7 +41,7 @@ const Tickets = () => {
       };
       getUserToken();
     }
-  }, [accounts, contract]);
+  }, [accounts, contracts]);
 
   return (
     <div className={classes.root}>

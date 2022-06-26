@@ -7,12 +7,12 @@ import useStyles from "./Subscriber.style";
 
 const Subscriber = () => {
   const classes = useStyles();
-  const { contract } = useContext(Web3Context);
+  const { contracts } = useContext(Web3Context);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const onClickHandler = useCallback(async () => {
     setIsButtonDisabled(true);
     try {
-      const result = await contract.methods
+      const result = await contracts.membership.methods
         .mintSubscriberNFT(
           "ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali"
         )
@@ -23,7 +23,7 @@ const Subscriber = () => {
     } finally {
       setIsButtonDisabled(false);
     }
-  }, [contract]);
+  }, [contracts]);
 
   return (
     <div className={classes.root}>

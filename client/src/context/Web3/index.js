@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { CHAIN_DATA, CHAIN_ID } from "../../constants/chain";
-import SportTicketsContract from "../../contracts/SportTickets.json";
+import STRMMembershipContract from "../../contracts/STRMMembership.json";
 import {
   enableWeb3Instance,
   getUserAccounts,
@@ -20,17 +20,18 @@ const switchToContractChain = async (web3, awaitTime) => {
   return connectedToCorrectChain;
 };
 
-const getContractInstance = (web3, networkId, account) => {
-  const deployedNetwork = SportTicketsContract.networks[networkId];
-  const contract = new web3.eth.Contract(
-    SportTicketsContract.abi,
-    deployedNetwork && deployedNetwork.address,
+const getContractInstances = async (web3, account) => {
+  const networkId = await web3.eth.net.getId();
+  const membershipDeployedNetwork = STRMMembershipContract.networks[networkId];
+  const membershipContract = new web3.eth.Contract(
+    STRMMembershipContract.abi,
+    membershipDeployedNetwork && membershipDeployedNetwork.address,
     {
       from: account,
       gasLimit: 3000000,
     }
   );
-  return contract;
+  return { membership: membershipContract };
 };
 
 const connectAccount = async (web3) => {
@@ -38,25 +39,24 @@ const connectAccount = async (web3) => {
   // Use web3 to get the user's accounts.
   const accounts = await getUserAccounts(web3);
 
-  const networkId = await web3.eth.net.getId();
   const connectedToCorrectChain = await switchToContractChain(web3, 0);
   if (connectedToCorrectChain) {
     // Get the contract instance.
-    const contract = getContractInstance(web3, networkId, accounts[0]);
-    return { accounts, contract, isConnected: accounts.length > 0 };
+    const contracts = getContractInstances(web3, accounts[0]);
+    return { accounts, contracts, isConnected: accounts.length > 0 };
   }
-  return { accounts: null, contract: null, isConnected: false };
+  return { accounts: null, contracts: {}, isConnected: false };
 };
 
 const INITIAL_STATE = {
   web3: null,
   isConnected: false,
   accounts: null,
-  contract: null,
+  contracts: {},
 };
 
 const Web3Provider = ({ children }) => {
-  const [{ web3, accounts, isConnected, contract }, setState] =
+  const [{ web3, accounts, isConnected, contracts }, setState] =
     useState(INITIAL_STATE);
 
   useEffect(() => {
@@ -66,12 +66,11 @@ const Web3Provider = ({ children }) => {
       const accounts = await getUserAccounts(web3);
       if (accounts.length > 0) {
         const connectedToCorrectChain = await switchToContractChain(web3, 0);
-        const networkId = await web3.eth.net.getId();
-        const contract = getContractInstance(web3, networkId, accounts[0]);
+        const contracts = await getContractInstances(web3, accounts[0]);
         setState((prevState) => ({
           ...prevState,
           web3,
-          contract,
+          contracts,
           accounts: connectedToCorrectChain ? accounts : null,
           isConnected: connectedToCorrectChain,
         }));
@@ -93,23 +92,22 @@ const Web3Provider = ({ children }) => {
         if (!connectedToCorrectChain) {
           setState((prevState) => ({ ...INITIAL_STATE, web3: prevState.web3 }));
         } else {
-          const { accounts, isConnected, contract } = await connectAccount(
+          const { accounts, isConnected, contracts } = await connectAccount(
             web3
           );
           setState((prevState) => ({
             ...prevState,
             accounts,
             isConnected,
-            contract,
+            contracts,
           }));
         }
       };
       onAccountChanged = async () => {
         const accounts = await web3.eth.getAccounts();
         if (accounts.length > 0) {
-          const networkId = await web3.eth.net.getId();
-          const contract = getContractInstance(web3, networkId, accounts[0]);
-          setState((prevState) => ({ ...prevState, accounts, contract }));
+          const contracts = await getContractInstances(web3, accounts[0]);
+          setState((prevState) => ({ ...prevState, accounts, contracts }));
         } else {
           // The user is disconnected.
           setState((prevState) => ({ ...INITIAL_STATE, web3: prevState.web3 }));
@@ -134,12 +132,12 @@ const Web3Provider = ({ children }) => {
 
   const connect = useCallback(async () => {
     try {
-      const { accounts, isConnected, contract } = await connectAccount(web3);
+      const { accounts, isConnected, contracts } = await connectAccount(web3);
       setState((prevState) => ({
         ...prevState,
         accounts,
         isConnected,
-        contract,
+        contracts,
       }));
     } catch (error) {
       console.error(error);
@@ -151,7 +149,7 @@ const Web3Provider = ({ children }) => {
       value={{
         web3,
         accounts,
-        contract,
+        contracts,
         isConnected,
         connect,
       }}

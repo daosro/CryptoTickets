@@ -9,7 +9,7 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-contract SportTickets is
+contract STRMMembership is
     ERC721,
     ERC721Enumerable,
     ERC721URIStorage,
@@ -24,7 +24,7 @@ contract SportTickets is
     using Counters for Counters.Counter;
     Counters.Counter private _subscriberCounter;
 
-    constructor() ERC721("RMRM Fan Token D1", "RMRM") {
+    constructor() ERC721("Real Madrid Official Membership T-1", "RMOM") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(ADMIN_CLUB_ROLE, msg.sender);
         _grantRole(SUBSCRIBER_ROLE, msg.sender);
