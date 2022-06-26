@@ -359,13 +359,13 @@
     "absolutePath": "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol",
     "exportedSymbols": {
       "Address": [
-        1964
+        2333
       ],
       "Context": [
-        1986
+        2355
       ],
       "ERC165": [
-        2287
+        2656
       ],
       "ERC721": [
         1350
@@ -374,19 +374,19 @@
         1514
       ],
       "IERC165": [
-        2299
+        2668
       ],
       "IERC721": [
         1466
       ],
       "IERC721Metadata": [
-        1669
+        2038
       ],
       "IERC721Receiver": [
         1484
       ],
       "Strings": [
-        2263
+        2632
       ]
     },
     "id": 1515,
@@ -423,7 +423,7 @@
         "nameLocation": "-1:-1:-1",
         "nodeType": "ImportDirective",
         "scope": 1515,
-        "sourceUnit": 1987,
+        "sourceUnit": 2356,
         "src": "160:36:6",
         "symbolAliases": [],
         "unitAlias": ""
@@ -436,7 +436,7 @@
               "id": 1490,
               "name": "Context",
               "nodeType": "IdentifierPath",
-              "referencedDeclaration": 1986,
+              "referencedDeclaration": 2355,
               "src": "340:7:6"
             },
             "id": 1491,
@@ -470,11 +470,11 @@
         "linearizedBaseContracts": [
           1514,
           1350,
-          1669,
+          2038,
           1466,
-          2287,
-          2299,
-          1986
+          2656,
+          2668,
+          2355
         ],
         "name": "ERC721Burnable",
         "nameLocation": "322:14:6",
@@ -499,7 +499,7 @@
                               "name": "_msgSender",
                               "nodeType": "Identifier",
                               "overloadedDeclarations": [],
-                              "referencedDeclaration": 1976,
+                              "referencedDeclaration": 2345,
                               "src": "664:10:6",
                               "typeDescriptions": {
                                 "typeIdentifier": "t_function_internal_view$__$returns$_t_address_$",
@@ -761,7 +761,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-06-24T18:54:13.249Z",
+  "updatedAt": "2022-06-26T10:30:19.983Z",
   "devdoc": {
     "details": "ERC721 Token that can be irreversibly burned (destroyed).",
     "kind": "dev",
