@@ -1,11 +1,14 @@
 import React, { useCallback, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { USER_ZONE_TICKETS_PATH } from "../../constants/routes";
 import { Web3Context } from "../../context/Web3";
 import Button from "../../core/Button";
 import withConnectionRequired from "../../hocs/withConnectionRequired";
 
 import useStyles from "./Subscriber.style";
+import Loading from "../../core/Loading";
+import { notify } from "../../utils/notifications";
 
 const Subscriber = () => {
   const classes = useStyles();
@@ -26,42 +29,27 @@ const Subscriber = () => {
     checkIfTokenIsMinted();
   }, [accounts, contracts, isButtonDisabled]);
 
-  useEffect(() => {
-    if (contracts.lenght || contracts.membership) {
-      contracts.membership.events.MembershipTokenMinted({}, (error, result) => {
-        if (!error) {
-          console.log(result);
-        } else {
-          console.error(error);
-        }
-      });
-    }
-  }, [contracts]);
-
   const onMintTokenButtonClick = useCallback(async () => {
     setIsButtonDisabled(true);
     try {
-      const result = await contracts.membership.methods
+      notify(
+        "Processing...",
+        "This process may take several minutes, please wait.",
+        "info",
+        10000
+      );
+
+      await contracts.membership.methods
         .mintMembershipToken(
           "ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali"
         )
         .send()
         .on("receipt", function () {
-          console.log("receipt");
+          notify("Congratulations!", "You are one of us now", "success", 5000);
+        })
+        .on("error", function (error, receipt) {
+          notify("Something went wrong", error?.message, "danger", 10000);
         });
-      //   .on('transactionHash', function(hash){
-      //     ...
-      // })
-      // .on('receipt', function(receipt){
-      //     ...
-      // })
-      // .on('confirmation', function(confirmationNumber, receipt){
-      //     ...
-      // })
-      // .on('error', function(error, receipt) {
-      //     ...
-      // });
-      console.log(result);
     } catch (error) {
       console.error(error);
     } finally {
@@ -94,7 +82,11 @@ const Subscriber = () => {
           onClick={onMintTokenButtonClick}
           disabled={isButtonDisabled}
         >
-          Quiero ser Socio
+          {isButtonDisabled ? (
+            <Loading height={80} width={80} />
+          ) : (
+            "Quiero ser Socio"
+          )}
         </Button>
       )}
 

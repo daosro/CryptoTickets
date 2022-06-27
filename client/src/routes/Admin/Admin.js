@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useState } from "react";
 import { Web3Context } from "../../context/Web3";
 import Button from "../../core/Button";
+import { notify } from "../../utils/notifications";
 
 import useStyles from "./Admin.style";
 
@@ -14,10 +15,26 @@ const Admin = () => {
 
   const addSubscriberHandler = useCallback(async () => {
     try {
+      notify(
+        "Processing...",
+        "This process may take several minutes, please wait.",
+        "info",
+        10000
+      );
       await contracts.membership.methods
         .grantMembershipRol(subscriberAccount)
-        .send();
-      console.log("Subscriber added");
+        .send()
+        .on("receipt", function () {
+          notify(
+            "Congratulations!",
+            "New membership add successfully",
+            "success",
+            5000
+          );
+        })
+        .on("error", function (error, receipt) {
+          notify("Something went wrong", error?.message, "danger", 10000);
+        });
     } catch (error) {
       console.error(error);
     }

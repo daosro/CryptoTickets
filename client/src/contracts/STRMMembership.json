@@ -31477,15 +31477,28 @@
           ],
           "name": "Unpaused",
           "type": "event"
+        },
+        "0xf5289db908b4edf796dfd939960db939c7239cc8f583a2a880d2c9b6ebec0d13": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "errorMessage",
+              "type": "string"
+            }
+          ],
+          "name": "ErrorMintingMembershipToken",
+          "type": "event"
         }
       },
       "links": {},
-      "address": "0x8dB910D83B2Ec5fbB67eE13F11D266f6E4bd818D",
-      "transactionHash": "0x3a4769e10ecbcaeb69f59f6dead4d010a0deac2d39a04034626a16eda44f700f"
+      "address": "0x2925aC128C26fCb985332A423BceB8d7aFbC923d",
+      "transactionHash": "0x3c69aad31f2f7cf4e654e22847b6bf9493244d54b21d8467ebf7e72a45449adb"
     }
   },
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-06-26T19:06:29.385Z",
+  "updatedAt": "2022-06-27T20:51:54.858Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

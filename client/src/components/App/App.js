@@ -1,5 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ReactNotifications } from "react-notifications-component";
+
 import {
   CLUB_ADMIN_AREA_PATH,
   HOME_PATH,
@@ -18,6 +20,7 @@ import Market from "../../routes/Market";
 import Tickets from "../../routes/Tickets";
 import Admin from "../../routes/Admin";
 
+import "react-notifications-component/dist/theme.css";
 import useStyles from "./App.style";
 
 const App = () => {
@@ -27,6 +30,7 @@ const App = () => {
       <BrowserRouter>
         <div className={classes.root}>
           <AppBar />
+          <ReactNotifications />
           <Routes>
             <Route exact path={HOME_PATH} element={<Home />} />
             <Route exact path={USER_ZONE_PATH} element={<UserArea />} />
