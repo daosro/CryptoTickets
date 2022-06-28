@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { CHAIN_DATA, CHAIN_ID } from "../../constants/chain";
 import STRMMembershipContract from "../../contracts/STRMMembership.json";
+import STRMMatchTickets from "../../contracts/STRMMatchTickets.json";
 import {
   enableWeb3Instance,
   getUserAccounts,
@@ -22,6 +23,7 @@ const switchToContractChain = async (web3, awaitTime) => {
 
 const getContractInstances = async (web3, account) => {
   const networkId = await web3.eth.net.getId();
+
   const membershipDeployedNetwork = STRMMembershipContract.networks[networkId];
   const membershipContract = new web3.eth.Contract(
     STRMMembershipContract.abi,
@@ -31,7 +33,17 @@ const getContractInstances = async (web3, account) => {
       gasLimit: 3000000,
     }
   );
-  return { membership: membershipContract };
+
+  const matchTicketsDeployedNetwork = STRMMatchTickets.networks[networkId];
+  const matchTicketsContract = new web3.eth.Contract(
+    STRMMatchTickets.abi,
+    matchTicketsDeployedNetwork && matchTicketsDeployedNetwork.address,
+    {
+      from: account,
+      gasLimit: 3000000,
+    }
+  );
+  return { membership: membershipContract, matchTickets: matchTicketsContract };
 };
 
 const connectAccount = async (web3) => {
