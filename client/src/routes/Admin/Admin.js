@@ -1,62 +1,75 @@
 import React, { useCallback, useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  ACCOUNT_ADMINISTRATION_AREA_PATH,
+  TICKETS_ADMINISTRATION_AREA_PATH,
+  USER_ZONE_SUBSCRIBER_PATH,
+} from "../../constants/routes";
 import { Web3Context } from "../../context/Web3";
 import Button from "../../core/Button";
+import Card, { CardContainer } from "../../core/Card";
+import withConnectionRequired from "../../hocs/withConnectionRequired";
 import { notify } from "../../utils/notifications";
 
 import useStyles from "./Admin.style";
 
 const Admin = () => {
   const classes = useStyles();
-  const { contracts } = useContext(Web3Context);
-  const [subscriberAccount, setSubscriberAccount] = useState(null);
-  const onAccountChanged = useCallback((event) => {
-    setSubscriberAccount(event.target.value);
-  }, []);
-
-  const addSubscriberHandler = useCallback(async () => {
-    try {
-      notify(
-        "Processing...",
-        "This process may take several minutes, please wait.",
-        "info",
-        10000
-      );
-      await contracts.membership.methods
-        .grantMembershipRol(subscriberAccount)
-        .send()
-        .on("receipt", function () {
-          notify(
-            "Congratulations!",
-            "New membership add successfully",
-            "success",
-            5000
-          );
-        })
-        .on("error", function (error, receipt) {
-          notify("Something went wrong", error?.message, "danger", 10000);
-        });
-    } catch (error) {
-      console.error(error);
-    }
-  }, [subscriberAccount, contracts]);
 
   return (
-    <>
-      <div className={classes.root}>
-        <h2>Administración club</h2>
-        <div className={classes.form}>
-          <label>Añadir cuenta de Abonado</label>
-          <div>
-            <input
-              className={classes.input}
-              onChange={onAccountChanged}
-            ></input>
-            <Button onClick={addSubscriberHandler}>Añadir Abonado</Button>
-          </div>
-        </div>
-      </div>
-    </>
+    <div className={classes.root}>
+      <h2>Administración del Club</h2>
+      <CardContainer>
+        <Card
+          xs={12}
+          sm={12}
+          md={6}
+          lg={4}
+          header={
+            <Link
+              to={ACCOUNT_ADMINISTRATION_AREA_PATH}
+              className={classes.homeLink}
+            >
+              <div className={classes.carHeader}>Cuentas</div>
+            </Link>
+          }
+        >
+          <Link
+            to={ACCOUNT_ADMINISTRATION_AREA_PATH}
+            className={classes.homeLink}
+          >
+            <div className={classes.carText}>
+              Administración de las cuentas de socios y nuevos administradores
+              de club
+            </div>
+          </Link>
+        </Card>
+        <Card
+          xs={12}
+          sm={12}
+          md={6}
+          lg={4}
+          header={
+            <Link
+              to={TICKETS_ADMINISTRATION_AREA_PATH}
+              className={classes.homeLink}
+            >
+              <div className={classes.carHeader}>Entradas a partidos</div>
+            </Link>
+          }
+        >
+          <Link
+            to={TICKETS_ADMINISTRATION_AREA_PATH}
+            className={classes.homeLink}
+          >
+            <div className={classes.carText}>
+              Consulta todas la información de todas tus entradas
+            </div>
+          </Link>
+        </Card>
+      </CardContainer>
+    </div>
   );
 };
 
-export default Admin;
+export default withConnectionRequired(Admin);

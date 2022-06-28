@@ -4,3 +4,5 @@ export const USER_ZONE_SUBSCRIBER_PATH = "/user-area/membership-card";
 export const USER_ZONE_TICKETS_PATH = "/user-area/tickets";
 export const USER_ZONE_MARKET_PATH = "/user-area/market";
 export const CLUB_ADMIN_AREA_PATH = "/admin";
+export const ACCOUNT_ADMINISTRATION_AREA_PATH = "/admin/accounts";
+export const TICKETS_ADMINISTRATION_AREA_PATH = "/admin/tickets";
