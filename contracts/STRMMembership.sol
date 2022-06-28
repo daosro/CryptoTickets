@@ -9,6 +9,8 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
+import "./STRMMatchTickets.sol";
+
 contract STRMMembership is
     ERC721,
     ERC721Enumerable,
@@ -17,6 +19,8 @@ contract STRMMembership is
     AccessControl,
     ERC721Burnable
 {
+    // Other contracts
+    STRMMatchTickets matchTicketsContract;
     // Roles (administrador, club, abonado)
     bytes32 public constant CLUB_ADMIN_ROLE = keccak256("CLUB_ADMIN_ROLE");
     bytes32 public constant MEMBERSHIP_ROLE = keccak256("MEMBERSHIP_ROLE");
@@ -39,10 +43,14 @@ contract STRMMembership is
     using Counters for Counters.Counter;
     Counters.Counter private _membershipCounter;
 
-    constructor() ERC721("T-3 Real Madrid Official Membership", "RMOM") {
+    constructor(address matchTicketsContractAddresss) ERC721("T-3 Real Madrid Official Membership", "RMOM") {
+
+        matchTicketsContract = STRMMatchTickets(matchTicketsContractAddresss);
+
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(CLUB_ADMIN_ROLE, msg.sender);
         _grantRole(MEMBERSHIP_ROLE, msg.sender);
+
         clubAdmins[msg.sender] = true;
         memberships[msg.sender] = true;
     }
@@ -70,7 +78,8 @@ contract STRMMembership is
         // ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali
         _setTokenURI(tokenId, uri);
         membershipsTokenMinted[msg.sender] = true;
-        // TODO: Call contract for seasons tokens airdrop
+        // Call Smart Contract to grant role to the memberships and add the membership the to list for airdrop
+        matchTicketsContract.addAddress(msg.sender);
         emit MembershipTokenMinted(msg.sender, tokenId, uri);
     }
 
@@ -85,6 +94,8 @@ contract STRMMembership is
     // The following functions are overrides required by Solidity.
     function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
         membershipsTokenMinted[msg.sender] = false;
+        // Call Smart Contract to grant role to the memberships and remove the membership to the list for airdrop
+        matchTicketsContract.removeAddress(msg.sender);
         super._burn(tokenId);
     }
 
@@ -110,6 +121,8 @@ contract STRMMembership is
     function grantClubRol(address account) public onlyRole(DEFAULT_ADMIN_ROLE) {
         _grantRole(CLUB_ADMIN_ROLE, account);
         clubAdmins[account] = true;
+        // Call Smart Contract to grant role to the clubAdmins
+        matchTicketsContract.grantClubRol(account);
         emit ClubAdminRoleGranted(msg.sender, account);
     }
 
@@ -119,6 +132,7 @@ contract STRMMembership is
     {
         _revokeRole(CLUB_ADMIN_ROLE, account);
         clubAdmins[account] = false;
+        // TODO: Call Smart Contract to revoke role to the clubAdmins
         emit ClubAdminRoleRevoked(msg.sender, account);
     }
 
@@ -141,6 +155,7 @@ contract STRMMembership is
     {
         _revokeRole(MEMBERSHIP_ROLE, account);
         memberships[account] = false;
+
         emit MembershipRoleRevoked(msg.sender, account);
     }
 
