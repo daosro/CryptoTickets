@@ -148,10 +148,10 @@ contract Match is
     function addAddress(address account) public onlyRole(ADMIN_CLUB_ROLE) {
         for (uint i = 0; i<listSubscriber.length-1; i++){
             if(listSubscriber[i] == account){
-                emit MsgInfoAccountLisKo("The account/address was already registered.", account);
+                emit MsgInfoAccountListKo("The account/address was already registered.", account);
             } else {
                 listSubscriber.push(account);
-                emit MsgInfoAccountLiOk("The account/address has been successfully registered.", account);
+                emit MsgInfoAccountListOk("The account/address has been successfully registered.", account);
             }
             listSubscriber[i] = listSubscriber[i+1];
         }
