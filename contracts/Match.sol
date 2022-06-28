@@ -58,8 +58,15 @@ contract Match is
     constructor() ERC721("Match", "MTC") EIP712("Match", "1") {
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(ADMIN_CLUB_ROLE, msg.sender);
-
+        //uri=ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali/season
         activeContract = true;
+
+        // register the supported interfaces to conform to ERC721 via ERC165
+        _registerInterface(_INTERFACE_ID_ERC721);
+        _registerInterface(_INTERFACE_ID_ERC721_METADATA);
+        _registerInterface(_INTERFACE_ID_ERC721_ENUMERABLE);
+        // Royalties interface
+        _registerInterface(_INTERFACE_ID_ERC2981);
     }
 
     function pause() public onlyRole(ADMIN_CLUB_ROLE) {
@@ -138,23 +145,6 @@ contract Match is
         emit ClubAdminRoleRevoked(msg.sender, account);
     }
 
-/*
-    function buyMatchTicket() public payable{
-        if(activeContract == false){
-            emit Status("No es posible realizar la compra, el contrato esta inactivo.");
-        } else {
-            if (msg.value > basePrice){
-                // Se realiza la transferencia del precio de la entrada al club
-                club.transfer(msg.value - basePrice);
-                //Deshabilitamos el contrato
-                activeContract = false;
-                emit Status("La compra de la entrada se ha realizado correctamente.");
-            } else {
-                emit Status("No es posible la compra, el importe no es suficiente");
-            }
-        }
-    }
-*/
     function addAddress(address account) public onlyRole(ADMIN_CLUB_ROLE) {
         for (uint i = 0; i<listSubscriber.length-1; i++){
             if(listSubscriber[i] == account){
@@ -188,4 +178,23 @@ contract Match is
         emit Approval(owner, to, tokenId);
         }
 */
+
+/*
+    function buyMatchTicket() public payable{
+        if(activeContract == false){
+            emit Status("No es posible realizar la compra, el contrato esta inactivo.");
+        } else {
+            if (msg.value > basePrice){
+                // Se realiza la transferencia del precio de la entrada al club
+                club.transfer(msg.value - basePrice);
+                //Deshabilitamos el contrato
+                activeContract = false;
+                emit Status("La compra de la entrada se ha realizado correctamente.");
+            } else {
+                emit Status("No es posible la compra, el importe no es suficiente");
+            }
+        }
+    }
+*/
+
 }
