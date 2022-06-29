@@ -8,27 +8,26 @@ export default createUseStyles(
       justifyContent: "center",
       flexDirection: "column",
     },
-    form: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      justifyContent: "center",
+    matchTicketRoot: {
       width: "100%",
-      "& > label": {
-        width: "100%",
-        margin: "1rem 0",
-        fontWeight: "bold",
-      },
-      "& > div": {
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        width: "100%",
-      },
+      height: "25vh",
+      margin: "20px 0",
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-around",
+      flexDirection: "column",
+      backgroundImage: `url(${process.env.PUBLIC_URL}/assets/images/campo-del-madrid.jpeg)`,
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "cover",
+      backgroundPosition: "0% 30%",
     },
-    input: {
-      width: "-webkit-fill-available",
-      margin: "0 20px 0 0",
+    logo: {
+      width: "80px",
+      margin: "0 10px",
+    },
+    logo_small: {
+      width: "65px",
+      margin: "0 10px",
     },
   },
   { name: "TicketsAdministration" }
