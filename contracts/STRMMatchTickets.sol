@@ -69,7 +69,7 @@ contract STRMMatchTickets is
     //The tokens for each of the matches are minted to the list of subscribers
     function mintMatch(string memory uri) public onlyRole(ADMIN_CLUB_ROLE) {
        //uri=ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali/season
-        for (uint i = 0; i<listSubscriber.length-1; i++){
+        for (uint i = 0; i < listSubscriber.length; i++){
             mint(listSubscriber[i], uri);
         }
         emit MsgInfoMinted("The minting has been done correctly.", msg.sender);
@@ -85,6 +85,10 @@ contract STRMMatchTickets is
 
     function _burn(uint256 matchId) internal override(ERC721, ERC721URIStorage) {
         super._burn(matchId);
+    }
+
+    function burnTicket(uint256 tokenId) public  {
+        _burn(tokenId);
     }
 
     function tokenURI(uint256 matchId)
