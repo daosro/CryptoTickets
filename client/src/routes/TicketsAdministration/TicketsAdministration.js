@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext } from "react";
 import { Web3Context } from "../../context/Web3";
 import Button from "../../core/Button";
 

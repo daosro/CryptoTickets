@@ -6,8 +6,6 @@ import Card, { CardContainer } from "../../core/Card";
 import Button from "../../core/Button";
 import NonFungibleToken from "../../core/NonFungibleToken";
 
-import { getNFTMetadataObject } from "../../services/nft";
-
 import useStyles from "./Tickets.style";
 import { getTokenBalanceOf, getTokenMetadataByIndex } from "../../utils/web3";
 
