@@ -7,9 +7,8 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
-import "@openzeppelin/contracts/utils/cryptography/draft-EIP712.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/draft-ERC721Votes.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
 
 contract Match is 
     ERC721, 
@@ -17,9 +16,8 @@ contract Match is
     ERC721URIStorage, 
     Pausable, 
     AccessControl, 
-    ERC721Burnable, 
-    EIP712, 
-    ERC721Votes 
+    ERC721Burnable,
+    ERC721Royalty
 {
     using Counters for Counters.Counter;
 
@@ -37,16 +35,9 @@ contract Match is
     event Status(string _message);
     event MsgInfoAccountListOk(string _message, address indexed account);
     event MsgInfoAccountListKo(string _message, address indexed account);
-    event MsgInfoMinted(string _message);
+    event MsgInfoMinted(string _message, address indexed account);
     event ClubAdminRoleGranted(address indexed sender, address indexed clubAddress);
     event ClubAdminRoleRevoked(address indexed sender, address indexed clubAddress);
-
-    //BuyMatchTicket
-    //Generar una lista con las entradas disponibles = entradas venta club + entradas venta abonados
-    //Generaria un mapping de contrato-tipoEntrada-precio-entrada??
-    //AddSale and removeSale
-    
-    
 
     struct MatchTransactionTicket{
         address account;
@@ -55,18 +46,11 @@ contract Match is
         //entrada?
     }
 
-    constructor() ERC721("Match", "MTC") EIP712("Match", "1") {
+    constructor() ERC721("Match", "MTC"){
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(ADMIN_CLUB_ROLE, msg.sender);
         //uri=ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali/season
         activeContract = true;
-
-        // register the supported interfaces to conform to ERC721 via ERC165
-        _registerInterface(_INTERFACE_ID_ERC721);
-        _registerInterface(_INTERFACE_ID_ERC721_METADATA);
-        _registerInterface(_INTERFACE_ID_ERC721_ENUMERABLE);
-        // Royalties interface
-        _registerInterface(_INTERFACE_ID_ERC2981);
     }
 
     function pause() public onlyRole(ADMIN_CLUB_ROLE) {
@@ -86,8 +70,8 @@ contract Match is
 
     //The tokens for each of the matches are minted to the list of subscribers
     function mintMatch(string memory uri) public onlyRole(ADMIN_CLUB_ROLE) {
-       //uri=ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali/season
-        for (uint i = 0; i<listSubscriber.length-1; i++){
+       //uri=ipfs://bafybeidpaq5ba6237nat7nmj6yjrkfv2i3qdjj5tnh6kt4b7l7xd3te4u4/season0
+        for (uint i = 0; i<listSubscriber.length; i++){
             mint(listSubscriber[i], uri);
         }
         emit MsgInfoMinted("The minting has been done correctly.", msg.sender);
@@ -101,16 +85,7 @@ contract Match is
         super._beforeTokenTransfer(from, to, matchId);
     }
 
-    // The following functions are overrides required by Solidity.
-
-    function _afterTokenTransfer(address from, address to, uint256 matchId)
-        internal
-        override(ERC721, ERC721Votes)
-    {
-        super._afterTokenTransfer(from, to, matchId);
-    }
-
-    function _burn(uint256 matchId) internal override(ERC721, ERC721URIStorage) {
+    function _burn(uint256 matchId) internal override(ERC721, ERC721URIStorage, ERC721Royalty) {
         super._burn(matchId);
     }
 
@@ -126,10 +101,14 @@ contract Match is
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721, ERC721Enumerable, AccessControl)
+        override(ERC721, ERC721Enumerable, ERC721Royalty, AccessControl)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
+    }
+
+    function grantAdminRol(address account) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        _grantRole(DEFAULT_ADMIN_ROLE, account);
     }
 
     function grantClubRol(address account) public onlyRole(DEFAULT_ADMIN_ROLE) {
@@ -145,28 +124,50 @@ contract Match is
         emit ClubAdminRoleRevoked(msg.sender, account);
     }
 
-    function addAddress(address account) public onlyRole(ADMIN_CLUB_ROLE) {
-        for (uint i = 0; i<listSubscriber.length-1; i++){
-            if(listSubscriber[i] == account){
-                emit MsgInfoAccountListKo("The account/address was already registered.", account);
-            } else {
-                listSubscriber.push(account);
-                emit MsgInfoAccountListOk("The account/address has been successfully registered.", account);
+    function addAddress(address account) public onlyRole(DEFAULT_ADMIN_ROLE){
+        if (listSubscriber.length>0){
+            bool exist;
+            for (uint i = 0; i<listSubscriber.length-1; i++){
+                if(listSubscriber[i] == account){
+                    emit MsgInfoAccountListKo("Account/address registered.", account);
+                    break;
+                }else{
+                    exist = false;
+                }
             }
-            listSubscriber[i] = listSubscriber[i+1];
+            if(!exist){
+                    listSubscriber.push(account);
+                    emit MsgInfoAccountListOk("The account/address has been successfully registered.", account);
+                }
+        } else {
+            listSubscriber.push(account);
+            emit MsgInfoAccountListOk("The account/address has been successfully registered.", account);
         }
     }
 
-    function removeAddress(address account) public onlyRole(ADMIN_CLUB_ROLE)  {
-        address[] memory listAuxSubscriber = new address[](listSubscriber.length-1);
-        uint index = 0;
-        for (uint256 i = 0; i < listSubscriber.length - 1; i++) {
-            if(listSubscriber[i] != account){
-                listAuxSubscriber[index] = account;
-                index ++;
-            } 
+    function getAddressInfo() public view returns(address[] memory){
+        return(listSubscriber);
+    }
+
+    function findAddress(address value) public view returns(uint) {
+        uint i = 0;
+        while (listSubscriber[i] != value) {
+            i++;
         }
-        listSubscriber = listAuxSubscriber;
+        return i;
+    }
+
+    function removeAddress(address value) public{
+        uint i = findAddress(value);
+        removeAddressByIndex(i);
+    }
+
+    function removeAddressByIndex(uint i) public{
+        while (i<listSubscriber.length-1) {
+            listSubscriber[i] = listSubscriber[i+1];
+            i++;
+        }
+        listSubscriber.pop();
     }
 
 /*
