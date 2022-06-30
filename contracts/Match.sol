@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/security/Pausable.sol";
-import "@openzeppelin/contracts/access/AccessControl.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Royalty.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/ERC721.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/security/Pausable.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/access/AccessControl.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC721/extensions/ERC721Burnable.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/utils/Counters.sol";
+import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/common/ERC2981.sol";
 
 contract Match is 
     ERC721, 
@@ -17,12 +17,14 @@ contract Match is
     Pausable, 
     AccessControl, 
     ERC721Burnable,
-    ERC721Royalty
+    ERC2981
 {
     using Counters for Counters.Counter;
 
     bytes32 public constant ADMIN_CLUB_ROLE = keccak256("ADMIN_CLUB_ROLE");
     Counters.Counter private _matchIdCounter;
+
+    string contractURI;
 
     address[] public listSubscriber;
 
@@ -46,11 +48,14 @@ contract Match is
         //entrada?
     }
 
-    constructor() ERC721("Match", "MTC"){
+    constructor(uint96 _royaltyFeesInBips, string memory _contractURI) ERC721("Match", "MTC"){
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(ADMIN_CLUB_ROLE, msg.sender);
         //uri=ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali/season
         activeContract = true;
+        
+        setRoyaltyInfo(msg.sender, _royaltyFeesInBips);
+        contractURI = _contractURI;
     }
 
     function pause() public onlyRole(ADMIN_CLUB_ROLE) {
@@ -85,7 +90,7 @@ contract Match is
         super._beforeTokenTransfer(from, to, matchId);
     }
 
-    function _burn(uint256 matchId) internal override(ERC721, ERC721URIStorage, ERC721Royalty) {
+    function _burn(uint256 matchId) internal override(ERC721, ERC721URIStorage) {
         super._burn(matchId);
     }
 
@@ -101,7 +106,7 @@ contract Match is
     function supportsInterface(bytes4 interfaceId)
         public
         view
-        override(ERC721, ERC721Enumerable, ERC721Royalty, AccessControl)
+        override(ERC721, ERC721Enumerable, ERC2981, AccessControl)
         returns (bool)
     {
         return super.supportsInterface(interfaceId);
@@ -197,5 +202,8 @@ contract Match is
         }
     }
 */
+    function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips) public onlyRole(DEFAULT_ADMIN_ROLE) {
+        _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
+    }
 
 }
