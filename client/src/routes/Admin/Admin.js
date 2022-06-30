@@ -25,6 +25,8 @@ const Admin = () => {
           sm={12}
           md={6}
           lg={4}
+          xl={4}
+          xxl={4}
           header={
             <Link
               to={ACCOUNT_ADMINISTRATION_AREA_PATH}
@@ -49,6 +51,8 @@ const Admin = () => {
           sm={12}
           md={6}
           lg={4}
+          xl={4}
+          xxl={4}
           header={
             <Link
               to={TICKETS_ADMINISTRATION_AREA_PATH}

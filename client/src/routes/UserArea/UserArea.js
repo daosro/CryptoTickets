@@ -22,6 +22,8 @@ const UserArea = () => {
           sm={12}
           md={6}
           lg={4}
+          xl={4}
+          xxl={4}
           header={
             <Link to={USER_ZONE_SUBSCRIBER_PATH} className={classes.homeLink}>
               <div className={classes.carHeader}>Carné de Socio</div>
@@ -47,6 +49,8 @@ const UserArea = () => {
           sm={12}
           md={6}
           lg={4}
+          xl={4}
+          xxl={4}
           header={
             <Link to={USER_ZONE_TICKETS_PATH} className={classes.homeLink}>
               <div className={classes.carHeader}>Mis Entradas</div>
@@ -64,6 +68,8 @@ const UserArea = () => {
           sm={12}
           md={6}
           lg={4}
+          xl={4}
+          xxl={4}
           header={
             <Link to={USER_ZONE_MARKET_PATH} className={classes.homeLink}>
               <div className={classes.carHeader}>Comprar Entradas</div>

@@ -9,6 +9,7 @@ import NonFungibleToken from "../../core/NonFungibleToken";
 import { getNFTMetadataObject } from "../../services/nft";
 
 import useStyles from "./Tickets.style";
+import { getTokenBalanceOf, getTokenMetadataByIndex } from "../../utils/web3";
 
 const Tickets = () => {
   const classes = useStyles();
@@ -20,44 +21,35 @@ const Tickets = () => {
     if (accounts?.[0] || contracts.lenght) {
       const getUserToken = async () => {
         const account = accounts[0];
-        const tokenLength = await contracts.membership.methods
-          .balanceOf(account)
-          .call();
-
-        if (tokenLength > 0) {
-          // Fetch the first NFT metadata so you should only mint one Subscriber NFT
-          const tokenId = await contracts.membership.methods
-            .tokenOfOwnerByIndex(account, 0)
-            .call();
-
-          const tokenMetadataURI = await contracts.membership.methods
-            .tokenURI(tokenId)
-            .call();
-
-          const metadata = await getNFTMetadataObject(tokenMetadataURI);
-          setSubscriberNFTMetadata({ ...metadata, tokenId: tokenId });
+        const membershipTokensLength = await getTokenBalanceOf(
+          contracts.membership,
+          account
+        );
+        if (membershipTokensLength > 0) {
+          const metadata = await getTokenMetadataByIndex(
+            contracts.membership,
+            account,
+            0
+          );
+          setSubscriberNFTMetadata(metadata);
         } else {
           setSubscriberNFTMetadata(null);
         }
-        const ticketsLength = await contracts.matchTickets.methods
-          .balanceOf(account)
-          .call();
-        if (ticketsLength > 0) {
+        const ticketsTokensLength = await getTokenBalanceOf(
+          contracts.matchTickets,
+          account
+        );
+        if (ticketsTokensLength > 0) {
           const tokensMetadata = [];
 
-          for (let i = 0; i < ticketsLength; i++) {
-            const tokenId = await contracts.matchTickets.methods
-              .tokenOfOwnerByIndex(account, i)
-              .call();
-            try {
-              const tokenMetadataURI = await contracts.matchTickets.methods
-                .tokenURI(tokenId)
-                .call();
-
-              const metadata = await getNFTMetadataObject(tokenMetadataURI);
-              tokensMetadata.push({ ...metadata, tokenId: tokenId });
-            } catch (error) {
-              console.error(error);
+          for (let i = 0; i < ticketsTokensLength; i++) {
+            const metadata = await getTokenMetadataByIndex(
+              contracts.matchTickets,
+              account,
+              i
+            );
+            if (metadata) {
+              tokensMetadata.push(metadata);
             }
           }
           setTicketsNFTsMetadata(tokensMetadata);
@@ -74,9 +66,21 @@ const Tickets = () => {
       <h2>Mis entradas</h2>
       <CardContainer>
         {subscriberNFTMetadata ? (
-          <NonFungibleToken metadata={subscriberNFTMetadata} />
+          <NonFungibleToken
+            metadata={subscriberNFTMetadata}
+            title={"Abono de Socio"}
+            tokenDetails={() => {}}
+          />
         ) : (
-          <Card xs={12} sm={6} md={3} lg={4} header={"Aún no eres socio"}>
+          <Card
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            xl={3}
+            xxl={2.4}
+            header={"Aún no eres socio"}
+          >
             <div className={classes.cardContent}>
               <div className={classes.cardText}>
                 No esperes más y hazte socio hoy mismo
@@ -88,7 +92,13 @@ const Tickets = () => {
           </Card>
         )}
         {ticketsNFTsMetadata.map((metadata) => (
-          <NonFungibleToken metadata={metadata} />
+          <NonFungibleToken
+            metadata={metadata}
+            title={"Crypto Ticket"}
+            tokenDetails={() => {}}
+            useToke={() => {}}
+            sellToken={() => {}}
+          />
         ))}
       </CardContainer>
     </div>
