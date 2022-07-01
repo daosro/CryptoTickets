@@ -12,5 +12,16 @@ export const MUMBAI_CHAIN_DATA = {
   blockExplorerUrls: ["https://mumbai.polygonscan.com/"],
 };
 
-export const CHAIN_ID = MUMBAI_CHAIN_ID;
-export const CHAIN_DATA = MUMBAI_CHAIN_DATA;
+export const GANACHE_CHAIN_ID = 1337;
+export const GANACHE_CHAIN_DATA = {
+  chainName: "Ganache",
+  nativeCurrency: {
+    name: "ETH",
+    symbol: "ETH",
+    decimals: 18,
+  },
+  rpcUrls: ["http://127,0,0,1:7545"],
+};
+
+export const CHAIN_ID = GANACHE_CHAIN_ID;
+export const CHAIN_DATA = GANACHE_CHAIN_DATA;
