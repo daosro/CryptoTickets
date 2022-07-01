@@ -10,93 +10,61 @@ import useStyles from "./Tickets.style";
 import { getTokenBalanceOf, getTokenMetadataByIndex } from "../../utils/web3";
 import { notify } from "../../utils/notifications";
 
+const refreshTokensMetadata = async (contracts, accounts) => {
+  const result = { subscriberNFT: null, ticketsNFTs: [] };
+  const account = accounts[0];
+  const membershipTokensLength = await getTokenBalanceOf(
+    contracts.membership,
+    account
+  );
+  if (membershipTokensLength > 0) {
+    const metadata = await getTokenMetadataByIndex(
+      contracts.membership,
+      account,
+      0
+    );
+    result.subscriberNFT = metadata;
+  }
+  const ticketsTokensLength = await getTokenBalanceOf(
+    contracts.matchTickets,
+    account
+  );
+  if (ticketsTokensLength > 0) {
+    const tokensMetadata = [];
+
+    for (let i = 0; i < ticketsTokensLength; i++) {
+      const metadata = await getTokenMetadataByIndex(
+        contracts.matchTickets,
+        account,
+        i
+      );
+      if (metadata) {
+        tokensMetadata.push(metadata);
+      }
+    }
+    result.ticketsNFTs = tokensMetadata;
+  }
+
+  return result;
+};
+
 const Tickets = () => {
   const classes = useStyles();
   const { accounts, contracts } = useContext(Web3Context);
   const [subscriberNFTMetadata, setSubscriberNFTMetadata] = useState(null);
   const [ticketsNFTsMetadata, setTicketsNFTsMetadata] = useState([]);
 
-  const refreshTokensMetadata = async () => {
-    const account = accounts[0];
-    const membershipTokensLength = await getTokenBalanceOf(
-      contracts.membership,
-      account
-    );
-    if (membershipTokensLength > 0) {
-      const metadata = await getTokenMetadataByIndex(
-        contracts.membership,
-        account,
-        0
-      );
-      setSubscriberNFTMetadata(metadata);
-    } else {
-      setSubscriberNFTMetadata(null);
-    }
-    const ticketsTokensLength = await getTokenBalanceOf(
-      contracts.matchTickets,
-      account
-    );
-    if (ticketsTokensLength > 0) {
-      const tokensMetadata = [];
-
-      for (let i = 0; i < ticketsTokensLength; i++) {
-        const metadata = await getTokenMetadataByIndex(
-          contracts.matchTickets,
-          account,
-          i
-        );
-        if (metadata) {
-          tokensMetadata.push(metadata);
-        }
-      }
-      setTicketsNFTsMetadata(tokensMetadata);
-    } else {
-      setTicketsNFTsMetadata([]);
-    }
-  };
-
   useEffect(() => {
     if (accounts?.[0] || contracts.lenght) {
-      refreshTokensMetadata();
-      // const getUserToken = async () => {
-      //   const account = accounts[0];
-      //   const membershipTokensLength = await getTokenBalanceOf(
-      //     contracts.membership,
-      //     account
-      //   );
-      //   if (membershipTokensLength > 0) {
-      //     const metadata = await getTokenMetadataByIndex(
-      //       contracts.membership,
-      //       account,
-      //       0
-      //     );
-      //     setSubscriberNFTMetadata(metadata);
-      //   } else {
-      //     setSubscriberNFTMetadata(null);
-      //   }
-      //   const ticketsTokensLength = await getTokenBalanceOf(
-      //     contracts.matchTickets,
-      //     account
-      //   );
-      //   if (ticketsTokensLength > 0) {
-      //     const tokensMetadata = [];
-
-      //     for (let i = 0; i < ticketsTokensLength; i++) {
-      //       const metadata = await getTokenMetadataByIndex(
-      //         contracts.matchTickets,
-      //         account,
-      //         i
-      //       );
-      //       if (metadata) {
-      //         tokensMetadata.push(metadata);
-      //       }
-      //     }
-      //     setTicketsNFTsMetadata(tokensMetadata);
-      //   } else {
-      //     setTicketsNFTsMetadata([]);
-      //   }
-      // };
-      // getUserToken();
+      const getUserToken = async () => {
+        const { subscriberNFT, ticketsNFTs } = await refreshTokensMetadata(
+          contracts,
+          accounts
+        );
+        setSubscriberNFTMetadata(subscriberNFT);
+        setTicketsNFTsMetadata(ticketsNFTs);
+      };
+      getUserToken();
     }
   }, [accounts, contracts]);
 
@@ -113,7 +81,12 @@ const Tickets = () => {
           .burnTicket(ticketId)
           .send()
           .on("receipt", async () => {
-            await refreshTokensMetadata();
+            const { subscriberNFT, ticketsNFTs } = await refreshTokensMetadata(
+              contracts,
+              accounts
+            );
+            setSubscriberNFTMetadata(subscriberNFT);
+            setTicketsNFTsMetadata(ticketsNFTs);
             notify(
               "Congratulations!",
               "Ticket burned successfully",
@@ -128,7 +101,7 @@ const Tickets = () => {
         console.error(error);
       }
     },
-    [contracts, refreshTokensMetadata]
+    [contracts, accounts]
   );
 
   return (
