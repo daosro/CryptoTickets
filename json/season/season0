@@ -12,8 +12,15 @@
       "value": "22-23"
     },
     {
-      "trait_type": "Title",
-      "value": "Real Madrid vs Chelsea"
+      "trait_type": "Torneo",
+      "value": "Champions"
+    },
+    {
+      "trait_type": "Local",
+      "value": "Real Madrid"
+    },{
+      "trait_type": "Visitante",
+      "value": "Chelsea"
     },
     {
       "trait_type": "Fecha",

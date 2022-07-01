@@ -12,8 +12,15 @@
       "value": "22-23"
     },
     {
-      "trait_type": "Title",
-      "value": "Real Madrid vs Barcelona F.C."
+      "trait_type": "Torneo",
+      "value": "Liga Santander"
+    },
+    {
+      "trait_type": "Local",
+      "value": "Real Madrid"
+    },{
+      "trait_type": "Visitante",
+      "value": "F.C. Barcelona"
     },
     {
       "trait_type": "Fecha",
