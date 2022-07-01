@@ -25,7 +25,7 @@ contract CryptoTicketsMatchNFTs is
     bytes32 public constant ADMIN_CLUB_ROLE = keccak256("ADMIN_CLUB_ROLE");
     Counters.Counter private _matchIdCounter;
 
-    string contractURI;
+    string contractURL;
 
     address[] public listSubscriber;
 
@@ -56,9 +56,14 @@ contract CryptoTicketsMatchNFTs is
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(ADMIN_CLUB_ROLE, msg.sender);
         //uri=ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali/season
+        
         activeContract = true;
         
         setRoyaltyInfo(msg.sender, royaltyFeesInBips);
+    }
+
+    function contractURI() public pure returns (string memory) {
+        return "https://ipfs.io/ipfs/bafkreiaw3nh6thv6e4x37hlvpyx2mu3tlf2zlcj2bkynxlbtd3ssvxoycm/";
     }
 
     function pause() public onlyRole(ADMIN_CLUB_ROLE) {

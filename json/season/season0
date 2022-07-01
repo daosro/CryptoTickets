@@ -16,9 +16,14 @@
       "value": "Champions"
     },
     {
+      "trait_type": "Stadium",
+      "value": "Santiago Bernabeu"
+    },
+    {
       "trait_type": "Local",
       "value": "Real Madrid"
-    },{
+    },
+    {
       "trait_type": "Visitante",
       "value": "Chelsea"
     },

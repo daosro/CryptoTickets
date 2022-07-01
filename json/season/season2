@@ -16,6 +16,10 @@
       "value": "Liga Santander"
     },
     {
+      "trait_type": "Stadium",
+      "value": "Santiago Bernabeu"
+    },
+    {
       "trait_type": "Local",
       "value": "Real Madrid"
     },{
