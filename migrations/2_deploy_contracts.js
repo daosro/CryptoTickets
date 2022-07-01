@@ -1,13 +1,18 @@
-var STRMMembership = artifacts.require("./STRMMembership.sol");
-var STRMMatchTickets = artifacts.require("./STRMMatchTickets.sol");
+var CryptoTicketsMembershipNFTs = artifacts.require(
+  "./CryptoTicketsMembershipNFTs.sol"
+);
+var CryptoTicketsMatchNFTs = artifacts.require("./CryptoTicketsMatchNFTs.sol");
 
 module.exports = async function (deployer) {
-  await deployer.deploy(STRMMatchTickets);
+  await deployer.deploy(CryptoTicketsMatchNFTs);
 
-  await deployer.deploy(STRMMembership, STRMMatchTickets.address);
+  await deployer.deploy(
+    CryptoTicketsMembershipNFTs,
+    CryptoTicketsMatchNFTs.address
+  );
 
-  var strmMatchTickets = await STRMMatchTickets.deployed();
+  var cryptoTicketsMatch = await CryptoTicketsMatchNFTs.deployed();
 
-  await strmMatchTickets.grantAdminRol(STRMMembership.address);
+  await cryptoTicketsMatch.grantAdminRol(CryptoTicketsMembershipNFTs.address);
 };
 4;

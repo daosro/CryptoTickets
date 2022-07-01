@@ -9,9 +9,9 @@ import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 
-import "./STRMMatchTickets.sol";
+import "./CryptoTicketsMatchNFTs.sol";
 
-contract STRMMembership is
+contract CryptoTicketsMembershipNFTs is
     ERC721,
     ERC721Enumerable,
     ERC721URIStorage,
@@ -20,7 +20,7 @@ contract STRMMembership is
     ERC721Burnable
 {
     // Other contracts
-    STRMMatchTickets matchTicketsContract;
+    CryptoTicketsMatchNFTs matchTicketsContract;
     // Roles (administrador, club, abonado)
     bytes32 public constant CLUB_ADMIN_ROLE = keccak256("CLUB_ADMIN_ROLE");
     bytes32 public constant MEMBERSHIP_ROLE = keccak256("MEMBERSHIP_ROLE");
@@ -43,9 +43,9 @@ contract STRMMembership is
     using Counters for Counters.Counter;
     Counters.Counter private _membershipCounter;
 
-    constructor(address matchTicketsContractAddresss) ERC721("T-3 Real Madrid Official Membership", "RMOM") {
+    constructor(address matchTicketsContractAddresss) ERC721("CryptoTicketsMembershipNFTs", "CTKUN") {
 
-        matchTicketsContract = STRMMatchTickets(matchTicketsContractAddresss);
+        matchTicketsContract = CryptoTicketsMatchNFTs(matchTicketsContractAddresss);
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(CLUB_ADMIN_ROLE, msg.sender);
