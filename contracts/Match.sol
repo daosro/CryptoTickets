@@ -45,10 +45,11 @@ contract Match is
     event ClubAdminRoleRevoked(address indexed sender, address indexed clubAddress);
 
     struct MatchTransactionTicket{
-        address account;
+        address ownerAccount;
+        uint tokenId;
         string typeTicket;
         uint price;
-        //entrada?
+        //Añadir fecha de vencimiento del token
     }
 
     constructor() ERC721("Match", "MTC"){
@@ -69,6 +70,13 @@ contract Match is
     }
 
     function mint(address to, string memory uri) private {
+        uint256 matchId = _matchIdCounter.current();
+        _matchIdCounter.increment();
+        _safeMint(to, matchId);
+        _setTokenURI(matchId, uri);
+    }
+
+    function mintTicket(address to, string memory uri) public payable {
         uint256 matchId = _matchIdCounter.current();
         _matchIdCounter.increment();
         _safeMint(to, matchId);
