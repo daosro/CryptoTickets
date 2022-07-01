@@ -7,6 +7,8 @@ const Card = ({
   sm = 12,
   md = 12,
   lg = 12,
+  xl = 12,
+  xxl = 12,
   header,
   image,
   alt,
@@ -18,6 +20,10 @@ const Card = ({
     sm,
     md,
     lg,
+    xl,
+    xxl,
+    withHeader: header !== undefined,
+    withFooter: footer !== undefined,
   });
   return (
     <div className={classes.root}>

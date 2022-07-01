@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { CHAIN_DATA, CHAIN_ID } from "../../constants/chain";
-import STRMMembershipContract from "../../contracts/STRMMembership.json";
+import CryptoTicketsMatchNFTsContract from "../../contracts/CryptoTicketsMatchNFTs.json";
+import CryptoTicketsMembershipNFTsContract from "../../contracts/CryptoTicketsMembershipNFTs.json";
 import {
   enableWeb3Instance,
   getUserAccounts,
@@ -22,16 +23,29 @@ const switchToContractChain = async (web3, awaitTime) => {
 
 const getContractInstances = async (web3, account) => {
   const networkId = await web3.eth.net.getId();
-  const membershipDeployedNetwork = STRMMembershipContract.networks[networkId];
+
+  const membershipDeployedNetwork =
+    CryptoTicketsMembershipNFTsContract.networks[networkId];
   const membershipContract = new web3.eth.Contract(
-    STRMMembershipContract.abi,
+    CryptoTicketsMembershipNFTsContract.abi,
     membershipDeployedNetwork && membershipDeployedNetwork.address,
     {
       from: account,
       gasLimit: 3000000,
     }
   );
-  return { membership: membershipContract };
+
+  const matchTicketsDeployedNetwork =
+    CryptoTicketsMatchNFTsContract.networks[networkId];
+  const matchTicketsContract = new web3.eth.Contract(
+    CryptoTicketsMatchNFTsContract.abi,
+    matchTicketsDeployedNetwork && matchTicketsDeployedNetwork.address,
+    {
+      from: account,
+      gasLimit: 3000000,
+    }
+  );
+  return { membership: membershipContract, matchTickets: matchTicketsContract };
 };
 
 const connectAccount = async (web3) => {

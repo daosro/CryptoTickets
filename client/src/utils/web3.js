@@ -1,4 +1,5 @@
 import Web3 from "web3";
+import { getNFTMetadataObject } from "../services/nft";
 
 /**
  * Get the a instance of web3.
@@ -93,4 +94,25 @@ export const switchToCorrectChain = async (
     return isCorrectNetwork;
   }
   return true;
+};
+
+export const getTokenBalanceOf = async (contract, account) =>
+  await contract.methods.balanceOf(account).call();
+
+export const getTokenMetadataByIndex = async (contract, account, tokenIdx) => {
+  let result = null;
+  try {
+    const tokenId = await contract.methods
+      .tokenOfOwnerByIndex(account, tokenIdx)
+      .call();
+
+    const tokenMetadataURI = await contract.methods.tokenURI(tokenId).call();
+
+    result = await getNFTMetadataObject(tokenMetadataURI);
+    result = { ...result, tokenId: tokenId };
+  } catch (error) {
+    console.error(error);
+  } finally {
+    return result;
+  }
 };

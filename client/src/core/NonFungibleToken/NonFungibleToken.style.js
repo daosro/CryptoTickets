@@ -17,6 +17,16 @@ export default createUseStyles(
     id: {
       marginLeft: "10px",
     },
+    footerContainer: {
+      display: "flex",
+      justifyContent: "space-between",
+      width: "100%",
+    },
+    icon: {
+      width: "25px",
+      height: "25px",
+      cursor: "pointer",
+    },
   },
   { name: "NonFungibleToken" }
 );

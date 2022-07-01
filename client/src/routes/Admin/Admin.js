@@ -1,15 +1,12 @@
-import React, { useCallback, useContext, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import {
   ACCOUNT_ADMINISTRATION_AREA_PATH,
   TICKETS_ADMINISTRATION_AREA_PATH,
-  USER_ZONE_SUBSCRIBER_PATH,
 } from "../../constants/routes";
-import { Web3Context } from "../../context/Web3";
-import Button from "../../core/Button";
+
 import Card, { CardContainer } from "../../core/Card";
 import withConnectionRequired from "../../hocs/withConnectionRequired";
-import { notify } from "../../utils/notifications";
 
 import useStyles from "./Admin.style";
 
@@ -25,6 +22,8 @@ const Admin = () => {
           sm={12}
           md={6}
           lg={4}
+          xl={4}
+          xxl={4}
           header={
             <Link
               to={ACCOUNT_ADMINISTRATION_AREA_PATH}
@@ -49,6 +48,8 @@ const Admin = () => {
           sm={12}
           md={6}
           lg={4}
+          xl={4}
+          xxl={4}
           header={
             <Link
               to={TICKETS_ADMINISTRATION_AREA_PATH}

@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 
 
-contract Match is 
+contract CryptoTicketsMatchNFTs is 
     ERC721, 
     ERC721Enumerable, 
     ERC721URIStorage, 
@@ -52,7 +52,7 @@ contract Match is
         //Añadir fecha de vencimiento del token
     }
 
-    constructor() ERC721("Match", "MTC"){
+    constructor() ERC721("CryptoTicketsMatchNFTs", "CTKMN"){
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(ADMIN_CLUB_ROLE, msg.sender);
         //uri=ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali/season
@@ -102,6 +102,10 @@ contract Match is
 
     function _burn(uint256 matchId) internal override(ERC721, ERC721URIStorage) {
         super._burn(matchId);
+    }
+    
+    function burnTicket(uint256 tokenId) public  {
+        _burn(tokenId);
     }
 
     function tokenURI(uint256 matchId)
