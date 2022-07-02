@@ -7,7 +7,7 @@ export default createUseStyles(
       margin: "8px",
       background: "#fff",
       borderRadius: "5px",
-      minHeight: "26rem",
+      minHeight: "20rem",
       display: "flex",
       flexDirection: "column",
       position: "relative",

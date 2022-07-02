@@ -14,17 +14,24 @@ export default createUseStyles(
       display: "flex",
       flexDirection: "row",
     },
+    priceLabel: {
+      width: "100%",
+      display: "flex",
+      alignItems: "start",
+      fontSize: "medium",
+      fontWeight: "bold",
+      marginBottom: "2px",
+    },
     priceContainer: {
       width: "100%",
       display: "flex",
       justifyContent: "start",
       alignItems: "center",
-      padding: "20px 10px 0 20px",
       fontSize: "medium",
       fontWeight: "bold",
       "& > img": {
         width: "25px",
-        margin: "0 2px 0 5px",
+        margin: "0 2px 0 0",
       },
     },
     title: {
@@ -33,6 +40,11 @@ export default createUseStyles(
     },
     id: {
       marginLeft: "10px",
+    },
+    owner: {
+      width: "100%",
+      display: "flex",
+      justifyContent: "end",
     },
     footerContainer: {
       display: "flex",

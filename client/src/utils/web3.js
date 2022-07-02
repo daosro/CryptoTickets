@@ -147,3 +147,6 @@ export const getContractInstance = (web3, networkId, contractJson, account) => {
 
   return result;
 };
+
+export const getShortAddress = (address) =>
+  `${address.substr(0, 5)}...${address.slice(-4)}`;

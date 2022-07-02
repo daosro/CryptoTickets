@@ -5,6 +5,7 @@ import { TbListDetails } from "react-icons/tb";
 import Card from "../Card";
 
 import useStyles from "./NonFungibleToken.style";
+import { getShortAddress } from "../../utils/web3";
 
 const NonFungibleToken = ({
   metadata: { image, name, tokenId, saleInfo },
@@ -70,14 +71,21 @@ const NonFungibleToken = ({
           <div className={classes.id}>{`#${tokenId}`}</div>
         </div>
         {saleInfo && saleInfo.price && (
-          <div className={classes.priceContainer}>
-            Price:
-            <img
-              src={process.env.PUBLIC_URL + "/assets/images/cryptos/matic.png"}
-              alt="matic"
-            />
-            {saleInfo.price}
-          </div>
+          <>
+            <p className={classes.priceLabel}>Price:</p>
+            <div className={classes.priceContainer}>
+              <img
+                src={
+                  process.env.PUBLIC_URL + "/assets/images/cryptos/matic.png"
+                }
+                alt="matic"
+              />
+              {saleInfo.price}
+              <div className={classes.owner}>
+                {getShortAddress(saleInfo.seller)}
+              </div>
+            </div>
+          </>
         )}
       </div>
     </Card>

@@ -68,6 +68,7 @@ const refreshTokensMetadata = async (contracts, accounts) => {
 const Tickets = () => {
   const classes = useStyles();
   const { accounts, contracts } = useContext(Web3Context);
+  const [isApprovedForAll, setIsApprovedForAll] = useState(false);
   const [subscriberNFTMetadata, setSubscriberNFTMetadata] = useState(null);
   const [ticketsNFTsMetadata, setTicketsNFTsMetadata] = useState([]);
   const [onSaleTokenList, setonSaleTokenList] = useState([]);
@@ -88,9 +89,17 @@ const Tickets = () => {
         const onSaleTokens = await getOnSaleTokenIds(contracts);
         setonSaleTokenList(onSaleTokens);
       };
+
+      const checkIfIsApprovedForAll = async () => {
+        const isApproved = await contracts.matchTickets.methods
+          .isApprovedForAll(accounts[0], marketplaceContractAddress)
+          .call();
+        setIsApprovedForAll(isApproved);
+      };
       getUserToken();
+      checkIfIsApprovedForAll();
     }
-  }, [accounts, contracts]);
+  }, [accounts, contracts, marketplaceContractAddress]);
 
   const burnTicketHandler = useCallback(
     async (ticketId) => {
@@ -137,32 +146,41 @@ const Tickets = () => {
         10000
       );
       try {
-        await contracts.matchTickets.methods
-          .setApprovalForAll(marketplaceContractAddress, true)
-          .send()
-          .on("receipt", async () => {
-            await contracts.marketplace.methods
-              .addListing(tokenId, 2)
-              .send()
-              .on("receipt", async () => {
-                const onSaleTokens = await getOnSaleTokenIds(contracts);
-                setonSaleTokenList(onSaleTokens);
-                notify(
-                  "Congratulations!",
-                  "Ticket add successfully to the marketplace",
-                  "success",
-                  5000
-                );
-              });
-          })
-          .on("error", (error) => {
-            notify("Something went wrong", error?.message, "danger", 10000);
-          });
+        const addTokenToMarketplaceHandler = async () => {
+          await contracts.marketplace.methods
+            .addListing(tokenId, 2)
+            .send()
+            .on("receipt", async () => {
+              const onSaleTokens = await getOnSaleTokenIds(contracts);
+              setonSaleTokenList(onSaleTokens);
+              notify(
+                "Congratulations!",
+                "Ticket add successfully to the marketplace",
+                "success",
+                5000
+              );
+            });
+        };
+
+        if (isApprovedForAll) {
+          await addTokenToMarketplaceHandler();
+        } else {
+          await contracts.matchTickets.methods
+            .setApprovalForAll(marketplaceContractAddress, true)
+            .send()
+            .on("receipt", async () => {
+              await addTokenToMarketplaceHandler();
+              setIsApprovedForAll(true);
+            })
+            .on("error", (error) => {
+              notify("Something went wrong", error?.message, "danger", 10000);
+            });
+        }
       } catch (error) {
         console.error(error);
       }
     },
-    [contracts, marketplaceContractAddress]
+    [contracts, isApprovedForAll, marketplaceContractAddress]
   );
 
   const removeFromSellTicketHandler = useCallback(
