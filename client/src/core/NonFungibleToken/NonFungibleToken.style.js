@@ -27,6 +27,15 @@ export default createUseStyles(
       height: "25px",
       cursor: "pointer",
     },
+    onSale: {
+      width: "100px",
+      height: "100px",
+      position: "absolute",
+      top: "-15px",
+      left: "-14px",
+      background: `url(${process.env.PUBLIC_URL}/assets/images/sale-tag.svg) no-repeat center`,
+      backgroundSize: "120px 100px",
+    },
   },
   { name: "NonFungibleToken" }
 );

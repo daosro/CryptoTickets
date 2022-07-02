@@ -116,3 +116,27 @@ export const getTokenMetadataByIndex = async (contract, account, tokenIdx) => {
     return result;
   }
 };
+
+export const getContractAddress = (networkId, contractJson) => {
+  const contract = contractJson.networks[networkId];
+  return contract && contract.address;
+};
+
+export const getContractInstance = (
+  web3,
+  networkId,
+  contractJson,
+  account,
+  gasLimit = 3000000
+) => {
+  const result = new web3.eth.Contract(
+    contractJson.abi,
+    getContractAddress(networkId, contractJson),
+    {
+      from: account,
+      gasLimit,
+    }
+  );
+
+  return result;
+};
