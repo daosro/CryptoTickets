@@ -1,5 +1,5 @@
 import React from "react";
-import { MdOutlineSell } from "react-icons/md";
+import { MdOutlineSell, MdOutlineRestorePage } from "react-icons/md";
 import { IoTicketOutline } from "react-icons/io5";
 import { TbListDetails } from "react-icons/tb";
 import Card from "../Card";
@@ -12,6 +12,8 @@ const NonFungibleToken = ({
   tokenDetails,
   useToke,
   sellToken,
+  removeFromSell,
+  onSale = false,
 }) => {
   const classes = useStyles();
   return (
@@ -42,11 +44,17 @@ const NonFungibleToken = ({
                 <MdOutlineSell size={20} />
               </div>
             )}
+            {removeFromSell && (
+              <div className={classes.icon} onClick={removeFromSell}>
+                <MdOutlineRestorePage size={20} />
+              </div>
+            )}
           </div>
         )
       }
     >
       <div className={classes.content}>
+        {onSale && <div className={classes.onSale} />}
         <div className={classes.title}>{metadata.name}</div>
         <div className={classes.id}>{`#${metadata.tokenId}`}</div>
       </div>

@@ -29,6 +29,9 @@ export default createUseStyles(
       },
     },
     header: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
       padding: "10px",
       fontWeight: "bold",
       fontSize: "larger",

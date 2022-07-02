@@ -1,14 +1,29 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { Link } from "react-router-dom";
+
+import { CHAIN_ID } from "../../constants/chain";
 import { USER_ZONE_SUBSCRIBER_PATH } from "../../constants/routes";
+import { notify } from "../../utils/notifications";
+import {
+  getContractAddress,
+  getTokenBalanceOf,
+  getTokenMetadataByIndex,
+} from "../../utils/web3";
+
+import CryptoTicketsMarketplaceContract from "../../contracts/CryptoTicketsMarketplace.json";
+
 import { Web3Context } from "../../context/Web3";
 import Card, { CardContainer } from "../../core/Card";
 import Button from "../../core/Button";
 import NonFungibleToken from "../../core/NonFungibleToken";
 
 import useStyles from "./Tickets.style";
-import { getTokenBalanceOf, getTokenMetadataByIndex } from "../../utils/web3";
-import { notify } from "../../utils/notifications";
 
 const refreshTokensMetadata = async (contracts, accounts) => {
   const result = { subscriberNFT: null, ticketsNFTs: [] };
@@ -48,11 +63,19 @@ const refreshTokensMetadata = async (contracts, accounts) => {
   return result;
 };
 
+const getOnSaleTokens = async (contracts) =>
+  await contracts.marketplace.methods.getOnSaleTokens().call();
+
 const Tickets = () => {
   const classes = useStyles();
   const { accounts, contracts } = useContext(Web3Context);
   const [subscriberNFTMetadata, setSubscriberNFTMetadata] = useState(null);
   const [ticketsNFTsMetadata, setTicketsNFTsMetadata] = useState([]);
+  const [onSaleTokenList, setonSaleTokenList] = useState([]);
+
+  const marketplaceContractAddress = useMemo(() => {
+    return getContractAddress(CHAIN_ID, CryptoTicketsMarketplaceContract);
+  }, []);
 
   useEffect(() => {
     if (accounts?.[0] || contracts.lenght) {
@@ -63,6 +86,8 @@ const Tickets = () => {
         );
         setSubscriberNFTMetadata(subscriberNFT);
         setTicketsNFTsMetadata(ticketsNFTs);
+        const onSaleTokens = await getOnSaleTokens(contracts);
+        setonSaleTokenList(onSaleTokens);
       };
       getUserToken();
     }
@@ -104,6 +129,75 @@ const Tickets = () => {
     [contracts, accounts]
   );
 
+  const sellTicketHandler = useCallback(
+    async (tokenId) => {
+      notify(
+        "Processing...",
+        "This process may take several minutes, please wait.",
+        "info",
+        10000
+      );
+      try {
+        await contracts.matchTickets.methods
+          .setApprovalForAll(marketplaceContractAddress, true)
+          .send()
+          .on("receipt", async () => {
+            await contracts.marketplace.methods
+              .addListing(tokenId, 2)
+              .send()
+              .on("receipt", async () => {
+                const onSaleTokens = await getOnSaleTokens(contracts);
+                setonSaleTokenList(onSaleTokens);
+                notify(
+                  "Congratulations!",
+                  "Ticket add successfully to the marketplace",
+                  "success",
+                  5000
+                );
+              });
+          })
+          .on("error", (error) => {
+            notify("Something went wrong", error?.message, "danger", 10000);
+          });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [contracts, marketplaceContractAddress]
+  );
+
+  const removeFromSellTicketHandler = useCallback(
+    async (tokenId) => {
+      notify(
+        "Processing...",
+        "This process may take several minutes, please wait.",
+        "info",
+        10000
+      );
+      try {
+        await contracts.marketplace.methods
+          .removeListing(tokenId)
+          .send()
+          .on("receipt", async () => {
+            const onSaleTokens = await getOnSaleTokens(contracts);
+            setonSaleTokenList(onSaleTokens);
+            notify(
+              "Congratulations!",
+              "Ticket removed successfully for the marketplace",
+              "success",
+              5000
+            );
+          })
+          .on("error", (error) => {
+            notify("Something went wrong", error?.message, "danger", 10000);
+          });
+      } catch (error) {
+        console.error(error);
+      }
+    },
+    [contracts]
+  );
+
   return (
     <div className={classes.root}>
       <h2>Mis entradas</h2>
@@ -139,9 +233,19 @@ const Tickets = () => {
             key={metadata.tokenId}
             metadata={metadata}
             title={"Crypto Ticket"}
+            onSale={onSaleTokenList.includes(metadata.tokenId)}
             tokenDetails={() => {}}
             useToke={() => burnTicketHandler(metadata.tokenId)}
-            sellToken={() => {}}
+            sellToken={
+              onSaleTokenList.includes(metadata.tokenId)
+                ? undefined
+                : () => sellTicketHandler(metadata.tokenId)
+            }
+            removeFromSell={
+              onSaleTokenList.includes(metadata.tokenId)
+                ? () => removeFromSellTicketHandler(metadata.tokenId)
+                : undefined
+            }
           />
         ))}
       </CardContainer>
