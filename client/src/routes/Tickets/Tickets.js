@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { CHAIN_ID } from "../../constants/chain";
 import { USER_ZONE_SUBSCRIBER_PATH } from "../../constants/routes";
 import { notify } from "../../utils/notifications";
+import { getOnSaleTokenIds } from "../../utils/contracts";
 import {
   getContractAddress,
   getTokenBalanceOf,
@@ -24,6 +25,7 @@ import Button from "../../core/Button";
 import NonFungibleToken from "../../core/NonFungibleToken";
 
 import useStyles from "./Tickets.style";
+import withConnectionRequired from "../../hocs/withConnectionRequired";
 
 const refreshTokensMetadata = async (contracts, accounts) => {
   const result = { subscriberNFT: null, ticketsNFTs: [] };
@@ -63,9 +65,6 @@ const refreshTokensMetadata = async (contracts, accounts) => {
   return result;
 };
 
-const getOnSaleTokens = async (contracts) =>
-  await contracts.marketplace.methods.getOnSaleTokens().call();
-
 const Tickets = () => {
   const classes = useStyles();
   const { accounts, contracts } = useContext(Web3Context);
@@ -86,7 +85,7 @@ const Tickets = () => {
         );
         setSubscriberNFTMetadata(subscriberNFT);
         setTicketsNFTsMetadata(ticketsNFTs);
-        const onSaleTokens = await getOnSaleTokens(contracts);
+        const onSaleTokens = await getOnSaleTokenIds(contracts);
         setonSaleTokenList(onSaleTokens);
       };
       getUserToken();
@@ -146,7 +145,7 @@ const Tickets = () => {
               .addListing(tokenId, 2)
               .send()
               .on("receipt", async () => {
-                const onSaleTokens = await getOnSaleTokens(contracts);
+                const onSaleTokens = await getOnSaleTokenIds(contracts);
                 setonSaleTokenList(onSaleTokens);
                 notify(
                   "Congratulations!",
@@ -179,7 +178,7 @@ const Tickets = () => {
           .removeListing(tokenId)
           .send()
           .on("receipt", async () => {
-            const onSaleTokens = await getOnSaleTokens(contracts);
+            const onSaleTokens = await getOnSaleTokenIds(contracts);
             setonSaleTokenList(onSaleTokens);
             notify(
               "Congratulations!",
@@ -236,7 +235,7 @@ const Tickets = () => {
             onSale={onSaleTokenList.includes(metadata.tokenId)}
             tokenDetails={() => {}}
             useToke={() => burnTicketHandler(metadata.tokenId)}
-            sellToken={
+            saleToken={
               onSaleTokenList.includes(metadata.tokenId)
                 ? undefined
                 : () => sellTicketHandler(metadata.tokenId)
@@ -253,4 +252,4 @@ const Tickets = () => {
   );
 };
 
-export default Tickets;
+export default withConnectionRequired(Tickets);

@@ -6,9 +6,26 @@ export default createUseStyles(
     content: {
       padding: "10px",
       display: "flex",
-      flexDirection: "row",
+      flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
+    },
+    details: {
+      display: "flex",
+      flexDirection: "row",
+    },
+    priceContainer: {
+      width: "100%",
+      display: "flex",
+      justifyContent: "start",
+      alignItems: "center",
+      padding: "20px 10px 0 20px",
+      fontSize: "medium",
+      fontWeight: "bold",
+      "& > img": {
+        width: "25px",
+        margin: "0 2px 0 5px",
+      },
     },
     title: {
       fontWeight: "bold",
