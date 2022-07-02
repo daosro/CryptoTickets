@@ -20,6 +20,7 @@ sudo truffle migrate --reset --network matic
 
 Antes de ejecutar dicho comando es necesario modificar el fichero .env añadiendo las palabras semilla
 MNEMONIC="Palabras semilla"
+CLUB_ADDRESS="address del club"
 
 cd client
 npm install
@@ -41,4 +42,3 @@ npm run start
 - Generación de la recompensa
   - Quema de la entrada
   - Airdrop de las recompensas
-

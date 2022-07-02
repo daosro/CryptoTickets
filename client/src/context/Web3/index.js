@@ -2,8 +2,10 @@ import React, { useCallback, useEffect, useState } from "react";
 import { CHAIN_DATA, CHAIN_ID } from "../../constants/chain";
 import CryptoTicketsMatchNFTsContract from "../../contracts/CryptoTicketsMatchNFTs.json";
 import CryptoTicketsMembershipNFTsContract from "../../contracts/CryptoTicketsMembershipNFTs.json";
+import CryptoTicketsMarketplaceContract from "../../contracts/CryptoTicketsMarketplace.json";
 import {
   enableWeb3Instance,
+  getContractInstance,
   getUserAccounts,
   getWeb3Instance,
   switchToCorrectChain,
@@ -24,28 +26,32 @@ const switchToContractChain = async (web3, awaitTime) => {
 const getContractInstances = async (web3, account) => {
   const networkId = await web3.eth.net.getId();
 
-  const membershipDeployedNetwork =
-    CryptoTicketsMembershipNFTsContract.networks[networkId];
-  const membershipContract = new web3.eth.Contract(
-    CryptoTicketsMembershipNFTsContract.abi,
-    membershipDeployedNetwork && membershipDeployedNetwork.address,
-    {
-      from: account,
-      gasLimit: 3000000,
-    }
+  const membershipContract = getContractInstance(
+    web3,
+    networkId,
+    CryptoTicketsMembershipNFTsContract,
+    account,
+    3000000
   );
-
-  const matchTicketsDeployedNetwork =
-    CryptoTicketsMatchNFTsContract.networks[networkId];
-  const matchTicketsContract = new web3.eth.Contract(
-    CryptoTicketsMatchNFTsContract.abi,
-    matchTicketsDeployedNetwork && matchTicketsDeployedNetwork.address,
-    {
-      from: account,
-      gasLimit: 3000000,
-    }
+  const matchTicketsContract = getContractInstance(
+    web3,
+    networkId,
+    CryptoTicketsMatchNFTsContract,
+    account,
+    3000000
   );
-  return { membership: membershipContract, matchTickets: matchTicketsContract };
+  const marketplaceContract = getContractInstance(
+    web3,
+    networkId,
+    CryptoTicketsMarketplaceContract,
+    account,
+    3000000
+  );
+  return {
+    membership: membershipContract,
+    matchTickets: matchTicketsContract,
+    marketplace: marketplaceContract,
+  };
 };
 
 const connectAccount = async (web3) => {
