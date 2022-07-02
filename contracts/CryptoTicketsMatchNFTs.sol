@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
-
+ 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
@@ -10,6 +10,7 @@ import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/token/common/ERC2981.sol";
 
+import "./CryptoTicketsRewards.sol";
 
 contract CryptoTicketsMatchNFTs is 
     ERC721, 
@@ -22,6 +23,8 @@ contract CryptoTicketsMatchNFTs is
 {
     using Counters for Counters.Counter;
 
+    CryptoTicketsRewards rewardsTicket;
+
     bytes32 public constant ADMIN_CLUB_ROLE = keccak256("ADMIN_CLUB_ROLE");
     Counters.Counter private _matchIdCounter;
 
@@ -33,7 +36,6 @@ contract CryptoTicketsMatchNFTs is
     address public newOwner;
 
     uint private basePrice;
-    bool private activeContract;
 
     uint96 private royaltyFeesInBips = 1000;
 
@@ -52,13 +54,12 @@ contract CryptoTicketsMatchNFTs is
         //Añadir fecha de vencimiento del token
     }
 
-    constructor() ERC721("CryptoTicketsMatchNFTs", "CTKMN"){
+    constructor(address rewardsTicketAddress) ERC721("CryptoTicketsMatchNFTs", "CTKMN"){
+        rewardsTicket = CryptoTicketsRewards(rewardsTicketAddress);
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(ADMIN_CLUB_ROLE, msg.sender);
         //uri=ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali/season
-        
-        activeContract = true;
-        
+                
         setRoyaltyInfo(msg.sender, royaltyFeesInBips);
     }
 
@@ -111,6 +112,7 @@ contract CryptoTicketsMatchNFTs is
     
     function burnTicket(uint256 tokenId) public  {
         _burn(tokenId);
+        rewardsTicket.mintReward();
     }
 
     function tokenURI(uint256 matchId)
@@ -194,33 +196,6 @@ contract CryptoTicketsMatchNFTs is
         listSubscriber.pop();
     }
 
-/*
-    function approve(address to, uint256 tokenId) public {    
-        address owner = ownerOf(tokenId);    
-        require(to != owner);    
-        require(msg.sender == owner || isApprovedForAll(owner, msg.sender));    
-        _tokenApprovals[tokenId] = to;    
-        emit Approval(owner, to, tokenId);
-        }
-*/
-
-/*
-    function buyMatchTicket() public payable{
-        if(activeContract == false){
-            emit Status("No es posible realizar la compra, el contrato esta inactivo.");
-        } else {
-            if (msg.value > basePrice){
-                // Se realiza la transferencia del precio de la entrada al club
-                club.transfer(msg.value - basePrice);
-                //Deshabilitamos el contrato
-                activeContract = false;
-                emit Status("La compra de la entrada se ha realizado correctamente.");
-            } else {
-                emit Status("No es posible la compra, el importe no es suficiente");
-            }
-        }
-    }
-*/
     function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips) public onlyRole(DEFAULT_ADMIN_ROLE) {
         _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
     }

@@ -1,7 +1,7 @@
 {
-  "name": "Season Real Madrid vs Barcelona F.C.",
+  "name": "Season Real Madrid vs Cádiz C.F.",
   "description": "This is a one-day NFT from the 22-23 season.",
-  "image": "ipfs://bafybeiecljikdmcgdvxqd5majx6uqj5kh42ie3disxa4fzljtzrecq4xwu",
+  "image": "ipfs://bafkreia65ppeiyhpv7d2fngzqxkxu5q5ml7o5oobvmtapu65ktmjf2ck5q",
   "attributes": [
     {
       "trait_type": "Type",
@@ -22,13 +22,14 @@
     {
       "trait_type": "Local",
       "value": "Real Madrid"
-    },{
+    },
+    {
       "trait_type": "Visitante",
-      "value": "F.C. Barcelona"
+      "value": "Cádiz C.F."
     },
     {
       "trait_type": "Fecha",
-      "value": "23/06/2022"
+      "value": "28/05/2022"
     }
   ]
 }
