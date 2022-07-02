@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ReactNotifications } from "react-notifications-component";
+import "rodal/lib/rodal.css";
 
 import {
   ACCOUNT_ADMINISTRATION_AREA_PATH,

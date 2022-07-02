@@ -9,7 +9,7 @@ import { getTokenMetadataById } from "../../utils/web3";
 
 import useStyles from "./Market.style";
 
-const getOnSaleTokensMetadata = async (contracts) => {
+const getOnSaleTokensMetadata = async (contracts, web3) => {
   const onSaleTokenInfo = await getOnSaleTokenInfo(contracts);
   const result = [];
   if (onSaleTokenInfo?.length > 0) {
@@ -19,7 +19,11 @@ const getOnSaleTokensMetadata = async (contracts) => {
         tokenInfo.tokenId
       );
       if (metadata) {
-        result.push({ ...metadata, saleInfo: tokenInfo });
+        result.push({
+          ...metadata,
+          ...tokenInfo,
+          price: web3.utils.fromWei(tokenInfo.price.toString(), "ether"),
+        });
       }
     }
   }
@@ -33,23 +37,23 @@ const Market = () => {
 
   useEffect(() => {
     const getOnSaleTokens = async () => {
-      const tokensOnSale = await getOnSaleTokensMetadata(contracts);
+      const tokensOnSale = await getOnSaleTokensMetadata(contracts, web3);
       setonSaleTokenMetadataList(tokensOnSale);
     };
     getOnSaleTokens();
-  }, [contracts]);
+  }, [web3, contracts]);
 
   const buyTokenHandler = useCallback(
-    async ({ price, seller, tokenId }) => {
+    async ({ price, tokenId }) => {
       const account = accounts[0];
       await contracts.marketplace.methods
         .purchase(tokenId)
         .send({
           from: account,
-          value: web3.utils.toWei(price, "ether"),
+          value: web3.utils.toWei(price.toString(), "ether"),
         })
         .on("receipt", async () => {
-          const tokensOnSale = await getOnSaleTokensMetadata(contracts);
+          const tokensOnSale = await getOnSaleTokensMetadata(contracts, web3);
           setonSaleTokenMetadataList(tokensOnSale);
           notify(
             "Congratulations!",
@@ -75,7 +79,7 @@ const Market = () => {
             metadata={metadata}
             title={"Crypto Ticket"}
             tokenDetails={() => {}}
-            buyToken={() => buyTokenHandler(metadata.saleInfo)}
+            buyToken={() => buyTokenHandler(metadata)}
           />
         ))}
       </CardContainer>

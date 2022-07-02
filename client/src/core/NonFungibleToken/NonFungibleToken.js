@@ -8,7 +8,7 @@ import useStyles from "./NonFungibleToken.style";
 import { getShortAddress } from "../../utils/web3";
 
 const NonFungibleToken = ({
-  metadata: { image, name, tokenId, saleInfo },
+  metadata: { image, name, tokenId, price, owner, seller },
   title,
   tokenDetails,
   onSale = false,
@@ -70,7 +70,7 @@ const NonFungibleToken = ({
           <div className={classes.title}>{name}</div>
           <div className={classes.id}>{`#${tokenId}`}</div>
         </div>
-        {saleInfo && saleInfo.price && (
+        {price && (
           <>
             <p className={classes.priceLabel}>Price:</p>
             <div className={classes.priceContainer}>
@@ -80,10 +80,8 @@ const NonFungibleToken = ({
                 }
                 alt="matic"
               />
-              {saleInfo.price}
-              <div className={classes.owner}>
-                {getShortAddress(saleInfo.seller)}
-              </div>
+              {price}
+              <div className={classes.owner}>{getShortAddress(seller)}</div>
             </div>
           </>
         )}

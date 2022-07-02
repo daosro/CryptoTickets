@@ -53,7 +53,8 @@ contract CryptoTicketsMarketplace is Pausable, AccessControl {
     function purchase(uint256 tokenId) public payable {
       address ownerAddress = listingIds[tokenId];
       Listing memory item = listings[ownerAddress][tokenId];
-      require(msg.value >= item.price, "You don't have enough money");
+      require(msg.value >= item.price / 1 wei, "You don't have enough money");
+      require(msg.sender != item.seller, "You can't buy your own ticket");
       require(matchTicketsContract.ownerOf(tokenId) == ownerAddress, "The owner of this token is not the seller");
 
       matchTicketsContract.safeTransferFrom(ownerAddress, msg.sender, tokenId);
