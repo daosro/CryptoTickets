@@ -1,7 +1,7 @@
 {
   "name": "Real Madrid Subscriber",
   "description": "This is the Real Madrid Subscriber Token that allow the owner to see the local matches",
-  "image": "ipfs://bafybeihatsrmnkyw5woi6jyupedcmahuwhvwoorlekz66mkm4te3x2lvna",
+  "animation_url": "ipfs://bafybeihatsrmnkyw5woi6jyupedcmahuwhvwoorlekz66mkm4te3x2lvna",
   "attributes": [
     {
       "trait_type": "Type",
