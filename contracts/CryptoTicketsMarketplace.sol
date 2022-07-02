@@ -13,6 +13,7 @@ contract CryptoTicketsMarketplace is Pausable, AccessControl {
     struct Listing {
       uint256 price;
       address payable seller;
+      uint256 tokenId;
     }
 
     mapping(address => mapping(uint256 => Listing)) public listings;
@@ -32,7 +33,7 @@ contract CryptoTicketsMarketplace is Pausable, AccessControl {
         require(matchTicketsContract.ownerOf(tokenId) == msg.sender, "You don't own this token");
         require(matchTicketsContract.isApprovedForAll(msg.sender, address(this)), "You are not approved for this contract");
 
-        listings[msg.sender][tokenId] = Listing(price, payable(msg.sender));
+        listings[msg.sender][tokenId] = Listing(price, payable(msg.sender), tokenId);
         listingIds[tokenId] = msg.sender;
         tokensOnSale.push(tokenId);
     }
@@ -69,6 +70,14 @@ contract CryptoTicketsMarketplace is Pausable, AccessControl {
 
     function getOnSaleTokens() public view returns (uint256[] memory) {
       return tokensOnSale;
+    }
+
+    function getOnSaleTokensInfo() public view returns (Listing[] memory) {
+      Listing[] memory items = new Listing[](tokensOnSale.length);
+      for (uint i = 0; i < tokensOnSale.length; i++) {
+        items[i] = listings[listingIds[tokensOnSale[i]]][tokensOnSale[i]];
+      }
+      return items;
     }
 
     function pause() public onlyRole(DEFAULT_ADMIN_ROLE) {
