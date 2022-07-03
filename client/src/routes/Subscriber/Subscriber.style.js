@@ -25,6 +25,13 @@ export default createUseStyles(
     button: {
       margin: "0 0 40px",
     },
+    error: {
+      color: "#fff",
+      backgroundColor: "red",
+      fontWeight: "bold",
+      padding: "20px",
+      marginBottom: "20px",
+    },
   },
   { name: "Subscriber" }
 );

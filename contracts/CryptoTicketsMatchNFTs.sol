@@ -148,6 +148,7 @@ contract CryptoTicketsMatchNFTs is
 
     function grantClubRol(address account) public onlyRole(DEFAULT_ADMIN_ROLE) {
         _grantRole(ADMIN_CLUB_ROLE, account);
+        rewardsTicket.grantAdminRol(account);
         emit ClubAdminRoleGranted(msg.sender, account);
     }
 
@@ -156,6 +157,7 @@ contract CryptoTicketsMatchNFTs is
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         _revokeRole(ADMIN_CLUB_ROLE, account);
+        rewardsTicket.revokeAdminRol(account);
         emit ClubAdminRoleRevoked(msg.sender, account);
     }
 

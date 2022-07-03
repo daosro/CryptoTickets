@@ -3,6 +3,7 @@ import { Web3Context } from "../../context/Web3";
 import Button from "../../core/Button";
 
 import withConnectionRequired from "../../hocs/withConnectionRequired";
+import withRoleAdmin from "../../hocs/withRoleAdmin";
 import { notify } from "../../utils/notifications";
 
 import useStyles from "./MatchsAdministration.style";
@@ -18,4 +19,4 @@ const MatchsAdministration = () => {
   );
 };
 
-export default withConnectionRequired(MatchsAdministration);
+export default withConnectionRequired(withRoleAdmin(MatchsAdministration));

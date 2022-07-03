@@ -68,7 +68,7 @@ const NonFungibleToken = ({
         {onSale && <div className={classes.onSale} />}
         <div className={classes.details}>
           <div className={classes.title}>{name}</div>
-          <div className={classes.id}>{`#${tokenId}`}</div>
+          {tokenId && <div className={classes.id}>{`#${tokenId}`}</div>}
         </div>
         {price && (
           <>

@@ -9,6 +9,7 @@ import {
 
 import Card, { CardContainer } from "../../core/Card";
 import withConnectionRequired from "../../hocs/withConnectionRequired";
+import withRoleAdmin from "../../hocs/withRoleAdmin";
 
 import useStyles from "./Admin.style";
 
@@ -125,4 +126,4 @@ const Admin = () => {
   );
 };
 
-export default withConnectionRequired(Admin);
+export default withConnectionRequired(withRoleAdmin(Admin));
