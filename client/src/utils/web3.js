@@ -97,7 +97,7 @@ export const switchToCorrectChain = async (
 };
 
 export const getTokenBalanceOf = async (contract, account) =>
-  await contract.methods.balanceOf(account).call();
+  await contract?.methods?.balanceOf(account).call();
 
 export const getTokenMetadataById = async (contract, tokenId) => {
   let result = null;
