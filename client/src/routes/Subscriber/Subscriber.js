@@ -16,10 +16,16 @@ const Subscriber = () => {
   const { accounts, contracts } = useContext(Web3Context);
   const [isMembershipTokenMinted, setIsMembershipTokenMinted] = useState(null);
   const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+  const [hasMembershipRole, setHasMembershipRole] = useState();
 
   useEffect(() => {
     const checkIfTokenIsMinted = async () => {
       if (accounts?.[0] && contracts?.membership) {
+        const hasCorrectRole = await contracts.membership.methods
+          .hasMembershipRol(accounts?.[0])
+          .call();
+        setHasMembershipRole(hasCorrectRole);
+
         const result = await contracts.membership.methods
           .isMembershipTokenMinted(accounts?.[0])
           .call();
@@ -76,7 +82,12 @@ const Subscriber = () => {
         alt="Stadium"
       />
 
-      {isMembershipTokenMinted === false && (
+      {hasMembershipRole === false && (
+        <div className={classes.error}>
+          <div>Tu dirección no consta en el listado de socios del club</div>
+        </div>
+      )}
+      {hasMembershipRole === true && isMembershipTokenMinted === false && (
         <Button
           className={classes.button}
           onClick={onMintTokenButtonClick}
@@ -90,7 +101,7 @@ const Subscriber = () => {
         </Button>
       )}
 
-      {isMembershipTokenMinted === true && (
+      {hasMembershipRole === true && isMembershipTokenMinted === true && (
         <Button
           className={classes.button}
           onClick={onSeeMembershipTokenButtonClick}

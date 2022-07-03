@@ -50,12 +50,6 @@ contract CryptoTicketsMembershipNFTs is
         address indexed sender,
         address indexed membershipAddress
     );
-    event ErrorTransferToken(
-        address indexed sender,
-        address indexed receiber,
-        uint256 indexed tokenId,
-        string errorMessage
-    );
 
     using Counters for Counters.Counter;
     Counters.Counter private _membershipCounter;
