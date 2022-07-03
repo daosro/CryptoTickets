@@ -99,6 +99,20 @@ export const switchToCorrectChain = async (
 export const getTokenBalanceOf = async (contract, account) =>
   await contract.methods.balanceOf(account).call();
 
+export const getTokenMetadataById = async (contract, tokenId) => {
+  let result = null;
+  try {
+    const tokenMetadataURI = await contract.methods.tokenURI(tokenId).call();
+
+    result = await getNFTMetadataObject(tokenMetadataURI);
+    result = { ...result, tokenId: tokenId };
+  } catch (error) {
+    console.error(error);
+  } finally {
+    return result;
+  }
+};
+
 export const getTokenMetadataByIndex = async (contract, account, tokenIdx) => {
   let result = null;
   try {
@@ -122,21 +136,17 @@ export const getContractAddress = (networkId, contractJson) => {
   return contract && contract.address;
 };
 
-export const getContractInstance = (
-  web3,
-  networkId,
-  contractJson,
-  account,
-  gasLimit = 3000000
-) => {
+export const getContractInstance = (web3, networkId, contractJson, account) => {
   const result = new web3.eth.Contract(
     contractJson.abi,
     getContractAddress(networkId, contractJson),
     {
       from: account,
-      gasLimit,
     }
   );
 
   return result;
 };
+
+export const getShortAddress = (address) =>
+  `${address.substr(0, 5)}...${address.slice(-4)}`;

@@ -6,9 +6,33 @@ export default createUseStyles(
     content: {
       padding: "10px",
       display: "flex",
-      flexDirection: "row",
+      flexDirection: "column",
       justifyContent: "center",
       alignItems: "center",
+    },
+    details: {
+      display: "flex",
+      flexDirection: "row",
+    },
+    priceLabel: {
+      width: "100%",
+      display: "flex",
+      alignItems: "start",
+      fontSize: "medium",
+      fontWeight: "bold",
+      marginBottom: "2px",
+    },
+    priceContainer: {
+      width: "100%",
+      display: "flex",
+      justifyContent: "start",
+      alignItems: "center",
+      fontSize: "medium",
+      fontWeight: "bold",
+      "& > img": {
+        width: "25px",
+        margin: "0 2px 0 0",
+      },
     },
     title: {
       fontWeight: "bold",
@@ -16,6 +40,11 @@ export default createUseStyles(
     },
     id: {
       marginLeft: "10px",
+    },
+    owner: {
+      width: "100%",
+      display: "flex",
+      justifyContent: "end",
     },
     footerContainer: {
       display: "flex",

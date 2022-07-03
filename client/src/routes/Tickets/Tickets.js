@@ -6,10 +6,12 @@ import React, {
   useState,
 } from "react";
 import { Link } from "react-router-dom";
+import Modal from "rodal";
 
 import { CHAIN_ID } from "../../constants/chain";
 import { USER_ZONE_SUBSCRIBER_PATH } from "../../constants/routes";
 import { notify } from "../../utils/notifications";
+import { getOnSaleTokenIds } from "../../utils/contracts";
 import {
   getContractAddress,
   getTokenBalanceOf,
@@ -24,6 +26,7 @@ import Button from "../../core/Button";
 import NonFungibleToken from "../../core/NonFungibleToken";
 
 import useStyles from "./Tickets.style";
+import withConnectionRequired from "../../hocs/withConnectionRequired";
 
 const refreshTokensMetadata = async (contracts, accounts) => {
   const result = { subscriberNFT: null, ticketsNFTs: [] };
@@ -63,15 +66,35 @@ const refreshTokensMetadata = async (contracts, accounts) => {
   return result;
 };
 
-const getOnSaleTokens = async (contracts) =>
-  await contracts.marketplace.methods.getOnSaleTokens().call();
-
 const Tickets = () => {
   const classes = useStyles();
-  const { accounts, contracts } = useContext(Web3Context);
+  const { web3, accounts, contracts } = useContext(Web3Context);
+  const [isApprovedForAll, setIsApprovedForAll] = useState(false);
   const [subscriberNFTMetadata, setSubscriberNFTMetadata] = useState(null);
   const [ticketsNFTsMetadata, setTicketsNFTsMetadata] = useState([]);
   const [onSaleTokenList, setonSaleTokenList] = useState([]);
+  const [{ isSellModalOpen, ticketId, price }, setModal] = useState({
+    isSellModalOpen: false,
+    ticketId: null,
+    price: null,
+  });
+
+  const toggleSellModal = useCallback((ticketId) => {
+    setModal((prevState) => ({
+      ...prevState,
+      isSellModalOpen: !prevState.isSellModalOpen,
+      ticketId,
+      price: ticketId ? prevState.price : 0,
+    }));
+  }, []);
+
+  const onTicketValueChange = useCallback((event) => {
+    console.log(event.target.value);
+    setModal((prevState) => ({
+      ...prevState,
+      price: Number(event.target.value),
+    }));
+  }, []);
 
   const marketplaceContractAddress = useMemo(() => {
     return getContractAddress(CHAIN_ID, CryptoTicketsMarketplaceContract);
@@ -86,12 +109,20 @@ const Tickets = () => {
         );
         setSubscriberNFTMetadata(subscriberNFT);
         setTicketsNFTsMetadata(ticketsNFTs);
-        const onSaleTokens = await getOnSaleTokens(contracts);
+        const onSaleTokens = await getOnSaleTokenIds(contracts);
         setonSaleTokenList(onSaleTokens);
       };
+
+      const checkIfIsApprovedForAll = async () => {
+        const isApproved = await contracts.matchTickets.methods
+          .isApprovedForAll(accounts[0], marketplaceContractAddress)
+          .call();
+        setIsApprovedForAll(isApproved);
+      };
       getUserToken();
+      checkIfIsApprovedForAll();
     }
-  }, [accounts, contracts]);
+  }, [accounts, contracts, marketplaceContractAddress]);
 
   const burnTicketHandler = useCallback(
     async (ticketId) => {
@@ -129,42 +160,55 @@ const Tickets = () => {
     [contracts, accounts]
   );
 
-  const sellTicketHandler = useCallback(
-    async (tokenId) => {
-      notify(
-        "Processing...",
-        "This process may take several minutes, please wait.",
-        "info",
-        10000
-      );
-      try {
+  const sellTicketHandler = useCallback(async () => {
+    notify(
+      "Processing...",
+      "This process may take several minutes, please wait.",
+      "info",
+      10000
+    );
+    try {
+      const addTokenToMarketplaceHandler = async () => {
+        await contracts.marketplace.methods
+          .addListing(ticketId, web3.utils.toWei(price.toString(), "ether"))
+          .send()
+          .on("receipt", async () => {
+            const onSaleTokens = await getOnSaleTokenIds(contracts);
+            setonSaleTokenList(onSaleTokens);
+            notify(
+              "Congratulations!",
+              "Ticket add successfully to the marketplace",
+              "success",
+              5000
+            );
+          });
+      };
+
+      if (isApprovedForAll) {
+        await addTokenToMarketplaceHandler();
+      } else {
         await contracts.matchTickets.methods
           .setApprovalForAll(marketplaceContractAddress, true)
           .send()
           .on("receipt", async () => {
-            await contracts.marketplace.methods
-              .addListing(tokenId, 2)
-              .send()
-              .on("receipt", async () => {
-                const onSaleTokens = await getOnSaleTokens(contracts);
-                setonSaleTokenList(onSaleTokens);
-                notify(
-                  "Congratulations!",
-                  "Ticket add successfully to the marketplace",
-                  "success",
-                  5000
-                );
-              });
+            await addTokenToMarketplaceHandler();
+            setIsApprovedForAll(true);
           })
           .on("error", (error) => {
             notify("Something went wrong", error?.message, "danger", 10000);
           });
-      } catch (error) {
-        console.error(error);
       }
-    },
-    [contracts, marketplaceContractAddress]
-  );
+    } catch (error) {
+      console.error(error);
+    }
+  }, [
+    web3,
+    contracts,
+    ticketId,
+    price,
+    isApprovedForAll,
+    marketplaceContractAddress,
+  ]);
 
   const removeFromSellTicketHandler = useCallback(
     async (tokenId) => {
@@ -179,7 +223,7 @@ const Tickets = () => {
           .removeListing(tokenId)
           .send()
           .on("receipt", async () => {
-            const onSaleTokens = await getOnSaleTokens(contracts);
+            const onSaleTokens = await getOnSaleTokenIds(contracts);
             setonSaleTokenList(onSaleTokens);
             notify(
               "Congratulations!",
@@ -236,10 +280,10 @@ const Tickets = () => {
             onSale={onSaleTokenList.includes(metadata.tokenId)}
             tokenDetails={() => {}}
             useToke={() => burnTicketHandler(metadata.tokenId)}
-            sellToken={
+            saleToken={
               onSaleTokenList.includes(metadata.tokenId)
                 ? undefined
-                : () => sellTicketHandler(metadata.tokenId)
+                : () => toggleSellModal(metadata.tokenId)
             }
             removeFromSell={
               onSaleTokenList.includes(metadata.tokenId)
@@ -249,8 +293,35 @@ const Tickets = () => {
           />
         ))}
       </CardContainer>
+      {isSellModalOpen && (
+        <Modal
+          visible
+          closeOnEsc
+          onClose={toggleSellModal}
+          animation="flip"
+          duration={500}
+        >
+          <div className={classes.modalRoot}>
+            <h3>Vender entrada</h3>
+            <span>¿Que precio quieres poner? </span>
+            <input type="number" value={price} onChange={onTicketValueChange} />
+            <div className={classes.modalFooter}>
+              <Button onClick={toggleSellModal}>Cancelar</Button>
+              <Button
+                disabled={!price || price === "0" || price < 0}
+                onClick={() => {
+                  sellTicketHandler();
+                  toggleSellModal();
+                }}
+              >
+                Confirmar
+              </Button>
+            </div>
+          </div>
+        </Modal>
+      )}
     </div>
   );
 };
 
-export default Tickets;
+export default withConnectionRequired(Tickets);

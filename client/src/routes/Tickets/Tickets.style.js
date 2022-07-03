@@ -22,6 +22,19 @@ export default createUseStyles(
       fontWeight: "bold",
       padding: "2rem 1rem",
     },
+    modalRoot: {
+      display: "flex",
+      width: "100%",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      height: "-webkit-fill-available",
+    },
+    modalFooter: {
+      display: "flex",
+      width: "100%",
+      justifyContent: "center",
+      marginBottom: "20px",
+    },
   },
   { name: "Tickets" }
 );

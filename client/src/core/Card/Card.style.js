@@ -4,28 +4,33 @@ export default createUseStyles(
   {
     root: {
       boxShadow: "0 4px 8px 0 rgba(0,0,0,0.2)",
-      transition: "0.3s",
-      margin: "5px",
-      minHeight: ({ withHeader }) =>
-        `calc(30vh + ${withHeader ? "50px" : "0px"})`,
+      margin: "8px",
+      background: "#fff",
+      borderRadius: "5px",
+      minHeight: "20rem",
+      display: "flex",
+      flexDirection: "column",
       position: "relative",
+      textAlign: "left",
+      textDecoration: "none !important",
+      transition: "box-shadow ease 0.3s",
       "@media (max-width: 575.98px)": {
-        width: ({ xs }) => `calc(((100% / 12 )* ${xs}) - 10px)`,
+        width: ({ xs }) => `calc(((100% / 12 )* ${xs}) - 16px)`,
       },
       "@media (min-width: 576px) and (max-width: 767.98px)": {
-        width: ({ sm }) => `calc(((100% / 12 )* ${sm}) - 10px)`,
+        width: ({ sm }) => `calc(((100% / 12 )* ${sm}) - 16px)`,
       },
       "@media (min-width: 768px) and (max-width: 991.98px)": {
-        width: ({ md }) => `calc(((100% / 12 )* ${md}) - 10px)`,
+        width: ({ md }) => `calc(((100% / 12 )* ${md}) - 16px)`,
       },
       "@media (min-width: 992px) and (max-width: 1199.98px)": {
-        width: ({ lg }) => `calc(((100% / 12 )* ${lg}) - 10px)`,
+        width: ({ lg }) => `calc(((100% / 12 )* ${lg}) - 16px)`,
       },
       "@media (min-width: 1200px) and (max-width: 1399.98px)": {
-        width: ({ xl }) => `calc(((100% / 12 )* ${xl}) - 10px)`,
+        width: ({ xl }) => `calc(((100% / 12 )* ${xl}) - 16px)`,
       },
       "@media (min-width: 1400px)": {
-        width: ({ xxl }) => `calc(((100% / 12 )* ${xxl}) - 10px)`,
+        width: ({ xxl }) => `calc(((100% / 12 )* ${xxl}) - 16px)`,
       },
     },
     header: {
@@ -46,13 +51,10 @@ export default createUseStyles(
     },
     content: {},
     footer: {
-      padding: "10px 20px",
-      position: "absolute",
-      bottom: "0",
-      width: "-webkit-fill-available",
-      display: "flex",
-      justifyContent: "center",
-      alignContent: "space-between",
+      minWidth: "100%",
+      marginTop: "auto",
+      boxSizing: "border-box",
+      padding: ".75rem 1.25rem",
       backgroundColor: "#00000008",
       borderTop: "1px solid #00000020",
     },

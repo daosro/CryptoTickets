@@ -30,22 +30,19 @@ const getContractInstances = async (web3, account) => {
     web3,
     networkId,
     CryptoTicketsMembershipNFTsContract,
-    account,
-    3000000
+    account
   );
   const matchTicketsContract = getContractInstance(
     web3,
     networkId,
     CryptoTicketsMatchNFTsContract,
-    account,
-    3000000
+    account
   );
   const marketplaceContract = getContractInstance(
     web3,
     networkId,
     CryptoTicketsMarketplaceContract,
-    account,
-    3000000
+    account
   );
   return {
     membership: membershipContract,

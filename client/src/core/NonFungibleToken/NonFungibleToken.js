@@ -1,19 +1,21 @@
 import React from "react";
-import { MdOutlineSell, MdOutlineRestorePage } from "react-icons/md";
+import { MdOutlineSell, MdOutlineRestorePage, MdPayment } from "react-icons/md";
 import { IoTicketOutline } from "react-icons/io5";
 import { TbListDetails } from "react-icons/tb";
 import Card from "../Card";
 
 import useStyles from "./NonFungibleToken.style";
+import { getShortAddress } from "../../utils/web3";
 
 const NonFungibleToken = ({
-  metadata,
+  metadata: { image, name, tokenId, price, owner, seller },
   title,
   tokenDetails,
-  useToke,
-  sellToken,
-  removeFromSell,
   onSale = false,
+  useToke,
+  saleToken,
+  buyToken,
+  removeFromSell,
 }) => {
   const classes = useStyles();
   return (
@@ -24,10 +26,14 @@ const NonFungibleToken = ({
       lg={3}
       xl={3}
       xxl={2.4}
-      image={metadata.image}
+      image={image}
       header={title}
       footer={
-        (tokenDetails || useToke || sellToken) && (
+        (tokenDetails ||
+          useToke ||
+          saleToken ||
+          removeFromSell ||
+          buyToken) && (
           <div className={classes.footerContainer}>
             {tokenDetails && (
               <div className={classes.icon} onClick={tokenDetails}>
@@ -39,8 +45,8 @@ const NonFungibleToken = ({
                 <IoTicketOutline size={20} />
               </div>
             )}
-            {sellToken && (
-              <div className={classes.icon} onClick={sellToken}>
+            {saleToken && (
+              <div className={classes.icon} onClick={saleToken}>
                 <MdOutlineSell size={20} />
               </div>
             )}
@@ -49,14 +55,36 @@ const NonFungibleToken = ({
                 <MdOutlineRestorePage size={20} />
               </div>
             )}
+            {buyToken && (
+              <div className={classes.icon} onClick={buyToken}>
+                <MdPayment size={20} />
+              </div>
+            )}
           </div>
         )
       }
     >
       <div className={classes.content}>
         {onSale && <div className={classes.onSale} />}
-        <div className={classes.title}>{metadata.name}</div>
-        <div className={classes.id}>{`#${metadata.tokenId}`}</div>
+        <div className={classes.details}>
+          <div className={classes.title}>{name}</div>
+          <div className={classes.id}>{`#${tokenId}`}</div>
+        </div>
+        {price && (
+          <>
+            <p className={classes.priceLabel}>Price:</p>
+            <div className={classes.priceContainer}>
+              <img
+                src={
+                  process.env.PUBLIC_URL + "/assets/images/cryptos/matic.png"
+                }
+                alt="matic"
+              />
+              {price}
+              <div className={classes.owner}>{getShortAddress(seller)}</div>
+            </div>
+          </>
+        )}
       </div>
     </Card>
   );

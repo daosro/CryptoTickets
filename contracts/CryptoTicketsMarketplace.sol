@@ -13,6 +13,7 @@ contract CryptoTicketsMarketplace is Pausable, AccessControl {
     struct Listing {
       uint256 price;
       address payable seller;
+      uint256 tokenId;
     }
 
     mapping(address => mapping(uint256 => Listing)) public listings;
@@ -32,7 +33,7 @@ contract CryptoTicketsMarketplace is Pausable, AccessControl {
         require(matchTicketsContract.ownerOf(tokenId) == msg.sender, "You don't own this token");
         require(matchTicketsContract.isApprovedForAll(msg.sender, address(this)), "You are not approved for this contract");
 
-        listings[msg.sender][tokenId] = Listing(price, payable(msg.sender));
+        listings[msg.sender][tokenId] = Listing(price, payable(msg.sender), tokenId);
         listingIds[tokenId] = msg.sender;
         tokensOnSale.push(tokenId);
     }
@@ -52,7 +53,8 @@ contract CryptoTicketsMarketplace is Pausable, AccessControl {
     function purchase(uint256 tokenId) public payable {
       address ownerAddress = listingIds[tokenId];
       Listing memory item = listings[ownerAddress][tokenId];
-      require(msg.value >= item.price, "You don't have enough money");
+      require(msg.value >= item.price / 1 wei, "You don't have enough money");
+      require(msg.sender != item.seller, "You can't buy your own ticket");
       require(matchTicketsContract.ownerOf(tokenId) == ownerAddress, "The owner of this token is not the seller");
 
       matchTicketsContract.safeTransferFrom(ownerAddress, msg.sender, tokenId);
@@ -69,6 +71,14 @@ contract CryptoTicketsMarketplace is Pausable, AccessControl {
 
     function getOnSaleTokens() public view returns (uint256[] memory) {
       return tokensOnSale;
+    }
+
+    function getOnSaleTokensInfo() public view returns (Listing[] memory) {
+      Listing[] memory items = new Listing[](tokensOnSale.length);
+      for (uint i = 0; i < tokensOnSale.length; i++) {
+        items[i] = listings[listingIds[tokensOnSale[i]]][tokensOnSale[i]];
+      }
+      return items;
     }
 
     function pause() public onlyRole(DEFAULT_ADMIN_ROLE) {
