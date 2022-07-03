@@ -71,8 +71,7 @@ contract CryptoTicketsRewards is
         _setTokenURI(rewardId, Strings.toString(random(carRewardsSize)));
     }
 
-    function mintReward() public onlyRole(DEFAULT_ADMIN_ROLE) 
-    whenNotPaused
+    function mintReward() public onlyRole(DEFAULT_ADMIN_ROLE) whenNotPaused
     {
         for (uint i = 0; i<listUserRewards.length; i++){
             mint(listUserRewards[i]);
@@ -82,10 +81,7 @@ contract CryptoTicketsRewards is
         removeListUserRewards();
     }
 
-    function _beforeTokenTransfer(address from, address to, uint256 rewardId)
-        internal
-        whenNotPaused
-        override(ERC721, ERC721Enumerable)
+    function _beforeTokenTransfer(address from, address to, uint256 rewardId) internal whenNotPaused override(ERC721, ERC721Enumerable)
     {
         super._beforeTokenTransfer(from, to, rewardId);
     }
@@ -98,20 +94,12 @@ contract CryptoTicketsRewards is
         _burn(tokenId);
     }
 
-    function tokenURI(uint256 rewardId)
-        public
-        view
-        override(ERC721, ERC721URIStorage)
-        returns (string memory)
+    function tokenURI(uint256 rewardId) public view override(ERC721, ERC721URIStorage) returns (string memory)
     {
         return super.tokenURI(rewardId);
     }
 
-    function supportsInterface(bytes4 interfaceId)
-        public
-        view
-        override(ERC721, ERC721Enumerable, AccessControl)
-        returns (bool)
+    function supportsInterface(bytes4 interfaceId) public view override(ERC721, ERC721Enumerable, AccessControl) returns (bool)
     {
         return super.supportsInterface(interfaceId);
     }
