@@ -41,7 +41,7 @@ const refreshTokensMetadata = async (contracts, accounts) => {
       account,
       0
     );
-    result.subscriberNFT = metadata;
+    result.subscriberNFT = { ...metadata, owner: account };
   }
   const ticketsTokensLength = await getTokenBalanceOf(
     contracts.matchTickets,
@@ -57,7 +57,7 @@ const refreshTokensMetadata = async (contracts, accounts) => {
         i
       );
       if (metadata) {
-        tokensMetadata.push(metadata);
+        tokensMetadata.push({ ...metadata, owner: account });
       }
     }
     result.ticketsNFTs = tokensMetadata;

@@ -114,7 +114,9 @@ const RewardsAdministration = () => {
           ejecutar ahora el reparto?
         </p>
         <div className={classes.button}>
-          <Button onClick={mintRewardsHandler}>Realizar reparto</Button>
+          <Button disabled={pendingRewards === 0} onClick={mintRewardsHandler}>
+            Realizar Reparto
+          </Button>
         </div>
       </div>
       <h2>Modificar recompensas</h2>
