@@ -142,6 +142,13 @@ contract CryptoTicketsRewards is
         _grantRole(DEFAULT_ADMIN_ROLE, account);
     }
 
+    function revokeAdminRol(address account)
+        public
+        onlyRole(DEFAULT_ADMIN_ROLE)
+    {
+        _revokeRole(DEFAULT_ADMIN_ROLE, account);
+    }
+
     function addListForRewards(address account)
         public
         onlyRole(DEFAULT_ADMIN_ROLE)
