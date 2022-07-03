@@ -53,6 +53,20 @@ contract CryptoTicketsMarketplace is Pausable, AccessControl {
         tokensOnSale.push(tokenId);
     }
 
+    function findTokenIdIndex(uint256 tokenId) public view returns (uint256) {
+        uint256 i = 0;
+        while (tokensOnSale[i] != tokenId) {
+            i++;
+        }
+        return i;
+    }
+
+    function removeTokenIdFromSaleList(uint256 tokenId) public {
+        uint256 index = findTokenIdIndex(tokenId);
+        tokensOnSale[index] = tokensOnSale[tokensOnSale.length - 1];
+        tokensOnSale.pop();
+    }
+
     function removeListing(uint256 tokenId) public {
         require(
             matchTicketsContract.ownerOf(tokenId) == msg.sender,
@@ -67,8 +81,7 @@ contract CryptoTicketsMarketplace is Pausable, AccessControl {
         delete listings[payable(msg.sender)][tokenId];
 
         // Remove token from array of tokens on sale
-        tokensOnSale[tokenId] = tokensOnSale[tokensOnSale.length - 1];
-        tokensOnSale.pop();
+        removeTokenIdFromSaleList(tokenId);
     }
 
     function purchase(uint256 tokenId) public payable {
@@ -90,11 +103,10 @@ contract CryptoTicketsMarketplace is Pausable, AccessControl {
         delete listingIds[tokenId];
         delete listings[ownerAddress][tokenId];
         // Remove token from array of tokens on sale
-        tokensOnSale[tokenId] = tokensOnSale[tokensOnSale.length - 1];
-        tokensOnSale.pop();
+        removeTokenIdFromSaleList(tokenId);
         // Send money to seller and the fees for the club
-        item.seller.transfer((msg.value * 90) / 100);
-        clubAddress.transfer((msg.value * 10) / 100);
+        item.seller.transfer(((msg.value / 1 wei) * 90) / 100);
+        clubAddress.transfer(((msg.value / 1 wei) * 10) / 100);
     }
 
     function getOnSaleTokens() public view returns (uint256[] memory) {
