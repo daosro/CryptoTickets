@@ -41,7 +41,12 @@ contract CryptoTicketsRewards is
         return baseURI;
     }
 
-    function getBaseURI() public view returns (string memory, uint256) {
+    function getBaseURI()
+        public
+        view
+        onlyRole(DEFAULT_ADMIN_ROLE)
+        returns (string memory, uint256)
+    {
         return (baseURI, carRewardsSize);
     }
 
