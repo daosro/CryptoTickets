@@ -1,0 +1,63 @@
+{
+  "name": "Real Madrid vs Rayo Vallecano",
+  "description": "This is a one-day NFT from the 22-23 season.",
+  "image": "ipfs://bafkreia65ppeiyhpv7d2fngzqxkxu5q5ml7o5oobvmtapu65ktmjf2ck5q",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Match"
+    },
+    {
+      "trait_type": "Year",
+      "value": "22-23"
+    },
+    {
+      "trait_type": "Torneo",
+      "value": "Liga Santander"
+    },
+    {
+      "trait_type": "Stadium",
+      "value": "Santiago Bernabeu"
+    },
+    {
+      "trait_type": "Local",
+      "value": "Real Madrid"
+    },
+    {
+      "trait_type": "Visitante",
+      "value": "Rayo Vallecano"
+    },
+    {
+      "trait_type": "Fecha",
+      "value": "14/05/2022"
+    },
+    {
+      "trait_type": "Area",
+      "value": "Tribuna"
+    },
+    {
+      "trait_type": "Locality",
+      "value": "-"
+    },
+    {
+      "trait_type": "Vomitory",
+      "value": "-"
+    },
+    {
+      "trait_type": "Sector",
+      "value": "003"
+    },
+    {
+      "trait_type": "Access",
+      "value": "Torre B"
+    },
+    {
+      "trait_type": "Row",
+      "value": "0002"
+    },
+    {
+      "trait_type": "Seat",
+      "value": "-"
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "name": "Season Real Madrid vs Bayern Munich",
+  "description": "This is a one-day NFT from the 22-23 season.",
+  "image": "ipfs://bafybeie4yfs7snh7hazwziua3e7gpwyvbvcredxkvtzrqoudexy2akdwaq",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Match"
+
+    },
+    {
+      "trait_type": "Year",
+      "value": "22-23"
+    },
+    {
+      "trait_type": "Torneo",
+      "value": "Champions"
+    },
+    {
+      "trait_type": "Stadium",
+      "value": "Santiago Bernabeu"
+    },
+    {
+      "trait_type": "Local",
+      "value": "Real Madrid"
+    },
+    {
+      "trait_type": "Visitante",
+      "value": "Bayern Munich"
+    },
+    {
+      "trait_type": "Fecha",
+      "value": "20/06/2022"
+    },
+    {
+      "trait_type": "Area",
+      "value": "Lateral Este"
+    },
+    {
+      "trait_type": "Locality",
+      "value": "1º Anfiteatro"
+    },
+    {
+      "trait_type": "Vomitory",
+      "value": "120-B"
+    },
+    {
+      "trait_type": "Sector",
+      "value": "007"
+    },
+    {
+      "trait_type": "Access",
+      "value": "Torre B-N1"
+    },
+    {
+      "trait_type": "Row",
+      "value": "0008"
+    },
+    {
+      "trait_type": "Seat",
+      "value": "0005"
+    }
+  ]
+}

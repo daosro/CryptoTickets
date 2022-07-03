@@ -5,7 +5,8 @@
   "attributes": [
     {
       "trait_type": "Type",
-      "value": "Season"
+      "value": "Match"
+
     },
     {
       "trait_type": "Year",
@@ -25,11 +26,39 @@
     },
     {
       "trait_type": "Visitante",
-      "value": "Rayo Vallecano"
+      "value": "Cádiz C.F."
     },
     {
       "trait_type": "Fecha",
-      "value": "14/05/2022"
+      "value": "21/05/2022"
+    },
+    {
+      "trait_type": "Area",
+      "value": "Lateral Oeste"
+    },
+    {
+      "trait_type": "Locality",
+      "value": "2º Anfiteatro"
+    },
+    {
+      "trait_type": "Vomitory",
+      "value": "850-Z"
+    },
+    {
+      "trait_type": "Sector",
+      "value": "109"
+    },
+    {
+      "trait_type": "Access",
+      "value": "Torre C-N5"
+    },
+    {
+      "trait_type": "Row",
+      "value": "0005"
+    },
+    {
+      "trait_type": "Seat",
+      "value": "0015"
     }
   ]
 }

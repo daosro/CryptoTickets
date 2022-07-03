@@ -5,7 +5,8 @@
   "attributes": [
     {
       "trait_type": "Type",
-      "value": "Season"
+      "value": "Match"
+
     },
     {
       "trait_type": "Year",
@@ -29,7 +30,35 @@
     },
     {
       "trait_type": "Fecha",
-      "value": "21/05/2022"
+      "value": "28/05/2022"
+    },
+    {
+      "trait_type": "Area",
+      "value": "Lateral Este"
+    },
+    {
+      "trait_type": "Locality",
+      "value": "1º Anfiteatro"
+    },
+    {
+      "trait_type": "Vomitory",
+      "value": "120-B"
+    },
+    {
+      "trait_type": "Sector",
+      "value": "007"
+    },
+    {
+      "trait_type": "Access",
+      "value": "Torre B-N1"
+    },
+    {
+      "trait_type": "Row",
+      "value": "0008"
+    },
+    {
+      "trait_type": "Seat",
+      "value": "0005"
     }
   ]
 }

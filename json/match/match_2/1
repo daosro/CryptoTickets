@@ -1,0 +1,64 @@
+{
+  "name": "Season Real Madrid vs Cádiz C.F.",
+  "description": "This is a one-day NFT from the 22-23 season.",
+  "image": "ipfs://bafkreia65ppeiyhpv7d2fngzqxkxu5q5ml7o5oobvmtapu65ktmjf2ck5q",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "Match"
+
+    },
+    {
+      "trait_type": "Year",
+      "value": "22-23"
+    },
+    {
+      "trait_type": "Torneo",
+      "value": "Liga Santander"
+    },
+    {
+      "trait_type": "Stadium",
+      "value": "Santiago Bernabeu"
+    },
+    {
+      "trait_type": "Local",
+      "value": "Real Madrid"
+    },
+    {
+      "trait_type": "Visitante",
+      "value": "Cádiz C.F."
+    },
+    {
+      "trait_type": "Fecha",
+      "value": "21/05/2022"
+    },
+    {
+      "trait_type": "Area",
+      "value": "Lateral Oeste"
+    },
+    {
+      "trait_type": "Locality",
+      "value": "2º Anfiteatro"
+    },
+    {
+      "trait_type": "Vomitory",
+      "value": "850-Z"
+    },
+    {
+      "trait_type": "Sector",
+      "value": "109"
+    },
+    {
+      "trait_type": "Access",
+      "value": "Torre C-N5"
+    },
+    {
+      "trait_type": "Row",
+      "value": "0005"
+    },
+    {
+      "trait_type": "Seat",
+      "value": "0017"
+    }
+  ]
+}

@@ -5,7 +5,8 @@
   "attributes": [
     {
       "trait_type": "Type",
-      "value": "Season"
+      "value": "Match"
+
     },
     {
       "trait_type": "Year",
@@ -30,6 +31,34 @@
     {
       "trait_type": "Fecha",
       "value": "13/06/2022"
+    },
+    {
+      "trait_type": "Area",
+      "value": "Tribuna"
+    },
+    {
+      "trait_type": "Locality",
+      "value": "-"
+    },
+    {
+      "trait_type": "Vomitory",
+      "value": "-"
+    },
+    {
+      "trait_type": "Sector",
+      "value": "003"
+    },
+    {
+      "trait_type": "Access",
+      "value": "Torre B"
+    },
+    {
+      "trait_type": "Row",
+      "value": "0002"
+    },
+    {
+      "trait_type": "Seat",
+      "value": "-"
     }
   ]
 }
