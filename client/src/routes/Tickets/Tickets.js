@@ -279,7 +279,11 @@ const Tickets = () => {
             title={"Crypto Ticket"}
             onSale={onSaleTokenList.includes(metadata.tokenId)}
             tokenDetails={() => {}}
-            useToke={() => burnTicketHandler(metadata.tokenId)}
+            useToke={
+              onSaleTokenList.includes(metadata.tokenId)
+                ? undefined
+                : () => burnTicketHandler(metadata.tokenId)
+            }
             saleToken={
               onSaleTokenList.includes(metadata.tokenId)
                 ? undefined

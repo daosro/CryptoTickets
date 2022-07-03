@@ -8,10 +8,6 @@ export default createUseStyles(
       justifyContent: "center",
       flexDirection: "column",
     },
-    carText: {
-      padding: "15px",
-      height: "20vh",
-    },
   },
-  { name: "Admin" }
+  { name: "MatchsAdministration" }
 );

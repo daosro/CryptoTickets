@@ -3,7 +3,7 @@ import { createUseStyles } from "react-jss";
 export default createUseStyles(
   {
     root: {
-      padding: "5rem 4.1rem 0",
+      padding: "1rem 2rem 5rem 2rem",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",

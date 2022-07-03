@@ -15,7 +15,7 @@ const getRewardsTokensMetadata = async (account, contracts) => {
     if (balanceLength > 0) {
       for (let i = 0; i < balanceLength; i++) {
         const metadata = await getTokenMetadataByIndex(
-          contracts.matchTickets,
+          contracts.rewards,
           account,
           i
         );
@@ -37,11 +37,13 @@ const Rewards = () => {
   const [rewardsTokenList, setrewardsTokenList] = useState([]);
 
   useEffect(() => {
-    const gerRewardsMetadata = async () => {
-      const result = await getRewardsTokensMetadata(accounts, contracts);
-      setrewardsTokenList(result);
-    };
-    gerRewardsMetadata();
+    if (accounts && accounts[0] && contracts) {
+      const gerRewardsMetadata = async () => {
+        const result = await getRewardsTokensMetadata(accounts[0], contracts);
+        setrewardsTokenList(result);
+      };
+      gerRewardsMetadata();
+    }
   }, [accounts, contracts]);
 
   return (

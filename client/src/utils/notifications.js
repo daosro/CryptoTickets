@@ -1,6 +1,6 @@
 import { Store } from "react-notifications-component";
 
-export const notify = (title, message, type, duration = 10000) => {
+export const notify = (title, message, type = "success", duration = 10000) => {
   Store.addNotification({
     title: title,
     message: message,

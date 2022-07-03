@@ -4,19 +4,23 @@ import { ReactNotifications } from "react-notifications-component";
 import "rodal/lib/rodal.css";
 
 import {
-  ACCOUNT_ADMINISTRATION_AREA_PATH,
-  CLUB_ADMIN_AREA_PATH,
   HOME_PATH,
-  TICKETS_ADMINISTRATION_AREA_PATH,
-  USER_ZONE_MARKET_PATH,
   USER_ZONE_PATH,
+  USER_ZONE_MARKET_PATH,
   USER_ZONE_REWARDS_PATH,
   USER_ZONE_SUBSCRIBER_PATH,
   USER_ZONE_TICKETS_PATH,
+  ACCOUNT_ADMINISTRATION_AREA_PATH,
+  CLUB_ADMIN_AREA_PATH,
+  TICKETS_ADMINISTRATION_AREA_PATH,
+  MATCHS_ADMINISTRATION_AREA_PATH,
+  REWARDS_ADMINISTRATION_AREA_PATH,
 } from "../../constants/routes";
 import { Web3Provider } from "../../context/Web3";
 
 import AppBar from "../AppBar";
+import Footer from "../Footer";
+import Breadcrumb from "../../core/Breadcrumb";
 import Home from "../../routes/Home";
 import UserArea from "../../routes/UserArea";
 import Subscriber from "../../routes/Subscriber";
@@ -26,9 +30,42 @@ import Tickets from "../../routes/Tickets";
 import Admin from "../../routes/Admin";
 import AccountsAdministration from "../../routes/AccountsAdministration";
 import TicketsAdministration from "../../routes/TicketsAdministration";
+import MatchsAdministration from "../../routes/MatchsAdministration";
+import RewardsAdministration from "../../routes/RewardsAdministration";
 
 import "react-notifications-component/dist/theme.css";
 import useStyles from "./App.style";
+
+const routes = [
+  { path: HOME_PATH, title: "Home", Component: Home },
+  { path: USER_ZONE_PATH, title: "Area de Usurio", Component: UserArea },
+  { path: USER_ZONE_SUBSCRIBER_PATH, title: "Socio", Component: Subscriber },
+  { path: USER_ZONE_TICKETS_PATH, title: "Mis entradas", Component: Tickets },
+  { path: USER_ZONE_MARKET_PATH, title: "Taquilla", Component: Market },
+  { path: USER_ZONE_REWARDS_PATH, title: "Recomponesas", Component: Rewards },
+
+  { path: CLUB_ADMIN_AREA_PATH, title: "Administración", Component: Admin },
+  {
+    path: ACCOUNT_ADMINISTRATION_AREA_PATH,
+    title: "Cuentas",
+    Component: AccountsAdministration,
+  },
+  {
+    path: TICKETS_ADMINISTRATION_AREA_PATH,
+    title: "Entradas",
+    Component: TicketsAdministration,
+  },
+  {
+    path: MATCHS_ADMINISTRATION_AREA_PATH,
+    title: "Partidos",
+    Component: MatchsAdministration,
+  },
+  {
+    path: REWARDS_ADMINISTRATION_AREA_PATH,
+    title: "Recompensas",
+    Component: RewardsAdministration,
+  },
+];
 
 const App = () => {
   const classes = useStyles();
@@ -38,29 +75,13 @@ const App = () => {
         <div className={classes.root}>
           <AppBar />
           <ReactNotifications />
+          <Breadcrumb routes={routes} />
           <Routes>
-            <Route exact path={HOME_PATH} element={<Home />} />
-            <Route exact path={USER_ZONE_PATH} element={<UserArea />} />
-            <Route
-              exact
-              path={USER_ZONE_SUBSCRIBER_PATH}
-              element={<Subscriber />}
-            />
-            <Route exact path={USER_ZONE_TICKETS_PATH} element={<Tickets />} />
-            <Route exact path={USER_ZONE_MARKET_PATH} element={<Market />} />
-            <Route exact path={USER_ZONE_REWARDS_PATH} element={<Rewards />} />
-            <Route exact path={CLUB_ADMIN_AREA_PATH} element={<Admin />} />
-            <Route
-              exact
-              path={ACCOUNT_ADMINISTRATION_AREA_PATH}
-              element={<AccountsAdministration />}
-            />
-            <Route
-              exact
-              path={TICKETS_ADMINISTRATION_AREA_PATH}
-              element={<TicketsAdministration />}
-            />
+            {routes.map(({ path, name, Component }) => (
+              <Route exact path={path} key={path} element={<Component />} />
+            ))}
           </Routes>
+          <Footer />
         </div>
       </BrowserRouter>
     </Web3Provider>
