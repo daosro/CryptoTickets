@@ -10,6 +10,7 @@ import {
   TICKETS_ADMINISTRATION_AREA_PATH,
   USER_ZONE_MARKET_PATH,
   USER_ZONE_PATH,
+  USER_ZONE_REWARDS_PATH,
   USER_ZONE_SUBSCRIBER_PATH,
   USER_ZONE_TICKETS_PATH,
 } from "../../constants/routes";
@@ -20,6 +21,7 @@ import Home from "../../routes/Home";
 import UserArea from "../../routes/UserArea";
 import Subscriber from "../../routes/Subscriber";
 import Market from "../../routes/Market";
+import Rewards from "../../routes/Rewards";
 import Tickets from "../../routes/Tickets";
 import Admin from "../../routes/Admin";
 import AccountsAdministration from "../../routes/AccountsAdministration";
@@ -46,6 +48,7 @@ const App = () => {
             />
             <Route exact path={USER_ZONE_TICKETS_PATH} element={<Tickets />} />
             <Route exact path={USER_ZONE_MARKET_PATH} element={<Market />} />
+            <Route exact path={USER_ZONE_REWARDS_PATH} element={<Rewards />} />
             <Route exact path={CLUB_ADMIN_AREA_PATH} element={<Admin />} />
             <Route
               exact

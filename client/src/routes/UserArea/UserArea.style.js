@@ -11,9 +11,15 @@ export default createUseStyles(
     },
     carHeader: {},
     carText: {
-      padding: "5px 15px 10px",
+      padding: "20px 15px 5px",
+      fontWeight: "bold",
+      fontSize: "medium",
     },
     carImage: {
+      width: "100%",
+      paddingTop: "20px",
+    },
+    headerLink: {
       width: "100%",
     },
   },
