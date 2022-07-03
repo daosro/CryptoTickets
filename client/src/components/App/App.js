@@ -17,6 +17,8 @@ import {
 import { Web3Provider } from "../../context/Web3";
 
 import AppBar from "../AppBar";
+import Footer from "../Footer";
+import Breadcrumb from "../../core/Breadcrumb";
 import Home from "../../routes/Home";
 import UserArea from "../../routes/UserArea";
 import Subscriber from "../../routes/Subscriber";
@@ -29,7 +31,6 @@ import TicketsAdministration from "../../routes/TicketsAdministration";
 
 import "react-notifications-component/dist/theme.css";
 import useStyles from "./App.style";
-import Breadcrumb from "../../core/Breadcrumb";
 
 const routes = [
   { path: HOME_PATH, title: "Home", Component: Home },
@@ -66,6 +67,7 @@ const App = () => {
               <Route exact path={path} key={path} element={<Component />} />
             ))}
           </Routes>
+          <Footer />
         </div>
       </BrowserRouter>
     </Web3Provider>
