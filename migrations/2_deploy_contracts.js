@@ -7,9 +7,12 @@ var CryptoTicketsMatchNFTs = artifacts.require("./CryptoTicketsMatchNFTs.sol");
 var CryptoTicketsMarketplace = artifacts.require(
   "./CryptoTicketsMarketplace.sol"
 );
+var CryptoTicketsRewards = artifacts.require("./CryptoTicketsRewards.sol");
 
 module.exports = async function (deployer) {
-  await deployer.deploy(CryptoTicketsMatchNFTs);
+  await deployer.deploy(CryptoTicketsRewards);
+
+  await deployer.deploy(CryptoTicketsMatchNFTs, CryptoTicketsRewards.address);
 
   await deployer.deploy(
     CryptoTicketsMembershipNFTs,
@@ -25,5 +28,6 @@ module.exports = async function (deployer) {
   var cryptoTicketsMatch = await CryptoTicketsMatchNFTs.deployed();
 
   await cryptoTicketsMatch.grantAdminRol(CryptoTicketsMembershipNFTs.address);
+  // TODO: grantAdminRol each time we add more admins
 };
 4;
