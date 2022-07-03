@@ -39,20 +39,22 @@ contract CryptoTicketsMatchNFTs is
 
     uint96 private royaltyFeesInBips = 1000;
 
+    struct MatchTransactionTicket{
+        uint matchId;
+        string local;
+        string visitor;
+        uint maxCapacity;
+        uint expirationDate;
+    }
+    MatchTransactionTicket matchList;
+
     event Status(string _message);
     event MsgInfoAccountListOk(string _message, address indexed account);
     event MsgInfoAccountListKo(string _message, address indexed account);
+    event MsgInfoMatchListOk(string _message, address indexed account);
     event MsgInfoMinted(string _message, address indexed account);
     event ClubAdminRoleGranted(address indexed sender, address indexed clubAddress);
     event ClubAdminRoleRevoked(address indexed sender, address indexed clubAddress);
-
-    struct MatchTransactionTicket{
-        address ownerAccount;
-        uint tokenId;
-        string typeTicket;
-        uint price;
-        //Añadir fecha de vencimiento del token
-    }
 
     constructor(address rewardsTicketAddress) ERC721("CryptoTicketsMatchNFTs", "CTKMN"){
         rewardsTicket = CryptoTicketsRewards(rewardsTicketAddress);
@@ -198,6 +200,15 @@ contract CryptoTicketsMatchNFTs is
 
     function setRoyaltyInfo(address _receiver, uint96 _royaltyFeesInBips) public onlyRole(DEFAULT_ADMIN_ROLE) {
         _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
+    }
+
+    function addMatchList(matchList newMatch) public onlyRole(DEFAULT_ADMIN_ROLE){
+        matchList.push(newMatch);
+        emit MsgInfoMatchListOk("The match has been successfully registered.", account);
+    }
+
+    function getInfoMatchList() public view returns(MatchTransactionTicket) {
+        return listmatch;
     }
 
 }

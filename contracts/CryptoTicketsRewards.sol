@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 contract CryptoTicketsRewards is 
     ERC721, 
@@ -20,8 +21,14 @@ contract CryptoTicketsRewards is
     using Counters for Counters.Counter;
     Counters.Counter private _rewardIdCounter;
 
+    //numero de elementos del car
+    uint carRewardsSize = 6;
+    string baseURI = "ipfs://bafybeiauikp6mbdabfmfq6rwvgwr6zh3uoxxlnzixbjmzzx77jp6waxvq4/";
+
     address[] public listUserRewards;
     address payable public club;
+
+    uint private countRandom = 0;
 
     event Status(string _message);
     event MsgInfoAccountListOk(string _message, address indexed account);
@@ -29,8 +36,20 @@ contract CryptoTicketsRewards is
 
     constructor() ERC721("CryptoTicketsRewards", "CTKRW"){
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
-        //uri=ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali/season
         
+    }
+
+    function _baseURI() internal view override returns (string memory) {
+         return baseURI; 
+    } 
+
+    function getBaseURI() public view returns (string memory, uint) {
+         return (baseURI, carRewardsSize); 
+    }
+
+    function setBaseURI(string memory newBaseURI,  uint numElements)  public onlyRole(DEFAULT_ADMIN_ROLE) {
+        carRewardsSize = numElements;
+        baseURI = newBaseURI;
     }
 
     function pause() public onlyRole(DEFAULT_ADMIN_ROLE) {
@@ -41,19 +60,23 @@ contract CryptoTicketsRewards is
         _unpause();
     }
 
+    function random(uint countListElementRewards) private view returns (uint8) {
+        return uint8(uint256(keccak256(abi.encodePacked(block.timestamp, block.difficulty, countRandom)))%countListElementRewards+1);
+   }
+
     function mint(address to) private {
         uint256 rewardId = _rewardIdCounter.current();
         _rewardIdCounter.increment();
         _safeMint(to, rewardId);
-        _setTokenURI(rewardId, Strings.toString(block.number%5));
+        _setTokenURI(rewardId, Strings.toString(random(carRewardsSize)));
     }
 
     function mintReward() public onlyRole(DEFAULT_ADMIN_ROLE) 
     whenNotPaused
     {
-       //uri=ipfs://bafybeidpaq5ba6237nat7nmj6yjrkfv2i3qdjj5tnh6kt4b7l7xd3te4u4/season0
         for (uint i = 0; i<listUserRewards.length; i++){
             mint(listUserRewards[i]);
+            countRandom ++;
         }
         emit MsgInfoMinted("The minting has been done correctly.", msg.sender);
         removeListUserRewards();
@@ -97,12 +120,12 @@ contract CryptoTicketsRewards is
         _grantRole(DEFAULT_ADMIN_ROLE, account);
     }
 
-    function addAddress(address account) public onlyRole(DEFAULT_ADMIN_ROLE){
+    function addListForRewards(address account) public onlyRole(DEFAULT_ADMIN_ROLE){
         listUserRewards.push(account);
         emit MsgInfoAccountListOk("Account registered.", account);
     }
 
-    function getAddressInfo() public view onlyRole(DEFAULT_ADMIN_ROLE) returns(address[] memory) {
+    function getListAddressRewardsInfo() public view onlyRole(DEFAULT_ADMIN_ROLE) returns(address[] memory) {
         return(listUserRewards);
     }
 
