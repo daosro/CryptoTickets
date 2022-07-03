@@ -7,3 +7,5 @@ export const USER_ZONE_REWARDS_PATH = "/user-area/rewards";
 export const CLUB_ADMIN_AREA_PATH = "/admin";
 export const ACCOUNT_ADMINISTRATION_AREA_PATH = "/admin/accounts";
 export const TICKETS_ADMINISTRATION_AREA_PATH = "/admin/tickets";
+export const MATCHS_ADMINISTRATION_AREA_PATH = "/admin/matchs";
+export const REWARDS_ADMINISTRATION_AREA_PATH = "/admin/rewards";

@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import {
   ACCOUNT_ADMINISTRATION_AREA_PATH,
+  MATCHS_ADMINISTRATION_AREA_PATH,
+  REWARDS_ADMINISTRATION_AREA_PATH,
   TICKETS_ADMINISTRATION_AREA_PATH,
 } from "../../constants/routes";
 
@@ -21,9 +23,9 @@ const Admin = () => {
           xs={12}
           sm={12}
           md={6}
-          lg={4}
-          xl={4}
-          xxl={4}
+          lg={3}
+          xl={3}
+          xxl={3}
           header={
             <Link
               to={ACCOUNT_ADMINISTRATION_AREA_PATH}
@@ -47,9 +49,34 @@ const Admin = () => {
           xs={12}
           sm={12}
           md={6}
-          lg={4}
-          xl={4}
-          xxl={4}
+          lg={3}
+          xl={3}
+          xxl={3}
+          header={
+            <Link
+              to={MATCHS_ADMINISTRATION_AREA_PATH}
+              className={classes.homeLink}
+            >
+              <div className={classes.carHeader}>Editor de partidos</div>
+            </Link>
+          }
+        >
+          <Link
+            to={MATCHS_ADMINISTRATION_AREA_PATH}
+            className={classes.homeLink}
+          >
+            <div className={classes.carText}>
+              Crea nuevos partidos para generar entradas
+            </div>
+          </Link>
+        </Card>
+        <Card
+          xs={12}
+          sm={12}
+          md={6}
+          lg={3}
+          xl={3}
+          xxl={3}
           header={
             <Link
               to={TICKETS_ADMINISTRATION_AREA_PATH}
@@ -64,7 +91,32 @@ const Admin = () => {
             className={classes.homeLink}
           >
             <div className={classes.carText}>
-              Consulta todas la información de todas tus entradas
+              Reparte las entradas entre los abonados del club
+            </div>
+          </Link>
+        </Card>
+        <Card
+          xs={12}
+          sm={12}
+          md={6}
+          lg={3}
+          xl={3}
+          xxl={3}
+          header={
+            <Link
+              to={REWARDS_ADMINISTRATION_AREA_PATH}
+              className={classes.homeLink}
+            >
+              <div className={classes.carHeader}>Recompensas</div>
+            </Link>
+          }
+        >
+          <Link
+            to={REWARDS_ADMINISTRATION_AREA_PATH}
+            className={classes.homeLink}
+          >
+            <div className={classes.carText}>
+              Consulta y edita las recompensas de los usurios
             </div>
           </Link>
         </Card>

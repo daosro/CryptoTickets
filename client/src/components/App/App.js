@@ -13,6 +13,8 @@ import {
   ACCOUNT_ADMINISTRATION_AREA_PATH,
   CLUB_ADMIN_AREA_PATH,
   TICKETS_ADMINISTRATION_AREA_PATH,
+  MATCHS_ADMINISTRATION_AREA_PATH,
+  REWARDS_ADMINISTRATION_AREA_PATH,
 } from "../../constants/routes";
 import { Web3Provider } from "../../context/Web3";
 
@@ -28,6 +30,8 @@ import Tickets from "../../routes/Tickets";
 import Admin from "../../routes/Admin";
 import AccountsAdministration from "../../routes/AccountsAdministration";
 import TicketsAdministration from "../../routes/TicketsAdministration";
+import MatchsAdministration from "../../routes/MatchsAdministration";
+import RewardsAdministration from "../../routes/RewardsAdministration";
 
 import "react-notifications-component/dist/theme.css";
 import useStyles from "./App.style";
@@ -48,8 +52,18 @@ const routes = [
   },
   {
     path: TICKETS_ADMINISTRATION_AREA_PATH,
-    title: "Cuentas",
+    title: "Entradas",
     Component: TicketsAdministration,
+  },
+  {
+    path: MATCHS_ADMINISTRATION_AREA_PATH,
+    title: "Partidos",
+    Component: MatchsAdministration,
+  },
+  {
+    path: REWARDS_ADMINISTRATION_AREA_PATH,
+    title: "Recompensas",
+    Component: RewardsAdministration,
   },
 ];
 
