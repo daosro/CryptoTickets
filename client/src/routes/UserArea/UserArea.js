@@ -60,7 +60,7 @@ const UserArea = () => {
         >
           <Link to={USER_ZONE_TICKETS_PATH} className={classes.headerLink}>
             <div className={classes.carText}>
-              Consulta la información de todas tus entradas
+              Consulta la información de todas tus entradas.
             </div>
             <div className={classes.carText}> </div>
             <img
@@ -86,7 +86,7 @@ const UserArea = () => {
           <Link to={USER_ZONE_MARKET_PATH} className={classes.headerLink}>
             <div className={classes.carText}>
               Compra la mejor entrada disponible para los proximos partidos de
-              tu club
+              tu club.
             </div>
             <div className={classes.carText}>¡No te quedes sin ellas!</div>
             <img
@@ -111,7 +111,7 @@ const UserArea = () => {
         >
           <Link to={USER_ZONE_REWARDS_PATH} className={classes.headerLink}>
             <div className={classes.carText}>
-              Utiliza tus entradas para recibir recompensas
+              Utiliza tus entradas para recibir recompensas.
             </div>
             <div className={classes.carText}>¡Hay miles de ellas!</div>
             <img
@@ -120,6 +120,27 @@ const UserArea = () => {
               alt="Rewards"
             />
           </Link>
+        </Card>
+        <Card
+          xs={12}
+          sm={12}
+          md={6}
+          lg={3}
+          xl={3}
+          xxl={3}
+          header={<div className={classes.carHeader}>Cesiones</div>}
+        >
+          <div className={classes.carText}>
+            Cede tus entradas a miembros de tu lista de cesiones.
+          </div>
+          <div className={classes.carText}>
+            ¡Gestiona tu listado de cesiones!
+          </div>
+          <img
+            className={classes.carImage}
+            src={process.env.PUBLIC_URL + "/assets/images/cesiones.jpeg"}
+            alt="Rewards"
+          />
         </Card>
       </CardContainer>
     </div>
