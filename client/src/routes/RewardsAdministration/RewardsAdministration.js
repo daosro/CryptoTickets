@@ -9,7 +9,7 @@ import useStyles from "./RewardsAdministration.style";
 
 const getPendingRewardsSize = async (contracts) => {
   const pendingRewards = await contracts.rewards.methods
-    .getAddressInfo()
+    .getListAddressRewardsInfo()
     .call();
   return pendingRewards.length;
 };

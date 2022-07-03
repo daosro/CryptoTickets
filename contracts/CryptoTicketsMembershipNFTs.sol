@@ -34,18 +34,38 @@ contract CryptoTicketsMembershipNFTs is
         uint256 indexed tokenId,
         string tokenURI
     );
-    event ClubAdminRoleGranted(address indexed sender, address indexed clubAddress);
-    event ClubAdminRoleRevoked(address indexed sender, address indexed clubAddress);
-    event MembershipRoleGranted(address indexed sender, address indexed membershipAddress);
-    event MembershipRoleRevoked(address indexed sender, address indexed membershipAddress);
-    event ErrorTransferToken(address indexed sender, address indexed receiber, uint256 indexed tokenId, string errorMessage);
+    event ClubAdminRoleGranted(
+        address indexed sender,
+        address indexed clubAddress
+    );
+    event ClubAdminRoleRevoked(
+        address indexed sender,
+        address indexed clubAddress
+    );
+    event MembershipRoleGranted(
+        address indexed sender,
+        address indexed membershipAddress
+    );
+    event MembershipRoleRevoked(
+        address indexed sender,
+        address indexed membershipAddress
+    );
+    event ErrorTransferToken(
+        address indexed sender,
+        address indexed receiber,
+        uint256 indexed tokenId,
+        string errorMessage
+    );
 
     using Counters for Counters.Counter;
     Counters.Counter private _membershipCounter;
 
-    constructor(address matchTicketsContractAddresss) ERC721("CryptoTicketsMembershipNFTs", "CTKUN") {
-
-        matchTicketsContract = CryptoTicketsMatchNFTs(matchTicketsContractAddresss);
+    constructor(address matchTicketsContractAddresss)
+        ERC721("CryptoTicketsMembershipNFTs", "CTKUN")
+    {
+        matchTicketsContract = CryptoTicketsMatchNFTs(
+            matchTicketsContractAddresss
+        );
 
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(CLUB_ADMIN_ROLE, msg.sender);
@@ -73,29 +93,30 @@ contract CryptoTicketsMembershipNFTs is
         }
         uint256 tokenId = _membershipCounter.current();
         _membershipCounter.increment();
-
         _safeMint(msg.sender, tokenId);
-        // ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali
         _setTokenURI(tokenId, uri);
         membershipsTokenMinted[msg.sender] = true;
         // Call Smart Contract to grant role to the memberships and add the membership the to list for airdrop
-        matchTicketsContract.addAddress(msg.sender);
+        matchTicketsContract.addAMembershipddress(msg.sender);
         emit MembershipTokenMinted(msg.sender, tokenId, uri);
     }
 
-    function _beforeTokenTransfer(address from, address to, uint256 tokenId)
-        internal
-        whenNotPaused
-        override(ERC721, ERC721Enumerable)
-    {
+    function _beforeTokenTransfer(
+        address from,
+        address to,
+        uint256 tokenId
+    ) internal override(ERC721, ERC721Enumerable) whenNotPaused {
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
     // The following functions are overrides required by Solidity.
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+    function _burn(uint256 tokenId)
+        internal
+        override(ERC721, ERC721URIStorage)
+    {
         membershipsTokenMinted[msg.sender] = false;
         // Call Smart Contract to grant role to the memberships and remove the membership to the list for airdrop
-        matchTicketsContract.removeAddress(msg.sender);
+        matchTicketsContract.removeMembershipAddress(msg.sender);
         super._burn(tokenId);
     }
 
@@ -132,7 +153,7 @@ contract CryptoTicketsMembershipNFTs is
     {
         _revokeRole(CLUB_ADMIN_ROLE, account);
         clubAdmins[account] = false;
-        // TODO: Call Smart Contract to revoke role to the clubAdmins
+        matchTicketsContract.revokeClubRol(account);
         emit ClubAdminRoleRevoked(msg.sender, account);
     }
 
@@ -163,12 +184,15 @@ contract CryptoTicketsMembershipNFTs is
         return memberships[account];
     }
 
-    function isMembershipTokenMinted(address account) public view returns (bool) {
+    function isMembershipTokenMinted(address account)
+        public
+        view
+        returns (bool)
+    {
         return membershipsTokenMinted[account];
     }
 
     function membershipsNumber() public view returns (uint256) {
         return _membershipCounter.current();
     }
-
 }

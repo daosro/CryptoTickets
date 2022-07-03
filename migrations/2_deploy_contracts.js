@@ -26,8 +26,10 @@ module.exports = async function (deployer) {
   );
 
   var cryptoTicketsMatch = await CryptoTicketsMatchNFTs.deployed();
+  var cryptoTicketsReward = await CryptoTicketsRewards.deployed();
 
   await cryptoTicketsMatch.grantAdminRol(CryptoTicketsMembershipNFTs.address);
+  await cryptoTicketsReward.grantAdminRol(CryptoTicketsMatchNFTs.address);
   // TODO: grantAdminRol each time we add more admins
 };
 4;
