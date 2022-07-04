@@ -46,10 +46,10 @@ module.exports = async function (deployer) {
   await cryptoTicketsManagement.addNewMatch(
     "Real Madrid",
     "Rayo Vallecano",
-    "ipfs://bafybeidpaq5ba6237nat7nmj6yjrkfv2i3qdjj5tnh6kt4b7l7xd3te4u4/season",
+    "ipfs://bafybeiaijux6ugx26qrxh7do36seqro6xzgmjtnagc3pbqimn6e63yruwe/",
     20,
     new Date().getTime(),
-    1
+    5
   );
 };
 4;

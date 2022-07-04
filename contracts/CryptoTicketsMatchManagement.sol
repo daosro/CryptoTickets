@@ -46,7 +46,8 @@ contract CryptoTicketsMatchManagement is Pausable, AccessControl {
         string memory visitor,
         string memory baseURI,
         uint256 maxCapacity,
-        uint256 expirationDate
+        uint256 expirationDate,
+        uint256 carTotalTokens
     ) public onlyRole(DEFAULT_ADMIN_ROLE) {
         uint256 matchId = _matchNumberCounter.current();
         MatchInfo memory matchInfo = MatchInfo(
@@ -57,7 +58,7 @@ contract CryptoTicketsMatchManagement is Pausable, AccessControl {
             maxCapacity,
             expirationDate,
             0,
-            6
+            carTotalTokens
         );
         matchList[matchId] = matchInfo;
         matchIdList.push(matchId);

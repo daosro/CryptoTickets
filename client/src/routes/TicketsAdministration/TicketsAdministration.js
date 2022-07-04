@@ -8,37 +8,6 @@ import { notify } from "../../utils/notifications";
 
 import useStyles from "./TicketsAdministration.style";
 
-const FOOTBALL_MATCHES = [
-  {
-    id: 0,
-    homeTeam: "Real Madrid",
-    homeTeamLogo: "realmadrid.png",
-    awayTeam: "Chelsea",
-    awayTeamLogo: "chelsea.png",
-  },
-  {
-    id: 1,
-    homeTeam: "Real Madrid",
-    homeTeamLogo: "realmadrid.png",
-    awayTeam: "Bayern Munich",
-    awayTeamLogo: "bayern.png",
-  },
-  {
-    id: 2,
-    homeTeam: "Real Madrid",
-    homeTeamLogo: "realmadrid.png",
-    awayTeam: "Barcelona F.C.",
-    awayTeamLogo: "barcelona.png",
-  },
-  {
-    id: 3,
-    homeTeam: "Real Madrid",
-    homeTeamLogo: "realmadrid.png",
-    awayTeam: "Cádiz C.F.",
-    awayTeamLogo: "cadiz.png",
-  },
-];
-
 const getTeamLogo = (team) => {
   switch (team) {
     case "Real Madrid":
@@ -49,8 +18,12 @@ const getTeamLogo = (team) => {
       return "bayern.png";
     case "Barcelona F.C.":
       return "barcelona.png";
-    case "Cádiz C.F.":
-      return "cadiz.png";
+    case "Rayo Vallecano":
+      return "rayo.png";
+    case "Atletic de Bilbao":
+      return "bilbao.png";
+    case "Real Betis":
+      return "betis.png";
     default:
       return "";
   }
