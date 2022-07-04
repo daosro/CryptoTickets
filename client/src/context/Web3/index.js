@@ -3,6 +3,7 @@ import { CHAIN_DATA, CHAIN_ID } from "../../constants/chain";
 import CryptoTicketsMatchNFTsContract from "../../contracts/CryptoTicketsMatchNFTs.json";
 import CryptoTicketsMembershipNFTsContract from "../../contracts/CryptoTicketsMembershipNFTs.json";
 import CryptoTicketsMarketplaceContract from "../../contracts/CryptoTicketsMarketplace.json";
+import CryptoTicketsManagementContract from "../../contracts/CryptoTicketsMatchManagement.json";
 import CryptoTicketsRewardsContract from "../../contracts/CryptoTicketsRewards.json";
 import {
   enableWeb3Instance,
@@ -51,11 +52,18 @@ const getContractInstances = async (web3, account) => {
     CryptoTicketsRewardsContract,
     account
   );
+  const managementContract = getContractInstance(
+    web3,
+    networkId,
+    CryptoTicketsManagementContract,
+    account
+  );
   return {
     membership: membershipContract,
     matchTickets: matchTicketsContract,
     marketplace: marketplaceContract,
     rewards: rewardsContract,
+    management: managementContract,
   };
 };
 
