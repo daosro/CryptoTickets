@@ -18,7 +18,7 @@ const Admin = () => {
 
   return (
     <div className={classes.root}>
-      <h2>Administración del Club</h2>
+      <h2>Area de Administración</h2>
       <CardContainer>
         <Card
           xs={12}
@@ -42,7 +42,7 @@ const Admin = () => {
           >
             <div className={classes.carText}>
               Administración de las cuentas de socios y nuevos administradores
-              de club
+              de club.
             </div>
             <img
               className={classes.carImage}
@@ -74,8 +74,13 @@ const Admin = () => {
             className={classes.headerLink}
           >
             <div className={classes.carText}>
-              Crea nuevos partidos para generar entradas
+              Crea nuevos partidos para generar entradas.
             </div>
+            <img
+              className={classes.carImage}
+              src={process.env.PUBLIC_URL + "/assets/images/match-editor.png"}
+              alt="Rewards"
+            />
           </Link>
         </Card>
         <Card
@@ -90,7 +95,7 @@ const Admin = () => {
               to={TICKETS_ADMINISTRATION_AREA_PATH}
               className={classes.headerLink}
             >
-              <div className={classes.carHeader}>Entradas a partidos</div>
+              <div className={classes.carHeader}>Distribución de Entradas</div>
             </Link>
           }
         >
@@ -101,6 +106,11 @@ const Admin = () => {
             <div className={classes.carText}>
               Reparte las entradas entre los abonados del club
             </div>
+            <img
+              className={classes.carImage}
+              src={process.env.PUBLIC_URL + "/assets/images/tickets-admin.jpeg"}
+              alt="Rewards"
+            />
           </Link>
         </Card>
         <Card
@@ -124,8 +134,13 @@ const Admin = () => {
             className={classes.headerLink}
           >
             <div className={classes.carText}>
-              Consulta y edita las recompensas de los usurios
+              Consulta y edita las recompensas de los usurios.
             </div>
+            <img
+              className={classes.carImage}
+              src={process.env.PUBLIC_URL + "/assets/images/rewards-admin.png"}
+              alt="Rewards"
+            />
           </Link>
         </Card>
       </CardContainer>
