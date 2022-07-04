@@ -84,7 +84,10 @@ const RewardsAdministration = () => {
   const changeRewardsHandler = useCallback(async () => {
     try {
       await contracts.rewards.methods
-        .setBaseURI(rewardsNewBaseURI, rewardsNewSize)
+        .setBaseURI(
+          `${rewardsNewBaseURI}${rewardsNewBaseURI.endsWith("/") ? "" : "/"}`,
+          rewardsNewSize
+        )
         .send()
         .on("receipt", async () => {
           const rewards = await getRewardsMetadata(contracts);
