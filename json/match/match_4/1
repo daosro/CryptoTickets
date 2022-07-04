@@ -1,5 +1,5 @@
 {
-  "name": "Season Real Madrid vs Chelsea",
+  "name": "Real Madrid vs Chelsea",
   "description": "First group match of the Champions League season 22-23. Real Madrid want to start the group stage strong.",
   "image": "ipfs://bafybeihs6qzk2ha2dlxqw4zlk6p6f6og3mvsf65qekmmytiazt4ky32xfa",
   "attributes": [
@@ -30,7 +30,7 @@
     },
     {
       "trait_type": "Fecha",
-      "value": "13/06/2022"
+      "value": "02/11/2022"
     },
     {
       "trait_type": "Area",

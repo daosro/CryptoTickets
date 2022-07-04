@@ -1,5 +1,5 @@
 {
-  "name": "Season Real Madrid vs Bayern Munich",
+  "name": "Real Madrid vs Bayern Munich",
   "description": "Second group match of the Champions League season 22-23. The most complicated group in the last 12 years",
   "image": "ipfs://bafybeie4yfs7snh7hazwziua3e7gpwyvbvcredxkvtzrqoudexy2akdwaq",
   "attributes": [
@@ -30,7 +30,7 @@
     },
     {
       "trait_type": "Fecha",
-      "value": "20/06/2022"
+      "value": "08/11/2022"
     },
     {
       "trait_type": "Area",

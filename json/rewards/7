@@ -1,0 +1,11 @@
+{
+  "name": "Zidane 2 Caricature",
+  "description": "This reward NFT is the result of the use of the Crypto Tickets application.",
+  "image": "ipfs://bafkreia65ppeiyhpv7d2fngzqxkxu5q5ml7o5oobvmtapu65ktmjf2ck5q",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "NFT Reward Collection"
+    }
+  ]
+}

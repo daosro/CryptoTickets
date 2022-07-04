@@ -1,0 +1,19 @@
+{
+  "name": "Real Madrid",
+  "description": "This is the Real Madrid Subscriber Token that allow the owner to see the local matches.",
+  "image": "ipfs://bafkreia65ppeiyhpv7d2fngzqxkxu5q5ml7o5oobvmtapu65ktmjf2ck5q",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "NFT Collection"
+    },
+    {
+      "trait_type": "Title",
+      "value": "Himno centenario"
+    },
+    {
+      "trait_type": "Area",
+      "value": "General"
+    }
+  ]
+}
