@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.12;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -31,32 +31,11 @@ contract CryptoTicketsMatchNFTs is
     string contractURL;
 
     address[] public listSubscriber;
+    mapping(uint256 => uint256) public tokensMintedByMatch;
 
     address payable public club;
 
     uint96 private royaltyFeesInBips = 1000;
-
-    struct MatchTicket {
-        uint256 matchId;
-        string local;
-        string visitor;
-        uint256 maxCapacity;
-        uint256 expirationDate;
-    }
-    MatchTicket[] matchList;
-
-    event Status(string _message);
-    event MsgInfoAccountListOk(string _message, address indexed account);
-    event MsgInfoAccountListKo(string _message, address indexed account);
-    event MsgInfoMinted(string _message, address indexed account);
-    event ClubAdminRoleGranted(
-        address indexed sender,
-        address indexed clubAddress
-    );
-    event ClubAdminRoleRevoked(
-        address indexed sender,
-        address indexed clubAddress
-    );
 
     constructor(address rewardsTicketAddress)
         ERC721("CryptoTicketsMatchNFTs", "CTKMN")
@@ -80,25 +59,52 @@ contract CryptoTicketsMatchNFTs is
         _unpause();
     }
 
-    function mint(address to, string memory uri) private {
+    function mintMatchTicket(
+        address to,
+        string memory uri,
+        uint256 randomNumber,
+        uint256 carSize
+    ) private {
         uint256 matchId = _matchIdCounter.current();
         _matchIdCounter.increment();
         _safeMint(to, matchId);
-        _setTokenURI(matchId, uri);
+        _setTokenURI(
+            matchId,
+            string.concat(uri, Strings.toString(randomNumber % carSize))
+        );
     }
 
-    function mintTicket(address to, string memory uri) public payable {
-        uint256 matchId = _matchIdCounter.current();
-        _matchIdCounter.increment();
-        _safeMint(to, matchId);
-        _setTokenURI(matchId, uri);
-    }
-
-    function mintMatch(string memory uri) public onlyRole(ADMIN_CLUB_ROLE) {
+    function airdropMatchTickets(
+        uint256 matchId,
+        uint256 maxCapacity,
+        string memory uri,
+        uint256 carSize
+    ) public onlyRole(ADMIN_CLUB_ROLE) {
+        require(
+            tokensMintedByMatch[matchId] + listSubscriber.length < maxCapacity,
+            "Match is full"
+        );
+        uint256 randomNumber = tokensMintedByMatch[matchId];
         for (uint256 i = 0; i < listSubscriber.length; i++) {
-            mint(listSubscriber[i], uri);
+            mintMatchTicket(listSubscriber[i], uri, randomNumber, carSize);
+            randomNumber++;
         }
-        emit MsgInfoMinted("The minting has been done correctly.", msg.sender);
+        tokensMintedByMatch[matchId] += listSubscriber.length;
+    }
+
+    // function mintSaleMatchTicket(address to, string memory uri) public payable {
+    //     uint256 matchId = _matchIdCounter.current();
+    //     _matchIdCounter.increment();
+    //     _safeMint(to, matchId);
+    //     _setTokenURI(matchId, uri);
+    // }
+
+    function getTotalMintedTicketsByMatchId(uint256 matchId)
+        public
+        view
+        returns (uint256)
+    {
+        return tokensMintedByMatch[matchId];
     }
 
     function _beforeTokenTransfer(
@@ -149,7 +155,6 @@ contract CryptoTicketsMatchNFTs is
     function grantClubRol(address account) public onlyRole(DEFAULT_ADMIN_ROLE) {
         _grantRole(ADMIN_CLUB_ROLE, account);
         rewardsTicket.grantAdminRol(account);
-        emit ClubAdminRoleGranted(msg.sender, account);
     }
 
     function revokeClubRol(address account)
@@ -158,7 +163,6 @@ contract CryptoTicketsMatchNFTs is
     {
         _revokeRole(ADMIN_CLUB_ROLE, account);
         rewardsTicket.revokeAdminRol(account);
-        emit ClubAdminRoleRevoked(msg.sender, account);
     }
 
     function addAMembershipddress(address account)
@@ -166,10 +170,6 @@ contract CryptoTicketsMatchNFTs is
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         listSubscriber.push(account);
-        emit MsgInfoAccountListOk(
-            "The account/address has been successfully registered.",
-            account
-        );
     }
 
     function findAddress(address value) public view returns (uint256) {
@@ -196,14 +196,4 @@ contract CryptoTicketsMatchNFTs is
     {
         _setDefaultRoyalty(_receiver, _royaltyFeesInBips);
     }
-    /*
-    function addMatchList(string memory local, string memory visitor, uint maxCapacity, uint256 expirationDate) public onlyRole(DEFAULT_ADMIN_ROLE){
-        MatchTicket memory newMatch = MatchTicket(matchId, local, visitor, maxCapacity, expirationDate); 
-        matchList.push(newMatch);
-    }
-
-    function getInfoMatchList() public view returns(MatchTicket[] memory) {
-        return matchList;
-    }
-*/
 }

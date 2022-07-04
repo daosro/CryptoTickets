@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.4;
+pragma solidity ^0.8.12;
 
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
@@ -11,6 +11,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "./CryptoTicketsMatchNFTs.sol";
+import "./CryptoTicketsMatchManagement.sol";
 
 contract CryptoTicketsMembershipNFTs is
     ERC721,
@@ -22,6 +23,7 @@ contract CryptoTicketsMembershipNFTs is
 {
     // Other contracts
     CryptoTicketsMatchNFTs matchTicketsContract;
+    CryptoTicketsMatchManagement matchManagementContract;
     // Roles (administrador, club, abonado)
     bytes32 public constant CLUB_ADMIN_ROLE = keccak256("CLUB_ADMIN_ROLE");
     bytes32 public constant MEMBERSHIP_ROLE = keccak256("MEMBERSHIP_ROLE");
@@ -58,13 +60,17 @@ contract CryptoTicketsMembershipNFTs is
     string baseURI =
         "ipfs://bafybeibcrbymwehaiyf6ttwfqut4aw7436gualmqw7sl7xoaqclo5sioxi/";
 
-    constructor(address matchTicketsContractAddresss)
-        ERC721("CryptoTicketsMembershipNFTs", "CTKUN")
-    {
+    constructor(
+        address matchTicketsContractAddresss,
+        address matchManagementContractAddresss
+    ) ERC721("CryptoTicketsMembershipNFTs", "CTKUN") {
         matchTicketsContract = CryptoTicketsMatchNFTs(
             matchTicketsContractAddresss
         );
 
+        matchManagementContract = CryptoTicketsMatchManagement(
+            matchManagementContractAddresss
+        );
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(CLUB_ADMIN_ROLE, msg.sender);
         _grantRole(MEMBERSHIP_ROLE, msg.sender);
@@ -139,6 +145,7 @@ contract CryptoTicketsMembershipNFTs is
         clubAdmins[account] = true;
         // Call Smart Contract to grant role to the clubAdmins
         matchTicketsContract.grantClubRol(account);
+        matchManagementContract.grantAdminRol(account);
         emit ClubAdminRoleGranted(msg.sender, account);
     }
 
@@ -149,6 +156,7 @@ contract CryptoTicketsMembershipNFTs is
         _revokeRole(CLUB_ADMIN_ROLE, account);
         clubAdmins[account] = false;
         matchTicketsContract.revokeClubRol(account);
+        matchManagementContract.revokeAdminRol(account);
         emit ClubAdminRoleRevoked(msg.sender, account);
     }
 
