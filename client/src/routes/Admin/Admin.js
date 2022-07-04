@@ -30,7 +30,7 @@ const Admin = () => {
           header={
             <Link
               to={ACCOUNT_ADMINISTRATION_AREA_PATH}
-              className={classes.homeLink}
+              className={classes.headerLink}
             >
               <div className={classes.carHeader}>Cuentas</div>
             </Link>
@@ -38,12 +38,19 @@ const Admin = () => {
         >
           <Link
             to={ACCOUNT_ADMINISTRATION_AREA_PATH}
-            className={classes.homeLink}
+            className={classes.headerLink}
           >
             <div className={classes.carText}>
               Administración de las cuentas de socios y nuevos administradores
               de club
             </div>
+            <img
+              className={classes.carImage}
+              src={
+                process.env.PUBLIC_URL + "/assets/images/cuentas-usuario.jpeg"
+              }
+              alt="Rewards"
+            />
           </Link>
         </Card>
         <Card
@@ -56,7 +63,7 @@ const Admin = () => {
           header={
             <Link
               to={MATCHS_ADMINISTRATION_AREA_PATH}
-              className={classes.homeLink}
+              className={classes.headerLink}
             >
               <div className={classes.carHeader}>Editor de partidos</div>
             </Link>
@@ -64,7 +71,7 @@ const Admin = () => {
         >
           <Link
             to={MATCHS_ADMINISTRATION_AREA_PATH}
-            className={classes.homeLink}
+            className={classes.headerLink}
           >
             <div className={classes.carText}>
               Crea nuevos partidos para generar entradas
@@ -81,7 +88,7 @@ const Admin = () => {
           header={
             <Link
               to={TICKETS_ADMINISTRATION_AREA_PATH}
-              className={classes.homeLink}
+              className={classes.headerLink}
             >
               <div className={classes.carHeader}>Entradas a partidos</div>
             </Link>
@@ -89,7 +96,7 @@ const Admin = () => {
         >
           <Link
             to={TICKETS_ADMINISTRATION_AREA_PATH}
-            className={classes.homeLink}
+            className={classes.headerLink}
           >
             <div className={classes.carText}>
               Reparte las entradas entre los abonados del club
@@ -106,7 +113,7 @@ const Admin = () => {
           header={
             <Link
               to={REWARDS_ADMINISTRATION_AREA_PATH}
-              className={classes.homeLink}
+              className={classes.headerLink}
             >
               <div className={classes.carHeader}>Recompensas</div>
             </Link>
@@ -114,7 +121,7 @@ const Admin = () => {
         >
           <Link
             to={REWARDS_ADMINISTRATION_AREA_PATH}
-            className={classes.homeLink}
+            className={classes.headerLink}
           >
             <div className={classes.carText}>
               Consulta y edita las recompensas de los usurios

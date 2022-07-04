@@ -46,9 +46,7 @@ const Subscriber = () => {
       );
 
       await contracts.membership.methods
-        .mintMembershipToken(
-          "ipfs://bafkreic3xz5cssins4ihcyoo27kcmflwmgqvpbm2stpr3xfxxnsykgkali"
-        )
+        .mintMembershipToken()
         .send()
         .on("receipt", function () {
           notify("Congratulations!", "You are one of us now", "success", 5000);

@@ -9,8 +9,16 @@ export default createUseStyles(
       flexDirection: "column",
     },
     carText: {
-      padding: "15px",
-      height: "20vh",
+      padding: "20px 15px 5px",
+      fontWeight: "bold",
+      fontSize: "medium",
+    },
+    carImage: {
+      width: "100%",
+      paddingTop: "20px",
+    },
+    headerLink: {
+      width: "100%",
     },
   },
   { name: "Admin" }

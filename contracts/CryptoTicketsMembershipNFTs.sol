@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
 
 import "./CryptoTicketsMatchNFTs.sol";
 
@@ -31,8 +32,7 @@ contract CryptoTicketsMembershipNFTs is
     // Events
     event MembershipTokenMinted(
         address indexed membershipId,
-        uint256 indexed tokenId,
-        string tokenURI
+        uint256 indexed tokenId
     );
     event ClubAdminRoleGranted(
         address indexed sender,
@@ -54,6 +54,10 @@ contract CryptoTicketsMembershipNFTs is
     using Counters for Counters.Counter;
     Counters.Counter private _membershipCounter;
 
+    uint256 membershipsInCar = 5;
+    string baseURI =
+        "ipfs://bafybeibcrbymwehaiyf6ttwfqut4aw7436gualmqw7sl7xoaqclo5sioxi/";
+
     constructor(address matchTicketsContractAddresss)
         ERC721("CryptoTicketsMembershipNFTs", "CTKUN")
     {
@@ -69,6 +73,10 @@ contract CryptoTicketsMembershipNFTs is
         memberships[msg.sender] = true;
     }
 
+    function _baseURI() internal view override returns (string memory) {
+        return baseURI;
+    }
+
     function pause() public onlyRole(DEFAULT_ADMIN_ROLE) {
         _pause();
     }
@@ -77,22 +85,18 @@ contract CryptoTicketsMembershipNFTs is
         _unpause();
     }
 
-    // Minting of generation of the subscription by the Membership user
-    function mintMembershipToken(string memory uri)
-        public
-        onlyRole(MEMBERSHIP_ROLE)
-    {
+    function mintMembershipToken() public onlyRole(MEMBERSHIP_ROLE) {
         if (membershipsTokenMinted[msg.sender]) {
             revert("You already have a membership token minted");
         }
         uint256 tokenId = _membershipCounter.current();
         _membershipCounter.increment();
         _safeMint(msg.sender, tokenId);
-        _setTokenURI(tokenId, uri);
+        _setTokenURI(tokenId, Strings.toString(tokenId % membershipsInCar));
         membershipsTokenMinted[msg.sender] = true;
-        // Call Smart Contract to grant role to the memberships and add the membership the to list for airdrop
+
         matchTicketsContract.addAMembershipddress(msg.sender);
-        emit MembershipTokenMinted(msg.sender, tokenId, uri);
+        emit MembershipTokenMinted(msg.sender, tokenId);
     }
 
     function _beforeTokenTransfer(
@@ -103,13 +107,11 @@ contract CryptoTicketsMembershipNFTs is
         super._beforeTokenTransfer(from, to, tokenId);
     }
 
-    // The following functions are overrides required by Solidity.
     function _burn(uint256 tokenId)
         internal
         override(ERC721, ERC721URIStorage)
     {
         membershipsTokenMinted[msg.sender] = false;
-        // Call Smart Contract to grant role to the memberships and remove the membership to the list for airdrop
         matchTicketsContract.removeMembershipAddress(msg.sender);
         super._burn(tokenId);
     }
@@ -132,7 +134,6 @@ contract CryptoTicketsMembershipNFTs is
         return super.supportsInterface(interfaceId);
     }
 
-    //ROLES FOR ASSIGNING AND UNASSIGNING ROLES
     function grantClubRol(address account) public onlyRole(DEFAULT_ADMIN_ROLE) {
         _grantRole(CLUB_ADMIN_ROLE, account);
         clubAdmins[account] = true;
