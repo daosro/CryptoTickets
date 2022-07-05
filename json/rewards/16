@@ -1,0 +1,11 @@
+{
+  "name": "20% en la próxima entrada.",
+  "description": "This reward NFT is the result of the use of the Crypto Tickets application.",
+  "image": "ipfs://bafybeifnzb5adr2hkg52dwfqek7lwmccebwij2xhzwertngd66bkeuo5u4/13",
+  "attributes": [
+    {
+      "trait_type": "Type",
+      "value": "NFT Reward Collection"
+    }
+  ]
+}
