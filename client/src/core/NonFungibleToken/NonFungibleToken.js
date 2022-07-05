@@ -93,7 +93,9 @@ const NonFungibleToken = ({
                   alt="matic"
                 />
                 {price}
-                <div className={classes.owner}>{getShortAddress(seller)}</div>
+                {seller && (
+                  <div className={classes.owner}>{getShortAddress(seller)}</div>
+                )}
               </div>
             </>
           )}

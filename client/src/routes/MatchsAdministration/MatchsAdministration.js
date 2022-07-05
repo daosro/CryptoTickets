@@ -11,7 +11,7 @@ import useStyles from "./MatchsAdministration.style";
 const MatchsAdministration = () => {
   const classes = useStyles();
   const [matchData, setMatchData] = useState({});
-  const { contracts } = useContext(Web3Context);
+  const { web3, contracts } = useContext(Web3Context);
 
   const onChangeFromDataHandler = useCallback(
     (event) => {
@@ -33,16 +33,20 @@ const MatchsAdministration = () => {
         maxCapacity,
         expirationDate,
         carTotalTokens,
+        pvp,
       } = matchData;
       try {
+        const finalBaseURI = `${baseURI}${baseURI.endsWith("/") ? "" : "/"}`;
         contracts.management.methods
           .addNewMatch(
             local,
             visitor,
-            `${baseURI}${baseURI.endsWith("/") ? "" : "/"}`,
+            finalBaseURI,
+            `${finalBaseURI}${maxCapacity}`,
             maxCapacity,
             new Date(expirationDate).getTime(),
-            carTotalTokens
+            carTotalTokens,
+            web3.utils.toWei(pvp.toString(), "ether")
           )
           .send()
           .on("receipt", async () => {
@@ -61,7 +65,7 @@ const MatchsAdministration = () => {
         console.log(error);
       }
     }
-  }, [contracts, matchData]);
+  }, [web3, contracts, matchData]);
 
   return (
     <div className={classes.root}>
@@ -89,7 +93,14 @@ const MatchsAdministration = () => {
             value={matchData.baseURI}
             onChange={onChangeFromDataHandler}
           />
-
+          <label>PVP</label>
+          <input
+            type="number"
+            className={classes.input}
+            name="pvp"
+            value={matchData.pvp}
+            onChange={onChangeFromDataHandler}
+          />
           <label>Aforo</label>
           <input
             type="number"

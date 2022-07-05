@@ -25,10 +25,12 @@ contract CryptoTicketsMatchManagement is Pausable, AccessControl {
         string local;
         string visitor;
         string baseURI;
+        string metadataURI;
         uint256 maxCapacity;
         uint256 expirationDate;
         uint256 totalSales;
         uint256 carTotalTokens;
+        uint256 pvp;
     }
 
     uint256[] matchIdList;
@@ -45,9 +47,11 @@ contract CryptoTicketsMatchManagement is Pausable, AccessControl {
         string memory local,
         string memory visitor,
         string memory baseURI,
+        string memory metadataURI,
         uint256 maxCapacity,
         uint256 expirationDate,
-        uint256 carTotalTokens
+        uint256 carTotalTokens,
+        uint256 pvp
     ) public onlyRole(DEFAULT_ADMIN_ROLE) {
         uint256 matchId = _matchNumberCounter.current();
         MatchInfo memory matchInfo = MatchInfo(
@@ -55,10 +59,12 @@ contract CryptoTicketsMatchManagement is Pausable, AccessControl {
             local,
             visitor,
             baseURI,
+            metadataURI,
             maxCapacity,
             expirationDate,
             0,
-            carTotalTokens
+            carTotalTokens,
+            pvp
         );
         matchList[matchId] = matchInfo;
         matchIdList.push(matchId);
@@ -94,7 +100,7 @@ contract CryptoTicketsMatchManagement is Pausable, AccessControl {
         onlyRole(DEFAULT_ADMIN_ROLE)
     {
         MatchInfo memory matchInfo = matchList[matchId];
-        require(matchInfo.totalSales < matchInfo.maxCapacity, "Match is full");
+        require(matchInfo.totalSales <= matchInfo.maxCapacity, "Match is full");
 
         matchTicketsContract.airdropMatchTickets(
             matchInfo.matchId,
@@ -109,12 +115,26 @@ contract CryptoTicketsMatchManagement is Pausable, AccessControl {
         matchList[matchId] = matchInfo;
     }
 
-    // function mintSaleMatchTicket(address to, string memory uri) public payable {
-    //     uint256 matchId = _matchIdCounter.current();
-    //     _matchIdCounter.increment();
-    //     _safeMint(to, matchId);
-    //     _setTokenURI(matchId, uri);
-    // }
+    function mintSaleMatchTicket(uint256 matchId) public payable {
+        MatchInfo memory matchInfo = matchList[matchId];
+        require(matchInfo.totalSales <= matchInfo.maxCapacity, "Match is full");
+        require(
+            msg.value >= matchInfo.pvp / 1 wei,
+            "You don't have enough money"
+        );
+
+        matchTicketsContract.mintSaleMatchTicket{value: msg.value}(
+            msg.sender,
+            matchInfo.matchId,
+            matchInfo.maxCapacity,
+            matchInfo.baseURI,
+            matchInfo.carTotalTokens
+        );
+        uint256 newTotalSales = matchTicketsContract
+            .getTotalMintedTicketsByMatchId(matchId);
+        matchInfo.totalSales = newTotalSales;
+        matchList[matchId] = matchInfo;
+    }
 
     function grantAdminRol(address account)
         public

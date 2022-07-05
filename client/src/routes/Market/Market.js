@@ -5,9 +5,14 @@ import NonFungibleToken from "../../core/NonFungibleToken";
 import withConnectionRequired from "../../hocs/withConnectionRequired";
 import { getOnSaleTokenInfo } from "../../utils/contracts";
 import { notify } from "../../utils/notifications";
-import { getTokenMetadataById } from "../../utils/web3";
+import { getContractAddress, getTokenMetadataById } from "../../utils/web3";
+
+import CryptoTicketsMatchManagementContract from "../../contracts/CryptoTicketsMatchManagement.json";
 
 import useStyles from "./Market.style";
+import { CHAIN_ID } from "../../constants/chain";
+import { ipfsPathToHttps } from "../../utils/ipfs";
+import { getNFTMetadataObject } from "../../services/nft";
 
 const getOnSaleTokensMetadata = async (contracts, web3) => {
   const onSaleTokenInfo = await getOnSaleTokenInfo(contracts);
@@ -30,15 +35,44 @@ const getOnSaleTokensMetadata = async (contracts, web3) => {
   return result;
 };
 
+const getOnSaleClubMatch = async (contracts, web3) => {
+  let onSaleClubMatchs = [];
+  if (contracts && contracts.management) {
+    try {
+      const result = await contracts.management.methods.getAllMatchs().call();
+
+      for (let match of result) {
+        const metadata = await getNFTMetadataObject(match.metadataURI);
+        onSaleClubMatchs.push({
+          ...match,
+          ...metadata,
+          seller: getContractAddress(
+            CHAIN_ID,
+            CryptoTicketsMatchManagementContract
+          ),
+          price: web3.utils.fromWei(match.pvp.toString(), "ether"),
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+    // TODO: clean
+  }
+  return onSaleClubMatchs;
+};
+
 const Market = () => {
   const classes = useStyles();
   const { web3, accounts, contracts } = useContext(Web3Context);
+  const [onSaleClubMatch, setOnSaleClubMatch] = useState([]);
   const [onSaleTokenMetadataList, setonSaleTokenMetadataList] = useState([]);
 
   useEffect(() => {
     const getOnSaleTokens = async () => {
       const tokensOnSale = await getOnSaleTokensMetadata(contracts, web3);
       setonSaleTokenMetadataList(tokensOnSale);
+      const onSaleClubTickets = await getOnSaleClubMatch(contracts, web3);
+      setOnSaleClubMatch(onSaleClubTickets);
     };
     getOnSaleTokens();
   }, [web3, contracts]);
@@ -69,10 +103,49 @@ const Market = () => {
     [accounts, web3, contracts]
   );
 
+  const buyTicketToClubHandler = useCallback(
+    async (matchInfo) => {
+      const account = accounts[0];
+      await contracts.management.methods
+        .mintSaleMatchTicket(matchInfo.matchId)
+        .send({
+          from: account,
+          value: web3.utils.toWei(matchInfo.price.toString(), "ether"),
+        })
+        .on("receipt", async () => {
+          const tokensOnSale = await getOnSaleTokensMetadata(contracts, web3);
+          setonSaleTokenMetadataList(tokensOnSale);
+          notify(
+            "Congratulations!",
+            "Ticket buy successfully",
+            "success",
+            5000
+          );
+        })
+        .on("error", (error, receipt) => {
+          notify("Something went wrong", error?.message, "danger", 10000);
+        });
+    },
+    [accounts, web3, contracts]
+  );
+
   return (
     <div className={classes.root}>
       <h2>Marketplaces</h2>
+
       <CardContainer>
+        {onSaleClubMatch.map((match) => (
+          // <button onClick={() => buyTicketToClubHandler(match)}>
+          //   {match.matchId}
+          // </button>
+          <NonFungibleToken
+            key={match.matchId}
+            metadata={match}
+            title={"Crypto Ticket Oficial"}
+            tokenDetails={() => {}}
+            buyToken={() => buyTicketToClubHandler(match)}
+          />
+        ))}
         {onSaleTokenMetadataList.map((metadata) => (
           <NonFungibleToken
             key={metadata.tokenId}

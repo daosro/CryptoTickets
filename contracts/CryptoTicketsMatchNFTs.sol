@@ -33,17 +33,18 @@ contract CryptoTicketsMatchNFTs is
     address[] public listSubscriber;
     mapping(uint256 => uint256) public tokensMintedByMatch;
 
-    address payable public club;
+    address payable clubAddress;
 
     uint96 private royaltyFeesInBips = 1000;
 
-    constructor(address rewardsTicketAddress)
+    constructor(address rewardsTicketAddress, address payable clubOwnerAddress)
         ERC721("CryptoTicketsMatchNFTs", "CTKMN")
     {
         rewardsTicket = CryptoTicketsRewards(rewardsTicketAddress);
         _grantRole(DEFAULT_ADMIN_ROLE, msg.sender);
         _grantRole(ADMIN_CLUB_ROLE, msg.sender);
-        setRoyaltyInfo(msg.sender, royaltyFeesInBips);
+        clubAddress = clubOwnerAddress;
+        setRoyaltyInfo(clubOwnerAddress, royaltyFeesInBips);
     }
 
     function contractURI() public pure returns (string memory) {
@@ -81,7 +82,7 @@ contract CryptoTicketsMatchNFTs is
         uint256 carSize
     ) public onlyRole(ADMIN_CLUB_ROLE) {
         require(
-            tokensMintedByMatch[matchId] + listSubscriber.length < maxCapacity,
+            tokensMintedByMatch[matchId] + listSubscriber.length <= maxCapacity,
             "Match is full"
         );
         uint256 randomNumber = tokensMintedByMatch[matchId];
@@ -92,12 +93,22 @@ contract CryptoTicketsMatchNFTs is
         tokensMintedByMatch[matchId] += listSubscriber.length;
     }
 
-    // function mintSaleMatchTicket(address to, string memory uri) public payable {
-    //     uint256 matchId = _matchIdCounter.current();
-    //     _matchIdCounter.increment();
-    //     _safeMint(to, matchId);
-    //     _setTokenURI(matchId, uri);
-    // }
+    function mintSaleMatchTicket(
+        address to,
+        uint256 matchId,
+        uint256 maxCapacity,
+        string memory uri,
+        uint256 carSize
+    ) public payable onlyRole(ADMIN_CLUB_ROLE) {
+        require(
+            tokensMintedByMatch[matchId] + 1 <= maxCapacity,
+            "Match is full"
+        );
+        uint256 randomNumber = tokensMintedByMatch[matchId];
+        mintMatchTicket(to, uri, randomNumber, carSize);
+        tokensMintedByMatch[matchId] += 1;
+        clubAddress.transfer(msg.value);
+    }
 
     function getTotalMintedTicketsByMatchId(uint256 matchId)
         public
