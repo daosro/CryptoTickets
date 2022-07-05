@@ -34,5 +34,30 @@ export const GANACHE_CHAIN_DATA = {
   rpcUrls: ["http://127,0,0,1:7545"],
 };
 
-export const CHAIN_ID = AVAX_FUJI_CHAIN_ID;
-export const CHAIN_DATA = AVAX_FUJI_CHAIN_DATA;
+export const ALLOWED_CHAINS = [
+  { value: MUMBAI_CHAIN_ID, label: "Polygon Testnet" },
+  { value: AVAX_FUJI_CHAIN_ID, label: "Avalanche Testnet" },
+  { value: GANACHE_CHAIN_ID, label: "Ganache (localhost)" },
+];
+
+export const getSelectedChainId = () => {
+  const chainId = localStorage.getItem("currenctChainId");
+  return chainId ? parseInt(chainId) : MUMBAI_CHAIN_ID;
+};
+
+export const getSelectedChainData = () => {
+  const chainId = getSelectedChainId();
+  switch (chainId) {
+    case MUMBAI_CHAIN_ID:
+      return MUMBAI_CHAIN_DATA;
+    case AVAX_FUJI_CHAIN_ID:
+      return AVAX_FUJI_CHAIN_DATA;
+    case GANACHE_CHAIN_ID:
+      return GANACHE_CHAIN_DATA;
+    default:
+      return MUMBAI_CHAIN_DATA;
+  }
+};
+
+export const CHAIN_ID = getSelectedChainId();
+export const CHAIN_DATA = getSelectedChainData();
