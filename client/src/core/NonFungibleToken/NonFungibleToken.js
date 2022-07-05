@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { MdOutlineSell, MdOutlineRestorePage, MdPayment } from "react-icons/md";
 import { IoTicketOutline } from "react-icons/io5";
 import { TbListDetails } from "react-icons/tb";
+import { GoVerified } from "react-icons/go";
 
 import Modal from "rodal";
 
@@ -13,7 +14,7 @@ import TokenDetails from "../TokenDetails/TokenDetails";
 
 const NonFungibleToken = ({
   metadata,
-  metadata: { image, name, tokenId, price, seller },
+  metadata: { image, name, tokenId, price, seller, verified, soldout },
   title,
   tokenDetails,
   onSale = false,
@@ -22,7 +23,7 @@ const NonFungibleToken = ({
   buyToken,
   removeFromSell,
 }) => {
-  const classes = useStyles();
+  const classes = useStyles({ soldout });
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false);
 
   const toggleDetailModal = () => {
@@ -67,7 +68,7 @@ const NonFungibleToken = ({
                   <MdOutlineRestorePage size={20} />
                 </div>
               )}
-              {buyToken && (
+              {buyToken && !soldout && (
                 <div className={classes.icon} onClick={buyToken}>
                   <MdPayment size={20} />
                 </div>
@@ -77,6 +78,14 @@ const NonFungibleToken = ({
         }
       >
         <div className={classes.content}>
+          {soldout && (
+            <div className={classes.soldout}>
+              <img
+                src={process.env.PUBLIC_URL + "/assets/images/soldout.png"}
+                alt="soldout"
+              />
+            </div>
+          )}
           {onSale && <div className={classes.onSale} />}
           <div className={classes.details}>
             <div className={classes.title}>{name}</div>
@@ -94,7 +103,14 @@ const NonFungibleToken = ({
                 />
                 {price}
                 {seller && (
-                  <div className={classes.owner}>{getShortAddress(seller)}</div>
+                  <div className={classes.owner}>
+                    {verified && (
+                      <span className={classes.verified}>
+                        <GoVerified />
+                      </span>
+                    )}
+                    {getShortAddress(seller)}
+                  </div>
                 )}
               </div>
             </>

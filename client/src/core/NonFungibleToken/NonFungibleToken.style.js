@@ -65,6 +65,17 @@ export default createUseStyles(
       background: `url(${process.env.PUBLIC_URL}/assets/images/sale-tag.svg) no-repeat center`,
       backgroundSize: "120px 100px",
     },
+    verified: {
+      color: "#0555a5",
+      marginRight: "2px",
+    },
+    soldout: {
+      position: "absolute",
+      top: "30px",
+      "& > img": {
+        width: "100%",
+      },
+    },
   },
   { name: "NonFungibleToken" }
 );

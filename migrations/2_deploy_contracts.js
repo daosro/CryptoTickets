@@ -62,7 +62,7 @@ module.exports = async function (deployer) {
     "Real Betis",
     "ipfs://bafybeiaeamdeii2liwhh7lapkccmobjs7bhxllfurh7h5eik5jv7w22xk4/",
     "ipfs://bafybeiaeamdeii2liwhh7lapkccmobjs7bhxllfurh7h5eik5jv7w22xk4/5",
-    3,
+    2,
     new Date(new Date().setMonth(new Date().getMonth() + 3)).getTime(),
     5,
     "1000000000000000000"

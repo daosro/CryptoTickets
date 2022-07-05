@@ -11,7 +11,6 @@ import CryptoTicketsMatchManagementContract from "../../contracts/CryptoTicketsM
 
 import useStyles from "./Market.style";
 import { CHAIN_ID } from "../../constants/chain";
-import { ipfsPathToHttps } from "../../utils/ipfs";
 import { getNFTMetadataObject } from "../../services/nft";
 
 const getOnSaleTokensMetadata = async (contracts, web3) => {
@@ -46,6 +45,8 @@ const getOnSaleClubMatch = async (contracts, web3) => {
         onSaleClubMatchs.push({
           ...match,
           ...metadata,
+          verified: true,
+          soldout: match.totalSales >= match.maxCapacity,
           seller: getContractAddress(
             CHAIN_ID,
             CryptoTicketsMatchManagementContract
@@ -56,7 +57,6 @@ const getOnSaleClubMatch = async (contracts, web3) => {
     } catch (error) {
       console.log(error);
     }
-    // TODO: clean
   }
   return onSaleClubMatchs;
 };
@@ -115,6 +115,8 @@ const Market = () => {
         .on("receipt", async () => {
           const tokensOnSale = await getOnSaleTokensMetadata(contracts, web3);
           setonSaleTokenMetadataList(tokensOnSale);
+          const onSaleClubTickets = await getOnSaleClubMatch(contracts, web3);
+          setOnSaleClubMatch(onSaleClubTickets);
           notify(
             "Congratulations!",
             "Ticket buy successfully",
@@ -135,9 +137,6 @@ const Market = () => {
 
       <CardContainer>
         {onSaleClubMatch.map((match) => (
-          // <button onClick={() => buyTicketToClubHandler(match)}>
-          //   {match.matchId}
-          // </button>
           <NonFungibleToken
             key={match.matchId}
             metadata={match}
