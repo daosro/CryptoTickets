@@ -11,10 +11,16 @@ const withRoleAdmin = (WrappedComponent) => (props) => {
   useEffect(() => {
     const checkIfTokenIsMinted = async () => {
       if (accounts?.[0] && contracts?.membership) {
-        const hasCorrectRole = await contracts.membership.methods
-          .hasClubRol(accounts[0])
-          .call();
-        setIsAdminUser(hasCorrectRole);
+        let hasCorrectRole = false;
+        try {
+          hasCorrectRole = await contracts.membership.methods
+            .hasClubRol(accounts[0])
+            .call();
+        } catch (error) {
+          console.log(error);
+        } finally {
+          setIsAdminUser(hasCorrectRole);
+        }
       }
     };
     checkIfTokenIsMinted();

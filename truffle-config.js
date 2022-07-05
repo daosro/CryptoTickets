@@ -16,9 +16,20 @@ module.exports = {
       provider: () =>
         new HDWalletProvider(
           process.env.MNEMONIC,
-          `https://rpc-mumbai.matic.today`
+          `https://matic-mumbai.chainstacklabs.com`
         ),
       network_id: 80001,
+      confirmations: 2,
+      timeoutBlocks: 200,
+      skipDryRun: true,
+    },
+    avalanche_fuji: {
+      provider: () =>
+        new HDWalletProvider(
+          process.env.MNEMONIC,
+          `https://api.avax-test.network/ext/C/rpc`
+        ),
+      network_id: 43113,
       confirmations: 2,
       timeoutBlocks: 200,
       skipDryRun: true,

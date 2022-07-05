@@ -14,22 +14,26 @@ import { CHAIN_ID } from "../../constants/chain";
 import { getNFTMetadataObject } from "../../services/nft";
 
 const getOnSaleTokensMetadata = async (contracts, web3) => {
-  const onSaleTokenInfo = await getOnSaleTokenInfo(contracts);
   const result = [];
-  if (onSaleTokenInfo?.length > 0) {
-    for (let tokenInfo of onSaleTokenInfo) {
-      const metadata = await getTokenMetadataById(
-        contracts.matchTickets,
-        tokenInfo.tokenId
-      );
-      if (metadata) {
-        result.push({
-          ...metadata,
-          ...tokenInfo,
-          price: web3.utils.fromWei(tokenInfo.price.toString(), "ether"),
-        });
+  try {
+    const onSaleTokenInfo = await getOnSaleTokenInfo(contracts);
+    if (onSaleTokenInfo?.length > 0) {
+      for (let tokenInfo of onSaleTokenInfo) {
+        const metadata = await getTokenMetadataById(
+          contracts.matchTickets,
+          tokenInfo.tokenId
+        );
+        if (metadata) {
+          result.push({
+            ...metadata,
+            ...tokenInfo,
+            price: web3.utils.fromWei(tokenInfo.price.toString(), "ether"),
+          });
+        }
       }
     }
+  } catch (error) {
+    console.log(error);
   }
   return result;
 };
@@ -46,7 +50,7 @@ const getOnSaleClubMatch = async (contracts, web3) => {
           ...match,
           ...metadata,
           verified: true,
-          soldout: match.totalSales >= match.maxCapacity,
+          soldout: Number(match.totalSales) >= Number(match.maxCapacity),
           seller: getContractAddress(
             CHAIN_ID,
             CryptoTicketsMatchManagementContract

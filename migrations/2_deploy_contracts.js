@@ -52,20 +52,20 @@ module.exports = async function (deployer) {
     "Rayo Vallecano",
     "ipfs://bafybeiaijux6ugx26qrxh7do36seqro6xzgmjtnagc3pbqimn6e63yruwe/",
     "ipfs://bafybeiaijux6ugx26qrxh7do36seqro6xzgmjtnagc3pbqimn6e63yruwe/5",
-    20,
+    30,
     new Date(new Date().setMonth(new Date().getMonth() + 2)).getTime(),
     5,
-    "5000000000000000000"
+    "20000000000000000"
   );
   await cryptoTicketsManagement.addNewMatch(
     "Real Madrid",
     "Real Betis",
     "ipfs://bafybeiaeamdeii2liwhh7lapkccmobjs7bhxllfurh7h5eik5jv7w22xk4/",
     "ipfs://bafybeiaeamdeii2liwhh7lapkccmobjs7bhxllfurh7h5eik5jv7w22xk4/5",
-    2,
+    30,
     new Date(new Date().setMonth(new Date().getMonth() + 3)).getTime(),
     5,
-    "1000000000000000000"
+    "30000000000000000"
   );
 };
 4;

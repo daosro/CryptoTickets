@@ -32168,10 +32168,22 @@
       "links": {},
       "address": "0xA84b6B0Fa967c2f3Fc40A378ccEe3012810469Cc",
       "transactionHash": "0x4bf7df7345b861f351b3f8ee9f8c5450e4d26b446cadae9c6414c82c9c32c39f"
+    },
+    "43113": {
+      "events": {},
+      "links": {},
+      "address": "0xA7BE95dF1CfB9876204E210D0d1F1b3bbfA1ffCE",
+      "transactionHash": "0xf995169f77f3e44843daa24e5aa152e86061074829316c847ff4192675d18794"
+    },
+    "80001": {
+      "events": {},
+      "links": {},
+      "address": "0x9cAc24f8D01f918b32b005dc7379B5f2162995Ce",
+      "transactionHash": "0xc9cd8241e289fac389ef9e87dc3e79c94345b026ba6267f5fa5fb54bd6532b36"
     }
   },
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-07-05T19:36:30.775Z",
+  "updatedAt": "2022-07-05T20:21:04.230Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
