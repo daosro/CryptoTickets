@@ -46,7 +46,6 @@ export default createUseStyles(
     },
     image: {
       width: "100%",
-      height: ({ withFooter }) => `calc(30vh - ${withFooter ? "105px" : 0})`,
       maxWidth: "100%",
     },
     content: {},
