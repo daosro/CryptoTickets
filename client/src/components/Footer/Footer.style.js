@@ -18,7 +18,7 @@ export default createUseStyles(
     logo: {
       "& > a": {
         top: "-10px",
-        left: "50%",
+        left: "calc(50% - 20px)",
         color: "#7b7b7b",
         display: "inline-block",
         zIndex: "5",
@@ -35,7 +35,7 @@ export default createUseStyles(
         content: '"\\e638"',
         display: "inline-block",
         position: "absolute",
-        left: "50%",
+        left: "calc(50% - 20px)",
         marginLeft: "-25px",
         top: "-25px",
         zIndex: "1",
