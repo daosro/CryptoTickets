@@ -12,6 +12,7 @@ import CryptoTicketsMatchManagementContract from "../../contracts/CryptoTicketsM
 import useStyles from "./Market.style";
 import { CHAIN_ID } from "../../constants/chain";
 import { getNFTMetadataObject } from "../../services/nft";
+import LoadingPage from "../../core/LoadingPage";
 
 const getOnSaleTokensMetadata = async (contracts, web3) => {
   const result = [];
@@ -68,6 +69,8 @@ const getOnSaleClubMatch = async (contracts, web3) => {
 const Market = () => {
   const classes = useStyles();
   const { web3, accounts, contracts } = useContext(Web3Context);
+  const [loadingClubMatchs, setLoadingClubMatchs] = useState(true);
+  const [loadingMarketMatchs, setLoadingMarketMatchs] = useState(true);
   const [onSaleClubMatch, setOnSaleClubMatch] = useState([]);
   const [onSaleTokenMetadataList, setonSaleTokenMetadataList] = useState([]);
 
@@ -75,8 +78,10 @@ const Market = () => {
     const getOnSaleTokens = async () => {
       const tokensOnSale = await getOnSaleTokensMetadata(contracts, web3);
       setonSaleTokenMetadataList(tokensOnSale);
+      setLoadingClubMatchs(false);
       const onSaleClubTickets = await getOnSaleClubMatch(contracts, web3);
       setOnSaleClubMatch(onSaleClubTickets);
+      setLoadingMarketMatchs(false);
     };
     getOnSaleTokens();
   }, [web3, contracts]);
@@ -140,24 +145,32 @@ const Market = () => {
       <h2>Marketplaces</h2>
 
       <CardContainer>
-        {onSaleClubMatch.map((match) => (
-          <NonFungibleToken
-            key={match.matchId}
-            metadata={match}
-            title={"Crypto Ticket Oficial"}
-            tokenDetails={() => {}}
-            buyToken={() => buyTicketToClubHandler(match)}
-          />
-        ))}
-        {onSaleTokenMetadataList.map((metadata) => (
-          <NonFungibleToken
-            key={metadata.tokenId}
-            metadata={metadata}
-            title={"Crypto Ticket"}
-            tokenDetails={() => {}}
-            buyToken={() => buyTokenHandler(metadata)}
-          />
-        ))}
+        {loadingClubMatchs ? (
+          <LoadingPage />
+        ) : (
+          onSaleClubMatch.map((match) => (
+            <NonFungibleToken
+              key={match.matchId}
+              metadata={match}
+              title={"Crypto Ticket Oficial"}
+              tokenDetails={() => {}}
+              buyToken={() => buyTicketToClubHandler(match)}
+            />
+          ))
+        )}
+        {loadingMarketMatchs ? (
+          <LoadingPage />
+        ) : (
+          onSaleTokenMetadataList.map((metadata) => (
+            <NonFungibleToken
+              key={metadata.tokenId}
+              metadata={metadata}
+              title={"Crypto Ticket"}
+              tokenDetails={() => {}}
+              buyToken={() => buyTokenHandler(metadata)}
+            />
+          ))
+        )}
       </CardContainer>
     </div>
   );

@@ -27,6 +27,7 @@ import NonFungibleToken from "../../core/NonFungibleToken";
 
 import useStyles from "./Tickets.style";
 import withConnectionRequired from "../../hocs/withConnectionRequired";
+import LoadingPage from "../../core/LoadingPage";
 
 const refreshTokensMetadata = async (contracts, accounts) => {
   const result = { subscriberNFT: null, ticketsNFTs: [] };
@@ -71,7 +72,7 @@ const Tickets = () => {
   const { web3, accounts, contracts } = useContext(Web3Context);
   const [isApprovedForAll, setIsApprovedForAll] = useState(false);
   const [subscriberNFTMetadata, setSubscriberNFTMetadata] = useState(null);
-  const [ticketsNFTsMetadata, setTicketsNFTsMetadata] = useState([]);
+  const [ticketsNFTsMetadata, setTicketsNFTsMetadata] = useState();
   const [onSaleTokenList, setonSaleTokenList] = useState([]);
   const [{ isSellModalOpen, ticketId, price }, setModal] = useState({
     isSellModalOpen: false,
@@ -272,30 +273,34 @@ const Tickets = () => {
             </div>
           </Card>
         )}
-        {ticketsNFTsMetadata.map((metadata) => (
-          <NonFungibleToken
-            key={metadata.tokenId}
-            metadata={metadata}
-            title={"Crypto Ticket"}
-            onSale={onSaleTokenList.includes(metadata.tokenId)}
-            tokenDetails={() => {}}
-            useToke={
-              onSaleTokenList.includes(metadata.tokenId)
-                ? undefined
-                : () => burnTicketHandler(metadata.tokenId)
-            }
-            saleToken={
-              onSaleTokenList.includes(metadata.tokenId)
-                ? undefined
-                : () => toggleSellModal(metadata.tokenId)
-            }
-            removeFromSell={
-              onSaleTokenList.includes(metadata.tokenId)
-                ? () => removeFromSellTicketHandler(metadata.tokenId)
-                : undefined
-            }
-          />
-        ))}
+        {!ticketsNFTsMetadata ? (
+          <LoadingPage />
+        ) : (
+          ticketsNFTsMetadata.map((metadata) => (
+            <NonFungibleToken
+              key={metadata.tokenId}
+              metadata={metadata}
+              title={"Crypto Ticket"}
+              onSale={onSaleTokenList.includes(metadata.tokenId)}
+              tokenDetails={() => {}}
+              useToke={
+                onSaleTokenList.includes(metadata.tokenId)
+                  ? undefined
+                  : () => burnTicketHandler(metadata.tokenId)
+              }
+              saleToken={
+                onSaleTokenList.includes(metadata.tokenId)
+                  ? undefined
+                  : () => toggleSellModal(metadata.tokenId)
+              }
+              removeFromSell={
+                onSaleTokenList.includes(metadata.tokenId)
+                  ? () => removeFromSellTicketHandler(metadata.tokenId)
+                  : undefined
+              }
+            />
+          ))
+        )}
       </CardContainer>
       {isSellModalOpen && (
         <Modal

@@ -51,14 +51,14 @@ module.exports = async function (deployer) {
   await cryptoTicketsMatch.grantClubRol(CryptoTicketsMatchManagement.address);
 
   await cryptoTicketsManagement.addNewMatch(
-    "Real Madrid",
-    "Rayo Vallecano",
-    "ipfs://bafybeiaijux6ugx26qrxh7do36seqro6xzgmjtnagc3pbqimn6e63yruwe/",
-    "ipfs://bafybeiaijux6ugx26qrxh7do36seqro6xzgmjtnagc3pbqimn6e63yruwe/5",
-    30,
-    new Date(new Date().setMonth(new Date().getMonth() + 2)).getTime(),
-    5,
-    "20000000000000000"
+    "Real Madrid", // Local
+    "Rayo Vallecano", // Visitor
+    "ipfs://bafybeiaijux6ugx26qrxh7do36seqro6xzgmjtnagc3pbqimn6e63yruwe/", // Car Base URL
+    "ipfs://bafybeiaijux6ugx26qrxh7do36seqro6xzgmjtnagc3pbqimn6e63yruwe/5", // Marketplace Ticket NFT
+    30, // Match mints allowed
+    new Date(new Date().setMonth(new Date().getMonth() + 2)).getTime(), // Expiration date
+    5, // Total tokens in car path (For the rollup)
+    "20000000000000000" // Price in wei
   );
   await cryptoTicketsManagement.addNewMatch(
     "Real Madrid",
@@ -69,6 +69,36 @@ module.exports = async function (deployer) {
     new Date(new Date().setMonth(new Date().getMonth() + 3)).getTime(),
     5,
     "30000000000000000"
+  );
+  await cryptoTicketsManagement.addNewMatch(
+    "Real Madrid",
+    "Atletic de Bilbao",
+    "ipfs://bafybeid576zpokj7n57mnytsweyat2w4kjp6bdstwhcz4b6szkrnluheyi/",
+    "ipfs://bafybeid576zpokj7n57mnytsweyat2w4kjp6bdstwhcz4b6szkrnluheyi/5",
+    30,
+    new Date(new Date().setMonth(new Date().getMonth() + 3)).getTime(),
+    5,
+    "10000000000000000"
+  );
+  await cryptoTicketsManagement.addNewMatch(
+    "Real Madrid",
+    "Chelsea",
+    "ipfs://bafybeifoxm5q4f7d2jryjnuu5jgkuafsmc4cn244n7npae7vaqhfatrryi/",
+    "ipfs://bafybeifoxm5q4f7d2jryjnuu5jgkuafsmc4cn244n7npae7vaqhfatrryi/5",
+    30,
+    new Date(new Date().setMonth(new Date().getMonth() + 3)).getTime(),
+    5,
+    "60000000000000000"
+  );
+  await cryptoTicketsManagement.addNewMatch(
+    "Real Madrid",
+    "Bayern Munich",
+    "ipfs://bafybeibo67eeeuw25jmcvrbhbuerjl6m6appi5gr5mnif4522mw5tuhiti/",
+    "ipfs://bafybeibo67eeeuw25jmcvrbhbuerjl6m6appi5gr5mnif4522mw5tuhiti/5",
+    30,
+    new Date(new Date().setMonth(new Date().getMonth() + 3)).getTime(),
+    5,
+    "80000000000000000"
   );
 };
 4;
