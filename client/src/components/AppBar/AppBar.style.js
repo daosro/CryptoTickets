@@ -19,7 +19,7 @@ export default createUseStyles(
     },
     homeLink: {
       width: "150px",
-      marginLeft: "20px",
+      marginLeft: "10px",
       "@media (max-width: 575.98px)": {
         width: "40px",
       },

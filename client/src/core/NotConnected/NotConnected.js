@@ -9,7 +9,7 @@ const NotConnected = () => {
     <div className={classes.root}>
       <div className={classes.title}>CONNECT WALLET</div>
       <div className={classes.connectText}>
-        Connect with your available waller or create new wallet to join our
+        Connect with your available wallet or create new wallet to join our
         marketplace
       </div>
       <ConnectButton />
@@ -29,8 +29,8 @@ const NotConnected = () => {
         </a>
       </div>
       <div className={classes.legal}>
-        We do not own your private keys and cannot acces your funds without your
-        confirmation
+        We do not own your private keys and cannot access your funds without
+        your confirmation
       </div>
     </div>
   );

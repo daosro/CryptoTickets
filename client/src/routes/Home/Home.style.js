@@ -10,15 +10,15 @@ export default createUseStyles(
       flexDirection: "column",
     },
     groupStyles: {
-      right: "50px",
-      width: "100%",
-      bottom: "100px",
+      right: "1.8rem",
+      bottom: "4rem",
       position: "absolute",
       display: "flex",
+      flexDirection: "column",
       justifyContent: "flex-end",
-      alignItems: "center",
+      alignItems: "flex-start",
       "& span": {
-        marginRight: "1rem",
+        marginBottom: "10px",
       },
     },
     selectContainer: {
