@@ -44,6 +44,9 @@ module.exports = async function (deployer) {
 
   await cryptoTicketsReward.grantAdminRol(CryptoTicketsMatchNFTs.address);
   await cryptoTicketsMatch.grantAdminRol(CryptoTicketsMembershipNFTs.address);
+  await cryptoTicketsManagement.grantAdminRol(
+    CryptoTicketsMembershipNFTs.address
+  );
   await cryptoTicketsMatch.grantAdminRol(CryptoTicketsMatchManagement.address);
   await cryptoTicketsMatch.grantClubRol(CryptoTicketsMatchManagement.address);
 
