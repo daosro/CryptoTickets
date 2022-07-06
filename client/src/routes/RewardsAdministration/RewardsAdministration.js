@@ -154,7 +154,7 @@ const RewardsAdministration = () => {
         <CardContainer>
           {rewardsMetadata.map((metadata) => (
             <NonFungibleToken
-              key={metadata.tokenId}
+              key={metadata.name}
               metadata={metadata}
               title={"Crypto Reward"}
               tokenDetails={() => {}}
