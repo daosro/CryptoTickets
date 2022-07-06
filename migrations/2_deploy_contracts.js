@@ -13,35 +13,41 @@ var CryptoTicketsMatchManagement = artifacts.require(
 );
 
 module.exports = async function (deployer) {
+  // Rewards
   await deployer.deploy(CryptoTicketsRewards);
+  var cryptoTicketsReward = await CryptoTicketsRewards.deployed();
 
+  // Tickets NFTs
   await deployer.deploy(
     CryptoTicketsMatchNFTs,
     CryptoTicketsRewards.address,
     process.env.CLUB_ADDRESS
   );
+  var cryptoTicketsMatch = await CryptoTicketsMatchNFTs.deployed();
 
+  // Match Manager
   await deployer.deploy(
     CryptoTicketsMatchManagement,
     CryptoTicketsMatchNFTs.address
   );
+  var cryptoTicketsManagement = await CryptoTicketsMatchManagement.deployed();
 
+  // Memberships and Accounts
   await deployer.deploy(
     CryptoTicketsMembershipNFTs,
     CryptoTicketsMatchNFTs.address,
     CryptoTicketsMatchManagement.address
   );
+  await CryptoTicketsMembershipNFTs.deployed();
 
   await deployer.deploy(
     CryptoTicketsMarketplace,
     CryptoTicketsMatchNFTs.address,
     process.env.CLUB_ADDRESS
   );
+  await CryptoTicketsMarketplace.deployed();
 
-  var cryptoTicketsMatch = await CryptoTicketsMatchNFTs.deployed();
-  var cryptoTicketsManagement = await CryptoTicketsMatchManagement.deployed();
-  var cryptoTicketsReward = await CryptoTicketsRewards.deployed();
-
+  // Set the addresses in the contracts
   await cryptoTicketsReward.grantAdminRol(CryptoTicketsMatchNFTs.address);
   await cryptoTicketsMatch.grantAdminRol(CryptoTicketsMembershipNFTs.address);
   await cryptoTicketsManagement.grantAdminRol(
@@ -50,6 +56,7 @@ module.exports = async function (deployer) {
   await cryptoTicketsMatch.grantAdminRol(CryptoTicketsMatchManagement.address);
   await cryptoTicketsMatch.grantClubRol(CryptoTicketsMatchManagement.address);
 
+  // Add matchs by default
   await cryptoTicketsManagement.addNewMatch(
     "Real Madrid", // Local
     "Rayo Vallecano", // Visitor
