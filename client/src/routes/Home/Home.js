@@ -1,6 +1,7 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useContext } from "react";
 import Select from "react-select";
 import { ALLOWED_CHAINS, getSelectedChainId } from "../../constants/chain";
+import { Web3Context } from "../../context/Web3";
 import useStyles from "./Home.style";
 
 const getDefaultChainValue = () => {
@@ -9,6 +10,7 @@ const getDefaultChainValue = () => {
 };
 const Home = () => {
   const classes = useStyles();
+  const { web3, accounts } = useContext(Web3Context);
 
   const onChangeChain = useCallback((selectChain) => {
     localStorage.setItem("currenctChainId", selectChain.value);
