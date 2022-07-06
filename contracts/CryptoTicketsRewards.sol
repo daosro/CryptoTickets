@@ -22,9 +22,9 @@ contract CryptoTicketsRewards is
     Counters.Counter private _rewardIdCounter;
 
     //numero de elementos del car
-    uint256 carRewardsSize = 14;
+    uint256 carRewardsSize = 20;
     string baseURI =
-        "ipfs://bafybeibcwxmhcsr4apfi4nfzol6fxitgaztercdwxzkqzgudd2qhlloise/";
+        "ipfs://bafybeibwo423gb7uagnqqsfw64kbn4dxgpsp3cvhjsvqseqn7nf4mqzoda/";
 
     address[] public listUserRewards;
     address payable public club;

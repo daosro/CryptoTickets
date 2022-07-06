@@ -1,12 +1,7 @@
-import React from 'react';
+import React from "react";
+import LoadingPage from "../../core/LoadingPage";
 
 // TODO: Implement awesome spinner
-const Spinner = () => {
-  return (
-    <div>
-      Loading...
-    </div>
-  );
-};
+const Spinner = () => <LoadingPage />;
 
 export default Spinner;

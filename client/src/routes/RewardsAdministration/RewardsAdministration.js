@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Web3Context } from "../../context/Web3";
 import Button from "../../core/Button";
 import { CardContainer } from "../../core/Card";
+import LoadingPage from "../../core/LoadingPage";
 import NonFungibleToken from "../../core/NonFungibleToken";
 
 import withConnectionRequired from "../../hocs/withConnectionRequired";
@@ -45,7 +46,7 @@ const RewardsAdministration = () => {
   const [pendingRewards, setPendingRewards] = useState(0);
   const [{ rewardsNewBaseURI, rewardsNewSize }, setRewardsFormData] =
     useState(INITIAL_FORM_DATA);
-  const [rewardsMetadata, setRewardsMetadata] = useState([]);
+  const [rewardsMetadata, setRewardsMetadata] = useState();
 
   useEffect(() => {
     if (contracts && contracts.rewards) {
@@ -90,6 +91,7 @@ const RewardsAdministration = () => {
         )
         .send()
         .on("receipt", async () => {
+          setRewardsMetadata(undefined);
           const rewards = await getRewardsMetadata(contracts);
           setRewardsMetadata(rewards);
           setRewardsFormData(INITIAL_FORM_DATA);
@@ -151,16 +153,20 @@ const RewardsAdministration = () => {
       </div>
       <h2>Listado de recompensas disponibles</h2>
       <div className={classes.section}>
-        <CardContainer>
-          {rewardsMetadata.map((metadata) => (
-            <NonFungibleToken
-              key={metadata.name}
-              metadata={metadata}
-              title={"Crypto Reward"}
-              tokenDetails={() => {}}
-            />
-          ))}
-        </CardContainer>
+        {rewardsMetadata ? (
+          <CardContainer>
+            {rewardsMetadata.map((metadata) => (
+              <NonFungibleToken
+                key={metadata.name}
+                metadata={metadata}
+                title={"Crypto Reward"}
+                tokenDetails={() => {}}
+              />
+            ))}
+          </CardContainer>
+        ) : (
+          <LoadingPage />
+        )}
       </div>
     </div>
   );
