@@ -27,10 +27,11 @@ module.exports = {
       provider: () =>
         new HDWalletProvider(
           process.env.MNEMONIC,
-          `https://api.avax-test.network/ext/C/rpc`
+          `https://api.avax-test.network/ext/bc/C/rpc`
         ),
       network_id: 43113,
       confirmations: 2,
+      networkCheckTimeoutnetworkCheckTimeout: 10000,
       timeoutBlocks: 200,
       skipDryRun: true,
     },

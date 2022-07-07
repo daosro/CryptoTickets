@@ -19626,14 +19626,116 @@
         }
       },
       "links": {},
-      "address": "0xE454B5D771729E77bb1e4201FA43825b74235441",
-      "transactionHash": "0x062c8d5b68dd58584e0c021487a1c057c908cb122d15746cab26cc60ad5c2586"
+      "address": "0x11028BF7343a3C10d844d4629f4724f0929675a8",
+      "transactionHash": "0xf8599005898bda87697e0a8ea5cff14f7197f8b5ada9fc85e8dd62dace4cb676"
     },
     "43113": {
-      "events": {},
+      "events": {
+        "0x62e78cea01bee320cd4e420270b5ea74000d11b0c9f74754ebdbfc544b05a258": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "Paused",
+          "type": "event"
+        },
+        "0xbd79b86ffe0ab8e8776151514217cd7cacd52c909f66475c3af44e129f0b00ff": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "previousAdminRole",
+              "type": "bytes32"
+            },
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "newAdminRole",
+              "type": "bytes32"
+            }
+          ],
+          "name": "RoleAdminChanged",
+          "type": "event"
+        },
+        "0x2f8788117e7eff1d82e926ec794901d17c78024a50270940304540a733656f0d": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            }
+          ],
+          "name": "RoleGranted",
+          "type": "event"
+        },
+        "0xf6391f5c32d9c69d2a47ea670b442974b53935d1edc7fd64eb21e047a839171b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "bytes32",
+              "name": "role",
+              "type": "bytes32"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "sender",
+              "type": "address"
+            }
+          ],
+          "name": "RoleRevoked",
+          "type": "event"
+        },
+        "0x5db9ee0a495bf2e6ff9c91a7834c1ba4fdd244a5e8aa4e537bd38aeae4b073aa": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "account",
+              "type": "address"
+            }
+          ],
+          "name": "Unpaused",
+          "type": "event"
+        }
+      },
       "links": {},
-      "address": "0x97c482c95aAE190b7a190D23754655B0781faE57",
-      "transactionHash": "0x424faf02d8bfd9414c94f3df19c07e277c86ea83955bd80b5867209036f11abf"
+      "address": "0x97e7F90b6D995F1bEafaA06377A995F22d09B10F",
+      "transactionHash": "0x0ee2937e8c87748ed91cd0aab72a3a483c2f563368b9a1b103356253b7f5aff0"
     },
     "80001": {
       "events": {},
@@ -19643,7 +19745,7 @@
     }
   },
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-07-06T20:12:30.703Z",
+  "updatedAt": "2022-07-07T06:54:43.158Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
